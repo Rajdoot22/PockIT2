@@ -1,0 +1,211 @@
+<div>
+  <form nz-form #TerritoryMappingForm="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+      <div nz-row>
+        <!-- Country Dropdown -->
+        <div nz-col nzSpan="10">
+          <nz-form-item>
+            <nz-form-label nzNoColon nzRequired>Country</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select Country">
+              <nz-select
+                name="COUNTRY_ID"
+                nzPlaceHolder="Select Country"
+                nzShowSearch
+                [(ngModel)]="addData.COUNTRY_ID"
+                (ngModelChange)="getTeritoryByCountry($event)"
+                nzAllowClear="true"
+                Country
+                required
+                [nzLoading]="countryloading"
+              >
+                <nz-option
+                  *ngFor="let data of countryData"
+                  [nzValue]="data.ID"
+                  [nzLabel]="data.NAME"
+                ></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Territory Dropdown -->
+        <div nz-col nzSpan="10">
+          <nz-form-item>
+            <nz-form-label nzNoColon nzRequired>Territory</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select Territory">
+              <nz-select
+                name="TERITORY_ID"
+                nzPlaceHolder="Select Territory"
+                nzShowSearch
+                [(ngModel)]="addData.TERITORY_ID"
+                nzAllowClear="true"
+                required
+                [nzLoading]="territoryloading"
+              >
+                <nz-option
+                  *ngFor="let data of territoryData"
+                  [nzValue]="data.ID"
+                  [nzLabel]="data.NAME"
+                ></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- Add Button -->
+        <div
+          nz-col
+          nzSpan="3"
+          style="display: flex; align-items: center; margin-top: 20px"
+        >
+          <button
+            nz-button
+            nzType="primary"
+            (click)="add(TerritoryMappingForm)"
+            style="width: 100%"
+            [nzLoading]="btnLoading"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+</div>
+
+ <!-- Table -->
+ <div nz-row>
+  <div nz-col nzSpan="24">
+    <nz-table
+      class="my-scroll no-wrap1"
+      #table
+      [nzData]="dataList"
+      [nzLoading]="loadingRecords"
+      nzBordered
+      [nzSize]="'small'"
+      [nzFrontPagination]="false"
+      (nzQueryParams)="sort($event)"
+
+    >
+      <thead>
+        <tr>
+            <!-- Is Mapped ? -->
+            <th
+            nzWidth="20px"
+            style="font-weight: bold; text-align: center"
+            nzColumnKey="{{ 'IS_ACTIVE' }}"
+            [nzSortFn]="true"
+          >
+            Is Mapped ?
+          </th>
+
+          <th nzWidth="140px"
+              align="center"
+              nzColumnKey="{{ 'COUNTRY_NAME' }}"
+             [nzSortFn]="true"
+          >Country</th>
+
+          <th nzWidth="140px"
+              align="center"
+              nzColumnKey="{{ 'TERRITORY_NAME'}}"
+              [nzSortFn]="true"
+          > Territory </th>
+
+
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of table.data">
+
+          <td align="center" style="white-space: pre-line">
+            <nz-switch
+            nzCheckedChildren="Yes"
+            nzUnCheckedChildren="No"
+              name="IS_ACTIVE"
+              [(ngModel)]="data['IS_ACTIVE']"
+              tabindex="-1"
+            ></nz-switch>
+        </td>
+
+          <td align="left" tabindex="-1">
+            <span *ngIf="data['COUNTRY_NAME'] != null">
+              <span
+                *ngIf="data['COUNTRY_NAME'].length >= 35"
+                nz-popover
+                [nzPopoverContent]="data['COUNTRY_NAME']"
+                nzPopoverPlacement="topLeft"
+              >
+                {{
+                  data["COUNTRY_NAME"] == null
+                    ? "-"
+                    : (data["COUNTRY_NAME"] | slice : 0 : 35)
+                }}{{ data["COUNTRY_NAME"].length > 35 ? "..." : "" }}
+              </span>
+              <span *ngIf="data['COUNTRY_NAME'].length < 35">
+                {{
+                  data["COUNTRY_NAME"] == null
+                    ? "-"
+                    : (data["COUNTRY_NAME"] | slice : 0 : 35)
+                }}
+                {{ data["COUNTRY_NAME"].length > 35 ? "..." : "" }}
+              </span>
+            </span>
+            <span *ngIf="data['COUNTRY_NAME'] == null">-</span>
+          </td>
+
+          <td align="left" tabindex="-1">
+            <span *ngIf="data['TERRITORY_NAME'] != null">
+              <span
+                *ngIf="data['TERRITORY_NAME'].length >= 25"
+                nz-popover
+                [nzPopoverContent]="data['TERRITORY_NAME']"
+                nzPopoverPlacement="topLeft"
+              >
+                {{
+                  data["TERRITORY_NAME"] == null
+                    ? "-"
+                    : (data["TERRITORY_NAME"] | slice : 0 : 25)
+                }}{{ data["TERRITORY_NAME"].length > 25 ? "..." : "" }}
+              </span>
+              <span *ngIf="data['TERRITORY_NAME'].length < 25">
+                {{
+                  data["TERRITORY_NAME"] == null
+                    ? "-"
+                    : (data["TERRITORY_NAME"] | slice : 0 : 25)
+                }}
+                {{ data["TERRITORY_NAME"].length > 25 ? "..." : "" }}
+              </span>
+            </span>
+            <span *ngIf="data['TERRITORY_NAME'] == null">-</span>
+          </td>
+
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+
+
+<!-- Map and Close  -->
+<div class="footer">
+  <button
+    type="button"
+    nz-button
+    (click)="close()"
+    class="ant-btn"
+    style="margin-right: 8px"
+  >
+    <span>Cancel</span>
+  </button>
+
+  <button
+    type="button"
+    class="ant-btn ant-btn-primary"
+    nz-button
+    [nzLoading]="isSpinning"
+    (click)="save()"
+  >
+    <span>Map & Close</span>
+  </button>
+</div>

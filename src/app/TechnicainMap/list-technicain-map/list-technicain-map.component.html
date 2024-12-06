@@ -1,0 +1,364 @@
+<div>
+  <!-- Header Row -->
+  <div nz-row [nzGutter]="10" style="margin-bottom: 16px; padding: 10px; border: 1px solid #0000001f">
+    <div nz-col [nzSpan]="8"></div>
+    <div nz-col [nzSpan]="4">
+      <nz-select [(ngModel)]="selectedTerritor" style="width: 100%" nzPlaceHolder="Select Territorys"
+        nzMode="multiple">
+        <nz-option nzValue="Sangli" nzLabel="Sangli"></nz-option>
+        <nz-option nzValue="Pune" nzLabel="Pune "></nz-option>
+      </nz-select>
+    </div>
+    <div nz-col [nzSpan]="4">
+      <nz-date-picker [(ngModel)]="selectedDate" style="width: 100%"></nz-date-picker>
+    </div>
+    <div nz-col [nzSpan]="8"></div>
+  </div>
+
+  <div nz-row [nzGutter]="16" *ngIf="selectedmode == 'tech' || selectedmode == 'job'">
+    <!-- First Column -->
+    <div nz-col [nzSpan]="6" style="padding: 10px; border: 1px solid #0000001f">
+      <!-- Dropdown -->
+      <nz-card style="border: none; height: 40px; width: 95%;">
+        <div nz-row [nzGutter]="8">
+          <div nz-col [nzSpan]="21">
+            <nz-form-item>
+              <nz-input-group [nzSuffix]="suffixIconSearch">
+                <input type="text" nz-input placeholder="Min 3 chars required" />
+              </nz-input-group>
+              <ng-template #suffixIconSearch>
+                <span nz-icon nzType="search"></span>
+              </ng-template>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="3" style="text-align: center">
+            <nz-form-item *ngIf="selectedmode == 'tech'">
+              <button nz-button nzTooltipTitle="Filter" nzTooltipPlacement="top" nz-tooltip
+                [nzType]="false ? 'primary' : 'default'" (click)="addtechnicianfilter('Technician')">
+                <i nz-icon nzType="filter"></i>
+              </button>
+            </nz-form-item>
+            <nz-form-item *ngIf="selectedmode == 'job'">
+              <button nz-button nzTooltipTitle="Filter" nzTooltipPlacement="top" nz-tooltip
+                [nzType]="false ? 'primary' : 'default'" (click)="addtechnicianfilter('jobcard')">
+                <i nz-icon nzType="filter"></i>
+              </button>
+            </nz-form-item>
+            <nz-form-item *ngIf="false">
+              <button nz-button nzTooltipTitle="Filter" nzTooltipPlacement="top" nz-tooltip
+                [nzType]="false ? 'primary' : 'default'" (click)="addtechnicianfilter('order')">
+                <i nz-icon nzType="filter"></i>
+              </button>
+            </nz-form-item>
+          </div>
+        </div>
+      </nz-card>
+
+      <!-- Technician Details -->
+      <nz-card nzTitle="Technicians" style="margin-top: 5px" *ngIf="selectedmode == 'tech'">
+        <div style="overflow-y: scroll; height: 410px; padding: 5px">
+          <div nz-col nzSpan="24" style="
+              background-color: #fff;
+              margin-top: 5px;
+              margin-bottom: 5px;
+              cursor: pointer;
+              padding: 10px;
+              box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+              border: 1px solid #efefef;
+              border-radius: 10px;" [ngStyle]="{'background-color': tech.status === 'off' ? '#80808030' : '#fff'}" 
+              *ngFor="let tech of technicians" (click)="onTechnicianCardClick(tech)">
+            <div nz-row>
+              <div class="subname" nz-col nzSpan="24">
+                <b>Name: </b>{{ tech.name }}
+              </div>
+              <div class="subname" nz-col nzSpan="24">
+               <b>Email: </b> <a style="font-size: 12px !important;" href="mailto:{{ tech.email }}">{{ tech.email }}</a>
+              </div>
+              <div class="subname" nz-col nzSpan="24">
+                <b>Mobile: </b><a style="font-size: 12px !important;" href="tel:{{ tech.mobile }}">{{ tech.mobile }}</a> 
+              </div>
+              <div class="subname" nz-col nzSpan="24">
+               <b>City: </b>{{ tech.city }}
+              </div>
+              <div class="subname" nz-col nzSpan="24">
+               <b>Status: </b>{{ tech.status }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </nz-card>
+
+      <!-- Order -->
+      <nz-card nzTitle="Orders" style="margin-top: 5px" *ngIf="false">
+        <div nz-row>
+          <div nz-col nzSpan="24" class="cardstyle">
+            <div nz-row>
+              <div nz-col nzSpan="12" style="border-color: black">
+                <div nz-row>
+                  <div nz-col nzSpan="1" style="align-self: center">
+                    <svg viewBox="0 0 500 500" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
+                      enable-background="new 0 0 512 512">
+                      <path
+                        d="M256.08 54.999c84.87 0 153.81 68.94 153.81 153.96 0 77.059-87.02 195.03-153.2 246.04-85.33-69.24-154.58-167.75-154.58-246.04 0-85.021 68.94-153.96 153.97-153.96zm74.79 150.799c0-41.34-33.521-74.86-74.87-74.86-41.35 0-74.86 33.52-74.86 74.86 0 41.35 33.51 74.87 74.86 74.87s74.87-33.52 74.87-74.87z"
+                        fill="#ff1612" class="fill-ff7979"></path>
+                    </svg>
+                  </div>
+                  <div class="mainnam" nz-col nzSpan="23" style="
+                      text-decoration: underline;
+                      color: blue;
+                      padding-left: 5px;
+                    ">
+                    Sangli
+                  </div>
+                </div>
+              </div>
+              <div class="mainnam" nz-col nzSpan="12" style="text-align: end">
+                <span class="mainnam"> ORD/1010/2024</span>
+              </div>
+              <div class="subname" nz-col nzSpan="24" style="text-align: start">
+                Order Date :{{ date | date : "dd/MMM/yyyy hh:mm a" }}
+              </div>
+
+              <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+                <span nz-icon nzType="user" nzTheme="outline"></span>
+
+                Shubham T Patil
+              </div>
+              <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important; text-align: start">
+                <span nz-icon nzType="phone" nzTheme="outline"></span>
+                <a style="font-size: 10px !important" href="tel:+9762417537">
+                  9762417537</a>
+              </div>
+              <div class="subname" nz-col nzSpan="24" style="font-size: 12px !important">
+                Service : 5
+              </div>
+              <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important; text-align: start">
+                Expected on : {{ date | date : "dd/MMM/yyyy hh:mm a" }}
+              </div>
+              <div class="subname" nz-col nzSpan="24" style="
+                  font-size: 10px !important;
+                  text-align: start;
+                  margin-top: 5px;
+                ">
+                <span class="subname"> ₹ 500</span>
+                Prepaid
+              </div>
+              <!-- <div
+              class="subname"
+              nz-col
+              nzSpan="24"
+              style="font-size: 12px !important; text-align: end; margin-top: 5px"
+            >
+              <nz-tag nzColor="success">Order Placed</nz-tag>
+            </div> -->
+            </div>
+          </div>
+        </div>
+      </nz-card>
+
+      <!-- Job -->
+      <nz-card nzTitle="Pending Jobs" style="margin-top: 16px" *ngIf="selectedmode == 'job'">
+        <div nz-col nzSpan="24" style="
+            background-color: #fff;
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+            border: 1px solid #efefef;
+            border-radius: 10px;
+          ">
+          <div nz-row>
+            <div class="mainnam" nz-col nzSpan="24">Job NO.</div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Date
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Estimate Time
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Description
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Customer Name
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Address
+            </div>
+          </div>
+        </div>
+        <div nz-col nzSpan="24" style="
+            background-color: #fff;
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+            border: 1px solid #efefef;
+            border-radius: 10px;
+          ">
+          <div nz-row>
+            <div class="mainnam" nz-col nzSpan="24">Job NO.</div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Date
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Estimate Time
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Description
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Customer Name
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Address
+            </div>
+          </div>
+        </div>
+        <div nz-col nzSpan="24" style="
+            background-color: #fff;
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+            border: 1px solid #efefef;
+            border-radius: 10px;
+          ">
+          <div nz-row>
+            <div class="mainnam" nz-col nzSpan="24">Job NO.</div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Date
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Estimate Time
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Description
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Customer Name
+            </div>
+            <div class="subname" nz-col nzSpan="24" style="font-size: 10px !important">
+              Address
+            </div>
+          </div>
+        </div>
+      </nz-card>
+
+      <!-- Grade Out Section -->
+      <!-- <nz-card nzTitle="Technicians on Leave" style="margin-top: 16px" *ngIf="selectedmode == 'tech'">
+        <ul>
+          <li *ngFor="let leaveTech of leaveTechnicians">{{ leaveTech }}</li>
+        </ul>
+      </nz-card> -->
+
+      <!-- Map View Button -->
+      <button nz-button nzType="primary" nzBlock style="margin-top: 16px" (click)="fullmap()">
+        All Technicians
+      </button>
+    </div>
+
+    <!-- Second Column  -->
+    <div nz-col [nzSpan]="18" style="padding: 10px; border: 1px solid #0000001f">
+
+      <!-- Technician Logs and Map -->
+      <div nz-row [nzGutter]="16" *ngIf="selectedmode == 'tech' && onlymap == false">
+        <div nz-col [nzSpan]="10">
+          <nz-card nzTitle="Selected Technician Action Logs">
+            <div style="height: 505px; overflow-y: scroll; padding-right: 10px; padding-top: 5px;">
+            <nz-timeline nzMode="alternate" >
+              <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
+              <nz-timeline-item nzColor="green">Solve initial network problems 2015-09-01</nz-timeline-item>
+              <nz-timeline-item [nzDot]="dotTemplate">
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
+                rem
+                aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
+                explicabo.
+              </nz-timeline-item>
+              <nz-timeline-item nzColor="red">Network problems being solved 2015-09-01</nz-timeline-item>
+              <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
+              <nz-timeline-item [nzDot]="dotTemplate">Technical testing 2015-09-01</nz-timeline-item>
+            </nz-timeline>
+            <ng-template #dotTemplate>
+              <span nz-icon nzType="clock-circle-o" style="font-size: 16px;"></span>
+            </ng-template>
+          </div>
+          </nz-card>
+        </div>
+        <div nz-col [nzSpan]="14">
+          <nz-card [nzTitle]="selectedTechnician?.name + ' Travel Locations'">
+              <div id="map" style="height: 500px;"></div>
+          </nz-card>
+        </div>
+      </div>
+      <!-- Technician Logs and Map -->
+
+      <!-- Technician Map Only -->
+      <div nz-row [nzGutter]="16" *ngIf="selectedmode == 'tech' && onlymap == true">
+        <div nz-col [nzSpan]="24">
+          <nz-card>
+            <div class="card-header" style="margin-bottom: 17px;">
+              <span nz-card-title style="color: rgba(0, 0, 0, .85);
+              font-weight: 500;
+              font-size: 16px !important">Technician Travel Locations</span>
+              <button nz-button nzType="primary" (click)="back()" style="float: right;">
+                <span nz-icon nzType="left"></span>
+                Back
+              </button>
+            </div>
+            <div id="map1" style="height: 500px; width: 100%;"></div>
+          </nz-card>
+        </div>
+      </div>
+      
+
+      <!-- Job -->
+      <div nz-row [nzGutter]="16" *ngIf="selectedmode == 'job'">
+        <div nz-col [nzSpan]="24" style="max-height: 70vh;padding: 20pz;">
+
+          <!-- <app-ordercalendar></app-ordercalendar> -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="16" *ngIf="selectedmode == 'order'">
+    <div nz-col [nzSpan]="24"> <app-orderlist></app-orderlist></div>
+  </div>
+</div>
+
+<div style="
+    text-align: justify;
+    position: absolute;
+    left: -125px;
+    z-index: 10;
+    transform: rotate(90deg);
+    display: flex;
+    justify-content: space-evenly;
+    top: 284px;
+  ">
+  <div>
+    <nz-tag style="cursor: pointer; font-size: 14px !important" (click)="selectmodeee('order')"
+      [nzColor]="'gold'">Orders | 10</nz-tag>
+  </div>
+  <div>
+    <nz-tag style="cursor: pointer; font-size: 14px !important" (click)="selectmodeee('job')" [nzColor]="'blue'">Jobs |
+      5</nz-tag>
+  </div>
+
+  <div>
+    <nz-tag style="cursor: pointer; font-size: 14px !important" (click)="selectmodeee('tech')"
+      [nzColor]="'orange'">Technicians</nz-tag>
+  </div>
+</div>
+
+<div *ngIf="drawerFilterVisible">
+  <nz-drawer [nzBodyStyle]="{
+      height: 'calc(100% - 55px)',
+      overflow: 'auto',
+      'padding-bottom': '53px'
+    }" [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="false" [nzWidth]="370" [nzVisible]="drawerFilterVisible"
+    [nzTitle]="drawerTitle" (nzOnClose)="drawerflterClose()" (nzKeyboard)="(true)" [nzPlacement]="'left'">
+    <ng-container *nzDrawerContent>
+      <app-order-filter [drawerClose]="closefilterCallback" [drawerVisible]="drawerFilterVisible"
+        [applyCondition]="applyCondition"></app-order-filter> </ng-container></nz-drawer>
+</div>

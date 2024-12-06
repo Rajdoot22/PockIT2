@@ -1,0 +1,191 @@
+<div>
+    <form nz-form #smsServiceForm="ngForm">
+        <nz-spin [nzSpinning]="isSpinning">
+            <div class="my-box">
+                <!-- Group 1: API Configuration -->
+                <div nz-row>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>Service Provider</nz-form-label>
+                            <nz-form-control nzHasFeedback nzErrorTip="Please enter the service provider">
+                                <input nz-input autocomplete="off" placeholder="Enter Service Provider"
+                                    name="SERVICE_PROVIDER" [(ngModel)]="data.SERVICE_PROVIDER" required />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>Authentication Type</nz-form-label>
+                            <nz-form-control nzHasFeedback>
+                                <nz-select nzPlaceHolder="Select authentication type"
+                                    [(ngModel)]="data.AUTHENTICATION_TYPE" name="AUTHENTICATION_TYPE"
+                                    autocomplete="off" required>
+                                    <nz-option nzValue="Basic" nzLabel="Basic"></nz-option>
+                                    <nz-option nzValue="OAuth2" nzLabel="OAuth2"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <!-- Group 2: API Keys and URLs -->
+                <div nz-row>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>API URL</nz-form-label>
+                            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid API URL">
+                                <input nz-input autocomplete="off" placeholder="Enter API URL"
+                                    name="API_URL" [(ngModel)]="data.API_URL" pattern="https?://.+" required />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>API Key</nz-form-label>
+                            <nz-form-control nzHasFeedback nzErrorTip="Please enter the API Key">
+                                <input nz-input autocomplete="off" placeholder="Enter API Key"
+                                    name="API_KEY" [(ngModel)]="data.API_KEY" required />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <!-- Group 3: Phone Configuration -->
+                <div nz-row>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzNoColon>Phone Number ID</nz-form-label>
+                            <nz-form-control nzHasFeedback nzErrorTip="Please select a valid Phone Number ID">
+                                <nz-select [(ngModel)]="data.PHONE_NUMBER_ID" name="PHONE_NUMBER_ID"
+                                    [nzPlaceHolder]="'Select Phone Number ID'" required>
+                                    <nz-option *ngFor="let phone of phoneNumbers" [nzValue]="phone"
+                                        [nzLabel]="phone"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzNoColon>Default Country Code</nz-form-label>
+                            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid country code">
+                                <nz-select [(ngModel)]="data.DEFAULT_COUNTRY_CODE" name="DEFAULT_COUNTRY_CODE"
+                                    [nzPlaceHolder]="'Select Country Code'" required>
+                                    <nz-option *ngFor="let country of countryCodes" [nzValue]="country"
+                                        [nzLabel]="country"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                 
+                </div>
+
+                <!-- Group 4: Country and Retry Configuration -->
+                <div nz-row>
+                    <div nz-col nzSpan="8">
+                        <nz-form-item>
+                            <nz-form-label nzNoColon>Sender Phone Number</nz-form-label>
+                            <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid sender phone number">
+                                <input nz-input autocomplete="off" placeholder="Enter Sender Phone Number" maxlength="10"
+                                    name="SENDER_PHONE_NUMBER" [(ngModel)]="data.SENDER_PHONE_NUMBER" required />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="8">
+                        <nz-form-item>
+                            <nz-form-label nzNoColon>Retry Attempts</nz-form-label>
+                            <nz-form-control nzHasFeedback nzErrorTip="Please enter retry attempts (number)">
+                                <input nz-input type="number" autocomplete="off" placeholder="Enter Retry Attempts"
+                                    name="RETRY_ATTEMPTS" [(ngModel)]="data.RETRY_ATTEMPTS" required />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="8">
+                        <nz-form-item>
+                            <nz-form-label nzNoColon>Timeout (Seconds)</nz-form-label>
+                            <nz-form-control nzHasFeedback nzErrorTip="Please select a timeout">
+                                <nz-time-picker [(ngModel)]="data.TIMEOUT_SECONDS" name="TIMEOUT_SECONDS" style="width:100%"
+                                    [nzFormat]="'ss'" [nzMinuteStep]="1" [nzSecondStep]="1" required>
+                                </nz-time-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row>
+                    <div nz-col nzSpan="24">
+                        <nz-form-item>
+                            <nz-form-label nzNoColon>Notes</nz-form-label>
+                            <nz-form-control>
+                                <textarea nz-input rows="2" name="NOTES" [(ngModel)]="data.NOTES"></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <!-- Group 5: Timeout and Status -->
+                <div nz-row>
+                  
+                    <div nz-col nzSpan="8">
+                        <nz-form-item>
+                            <nz-form-label nzNoColon>Status</nz-form-label>
+                            <nz-form-control>
+                                <nz-switch name="IS_ACTIVE" [(ngModel)]="data.IS_ACTIVE" nzCheckedChildren="Active"
+                                    nzUnCheckedChildren="Inactive" required></nz-switch>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <!-- Group 6: Timestamps and Notes -->
+                 
+              
+            </div>
+        </nz-spin>
+
+        <!-- Footer Buttons -->
+        <div class="footer">
+            <button type="button" nz-button (click)="Close()" class="ant-btn" style="margin-right: 8px">
+                <span>Cancel</span>
+            </button>
+            <button type="button" class="ant-btn ant-btn-primary" nz-button nz-dropdown
+                style="border-radius: 4px; background-color: #40a9ff;" [nzDropdownMenu]="menu" [nzLoading]="isSpinning">
+                <span>Save & Close</span>
+            </button>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu>
+                    <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+                        <a style="color: white;">Save & New</a>
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+        </div>
+    </form>
+
+    <!-- Footer Buttons -->
+    <div class="footer">
+
+        <button type="button" nz-button (click)="Close()" class="ant-btn" style="margin-right: 8px">
+            <span>Cancel</span>
+        </button>
+        <!-- <button
+        type="button"
+        class="ant-btn ant-btn-primary"
+        style="border-radius: 4px; background-color: #40a9ff;margin-right: 8px"
+        nz-button
+        [nzLoading]="isSpinning"
+        (click)="save1(false)"
+      >
+        <span>Save as Draft</span>
+      </button> -->
+        <button type="button" class="ant-btn ant-btn-primary" nz-button nz-dropdown
+            style="border-radius: 4px; background-color: #40a9ff;" [nzDropdownMenu]="menu" [nzLoading]="isSpinning">
+            <span>Save & Close</span>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+                    <a style="color: white;">Save & New</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+
+    </div>
+</div>

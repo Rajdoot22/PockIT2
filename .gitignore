@@ -1,0 +1,40 @@
+# Compiled output
+dist/
+out-tsc/
+
+# Dependencies
+node_modules/
+backup/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+
+# Logs and debugging
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# package-lock.json
+.pnp/
+.pnp.js
+
+# Angular specific files
+.angular/
+
+# Temporary files and folders
+.tmp/
+temp/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment files
+# src/environments/environment*.ts
+
+# Test-related files
+coverage/
+*.log
+.jest/
+.nyc_output/

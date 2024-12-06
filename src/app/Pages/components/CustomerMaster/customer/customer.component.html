@@ -1,0 +1,356 @@
+<div>
+ 
+  <form nz-form #accountMasterPage="ngForm">
+    <nz-tabset [(nzSelectedIndex)]="activeTabIndex">
+      <nz-tab
+        *ngFor="let tab of tabs; let i = index"
+        [nzTitle]="application"
+        [nzDisabled]="tab.disabled"
+      >
+        <ng-template #application>
+          {{ tab.name }}
+        </ng-template>
+    
+        <div *ngIf="tab.name == 'Personal Details'">
+          <!-- Personal Details Tab Content -->
+          <form nz-form #accountMasterPage="ngForm">
+            <nz-spin [nzSpinning]="isSpinning">
+              <div *ngIf="tab.name == 'Personal Details'">
+                <form nz-form #accountMasterPage="ngForm">
+                  <nz-spin [nzSpinning]="isSpinning">
+            
+            
+                    <div class="my-box">
+                      <div nz-row>
+                        <div nz-col nzSpan="12">
+                          <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>Customer Type</nz-form-label>
+                            <nz-form-control nzErrorTip="Select Customer Type">
+                              <nz-radio-group name="type" [(ngModel)]="data.CUSTOMER_TYPE" style="width: 100%;">
+                                <label nz-radio nzValue="I">Individual </label>
+                                <label nz-radio nzValue="B">Business</label>
+                              </nz-radio-group>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        <div nz-col nzSpan="12">
+                          <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>Customer Category</nz-form-label>
+            
+                            <nz-form-control nzHasFeedback nzErrorTip="Please Select Customer Category">
+                              <nz-select nzShowSearch nzPlaceHolder="Select Customer Category" name="CustomerCategory"
+                                [(ngModel)]="data.CUSTOMER_CATEGORY_ID">
+                                <nz-option *ngFor="let role of customercategories" [nzValue]="role.ID" [nzLabel]="role.NAME">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        
+                   
+                      </div>
+                    </div>
+                    <div class="my-box">
+                      <div nz-row *ngIf="data.CUSTOMER_TYPE=='B'">
+                        <div nz-col nzSpan="24">
+                          <nz-form-item>
+                            <nz-form-label  nzRequired nzNoColon>Company Name</nz-form-label>
+            
+                            <nz-form-control  nzHasFeedback nzErrorTip="Please Enter Valid Company Name">
+                              <input nz-input name="COMPANY_NAME" placeHolder="Enter Company Name" maxlength="256" type="text"
+                                [pattern]="namepatt" (keypress)="alphaOnly($event)" [(ngModel)]="data.COMPANY_NAME" required />
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+                      <div nz-row>
+                    
+                        <div nz-col nzSpan="24">
+                          <nz-form-item >
+                            <nz-form-label *ngIf="data.CUSTOMER_TYPE=='I'" nzRequired nzNoColon>Customer Name</nz-form-label>
+                            <nz-form-label *ngIf="data.CUSTOMER_TYPE=='B'" nzRequired nzNoColon>Contact Person Name</nz-form-label>
+                            
+                                <nz-form-control >
+                                  <nz-input-group [nzAddOnBefore]="addOnAfterTemplate4" >
+                                    <input nz-input nzHasFeedback name="name" placeHolder="Enter Customer Name" maxlength="256" type="text"
+                                    [pattern]="namepatt" (keypress)="alphaOnly($event)" [(ngModel)]="data.NAME" required />
+                                  </nz-input-group>
+                                  <ng-template #addOnAfterTemplate4>
+                                    <nz-select style="width: 100px;" name="discounttype1"
+                                    [(ngModel)]="data.SALUTATION" >
+                                    <nz-option nzLabel="Mrs" nzValue="Mrs"></nz-option>
+                                      <nz-option nzLabel="Miss" nzValue="Miss"></nz-option>
+                                      <nz-option nzLabel="Mr" nzValue="Mr"></nz-option>
+                                    </nz-select>
+                                </ng-template>
+                                   
+                          </nz-form-control> 
+                          
+                          </nz-form-item>
+            
+                        </div>
+                      </div>
+                      <div nz-row>
+                        <div nz-col nzSpan="15">
+                          <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>Email ID</nz-form-label>
+            
+                            <nz-form-control  nzErrorTip="Please Enter Valid Email ID">
+                              <input nz-input name="email" placeHolder="Enter Email ID" maxlength="256" [pattern]="emailpattern"
+                                [(ngModel)]="data.EMAIL" required />
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+            
+                        <div nz-col nzSpan="9">
+                          <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>Mobile No.</nz-form-label>
+            
+                            <nz-form-control  nzErrorTip="Please Enter Valid Mobile No.">
+                              <input nz-input name="mobileno" placeHolder="Enter Mobile No." [pattern]="mobpattern"
+                                [(ngModel)]="data.MOBILE_NO" maxlength="10" minlength="10" (keypress)="omit($event)" required />
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                      </div>
+            
+            
+            
+                      <div nz-row *ngIf="data.CUSTOMER_TYPE=='I'">
+            
+                        <div nz-col nzSpan="8">
+                          <nz-form-item>
+                            <nz-form-label nzNoColon>Alternate Mobile No.</nz-form-label>
+            
+                            <nz-form-control  nzErrorTip="Please Enter Valid Alternate Mobile No.">
+                              <input nz-input name="ALTERNATE_MOBILE_NO" placeHolder="Enter Alternate Mobile No."
+                                [pattern]="mobpattern" [(ngModel)]="data.ALTERNATE_MOBILE_NO" maxlength="10" minlength="10"
+                                (keypress)="omit($event)" required />
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        
+                        <div nz-col nzSpan="6">
+                          <nz-form-item>
+                            <nz-form-label nzNoColon>Status</nz-form-label>
+            
+                            <nz-form-control>
+                              <nz-switch name="Status" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                                [(ngModel)]="data.ACCOUNT_STATUS">
+                              </nz-switch>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+            
+                      </div>
+                      <div nz-row *ngIf="data.CUSTOMER_TYPE=='B'">
+            
+                        <div nz-col nzSpan="8">
+                          <nz-form-item>
+                            <nz-form-label nzNoColon>Phone No.</nz-form-label>
+            
+                            <nz-form-control   nzErrorTip="Please Enter Valid Phone No.">
+                              <input nz-input name="Phone_NO" placeHolder="Enter Phone No." [pattern]="mobpattern"
+                                [(ngModel)]="data.PHONE_NO" maxlength="10" minlength="10" (keypress)="omit($event)" required />
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        <div nz-col nzSpan="7">
+                          <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>PAN No.</nz-form-label>
+                        
+                            <nz-form-control   nzErrorTip="Please Enter Valid PAN No.">
+                              <input nz-input name="PAN1" placeholder="Enter PAN No."
+                              pattern="^[A-Z]{5}[0-9]{4}[A-Z]{1}$" 
+                                     [(ngModel)]="data.PAN" maxlength="10" minlength="10" required />
+                              <!-- Note or Sample Pattern -->
+                              <small style="color: #0063a5;
+                              font-size: 10px;
+                              font-weight: 600;"> e.g.: ABCDE1234F</small>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        <div nz-col nzSpan="9">
+                          <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>GST No.</nz-form-label>
+                        
+                            <nz-form-control   nzErrorTip="Please Enter Valid GST No.">
+                              <input nz-input name="GST" placeholder="Enter GST No."
+                                     pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$"
+                                     [(ngModel)]="data.GST_NO" maxlength="15" minlength="15" required />
+                              <!-- Note or Sample Pattern -->
+                              <small style="color: #0063a5;
+                              font-size: 10px;
+                              font-weight: 600;"> e.g.: 22ABCDE1234F1Z5</small>
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+            
+                      </div>
+                    </div>
+            
+            
+                  </nz-spin>
+                </form>
+            
+                <!-- <div class="footer">
+                  <button type="button" nz-button style="margin-right: 8px;" class="ant-btn" style="margin-right: 8px;"
+                    (click)="close(accountMasterPage)"><span>Cancel</span></button>
+            
+                  <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.ID" nz-button nz-dropdown
+                   (click)="save(false,accountMasterPage)"><span>Save  </span></button>
+            
+                 
+            
+                  <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.ID"
+                    (click)="save(false,accountMasterPage)"><span>Update & close</span></button>
+                </div> -->
+              </div>
+            </nz-spin>
+          </form>
+          <div class="footer">
+            <button
+              type="button"
+              nz-button
+              style="margin-right: 8px;"
+              class="ant-btn"
+              (click)="close(accountMasterPage)"
+            >
+              <span>Cancel</span>
+            </button>
+            <button
+              type="button"
+              class="ant-btn ant-btn-primary"
+              nz-button *ngIf="!data.ID"
+              [nzLoading]="isSpinning"
+              (click)="save(false, accountMasterPage)"
+            >
+              <span>Save</span>
+            </button>
+            <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.ID"
+      (click)="save(false,accountMasterPage)" style="margin-right: 8px;"><span>Update </span></button>
+      <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.ID"
+      (click)="next()"><span>Next &nbsp;<span nz-icon nzType="arrow-right" nzTheme="outline"></span></span></button>
+          </div>
+        </div>
+    
+        <div *ngIf="tab.name == 'Address Details'">
+          <div *ngIf="tab.name == 'Address Details'">
+            <div class="hh"  id="activityItemFamily" #activityItemFamily
+            >
+           <nz-spin [nzSpinning]="loadingFamilyRecords">
+             <!-- <div nz-row  >
+               
+                 <div class="cardstyle" style=" width: 49%;height:184px;margin-bottom: 10px;"  (click)="addAddress()">
+                   <div class="plusCard">
+                     <span nz-icon nzType="plus-circle" nzTheme="outline" style="
+                                     font-size: 50px !important;
+                                     color: #1890ff;
+                                   "></span>
+                   </div>
+                 </div>
+               
+               <div style="width:2%"></div>
+               <div    *ngFor="let show of addressdata; let i = index">
+                <div class="cardstyle" style=" width: 48%;height:100%;margin-bottom: 10px;">
+                  <div nz-row>
+                    <div class="subnamm" nz-col nzSpan="20"> 
+                      <nz-tag nzColor="success" *ngIf="show.IS_ACTIVE==1">Set as Default</nz-tag>
+                    </div>
+        
+                    <div class="subnamm" nz-col nzSpan="4" style="text-align: end; padding-right: 10px">
+                      <a   nzTooltipTitle="Edit" (click)="addAddress()" nzTooltipPlacement="top" nz-tooltip>
+                        <span nz-icon nzType="edit" nzTheme="twotone" style="font-size: 15px"></span>
+                      </a>
+                    </div>
+                    <div class="subnamm" nz-col nzSpan="24" style="white-space: pre-line;" >
+                     <b>Contact Person  Name</b>: {{show.CUSTOMER_NAME}}
+                      </div>
+                    <div class="subnamm" nz-col nzSpan="24">
+                      <b>Contact No.</b> : {{show.MOBILE_NO}}
+                      
+                    </div>
+        
+                    <div class="subnamm" nz-col nzSpan="24" style="white-space: pre-line;">
+                     <b>Address</b> : <span style="white-space:  pre-line;">{{fullAddress}} </span>
+                    </div>
+                    
+                  </div>
+                </div>
+                <div style="width:2%"></div>
+               </div>
+              
+             </div> -->
+             <div nz-row [nzGutter]="16" style="flex-wrap: wrap;">
+              <!-- Add Address Card -->
+              <div nz-col [nzSpan]="12" style="margin-bottom: 10px;">
+                <div class="cardstyle" style="height: 184px;" (click)="addAddress()">
+                  <div class="plusCard">
+                    <span
+                      nz-icon
+                      nzType="plus-circle"
+                      nzTheme="outline"
+                      style="font-size: 50px !important; color: #1890ff;">
+                    </span>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Loop Through Address Data -->
+              <div
+              nz-col
+              [nzSpan]="12"
+              *ngFor="let data of addressdata; let i = index"
+              style="margin-bottom: 10px;">
+              <div class="cardstyle" style="height: 184px;">
+                <div nz-row>
+                  <div class="subnamm" nz-col nzSpan="20">
+                    <nz-tag nzColor="success" *ngIf="data.IS_ACTIVE == 1">Set as Default</nz-tag>
+                  </div>
+                  <div class="subnamm" nz-col nzSpan="4" style="text-align: end; padding-right: 10px;">
+                    <a nzTooltipTitle="Edit" (click)="editAddress(data)" nzTooltipPlacement="top" nz-tooltip>
+                      <span nz-icon nzType="edit" nzTheme="twotone" style="font-size: 15px;"></span>
+                    </a>
+                  </div>
+                  <div class="subnamm" nz-col nzSpan="24" style="white-space: pre-line;">
+                    <b>Contact Person Name</b>: {{ data.CUSTOMER_NAME }}
+                  </div>
+                  <div class="subnamm" nz-col nzSpan="24">
+                    <b>Contact No.</b>: {{ data.MOBILE_NO }}
+                  </div>
+                  <div class="subnamm" nz-col nzSpan="24" style="white-space: pre-line;">
+                    <b>Address</b>: <span style="white-space: pre-line;">{{ data.FULL_ADDRESS }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            </div>
+            
+           </nz-spin>
+           <div class="footer">
+            <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning"  
+            (click)="back()"><span><span nz-icon nzType="arrow-left" nzTheme="outline"></span>&nbsp;Back</span></button>
+           </div>
+         </div>
+          </div>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+    
+  </form>
+
+</div>
+<div *ngIf="drawerVisibleAddress">
+  <nz-drawer [nzBodyStyle]="{
+      height: 'calc(100% - 55px)',
+      overflow: 'auto',
+      'padding-bottom': '53px'
+    }" [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="true" [nzWidth]="600"
+    [nzVisible]="drawerVisibleAddress" [nzTitle]="drawerTitle" (nzOnClose)="drawerAddressClose()" (nzKeyboard)="(true)">
+    <ng-container *nzDrawerContent>
+      <app-address-details [dataList]="dataList"[data]="drawerData" [drawerAddressClose]="closeCallbackAddress" [dataList]="dataList" [ID]="ID" ></app-address-details>
+    </ng-container>
+  </nz-drawer>
+</div>
+ 

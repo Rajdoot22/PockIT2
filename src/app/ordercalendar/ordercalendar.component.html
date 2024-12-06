@@ -1,0 +1,252 @@
+<!-- <div class="d-flex">
+
+  <div class="sidebar" [class.hidden]="isSidebarHidden">
+    <div class="p-3">
+      <button class="btn btn-primary w-100 mb-3" (click)="toggleSidebar()">
+        Hide
+      </button>
+      <h5>Pending List</h5>
+      <ul class="list-group">
+      
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="main-content w-100" [class.full-width]="isSidebarHidden">
+    <button
+      *ngIf="isSidebarHidden"
+      class="btn btn-primary"
+      (click)="toggleSidebar()"
+    >
+      Show
+    </button>
+    <div >
+      
+
+      
+
+    </div>
+  </div>
+</div> -->
+
+<!-- <div nz-row>
+    <div nz-col [nzSpan]="isSidebarHidden ? 0 : 4" style="min-height: 65vh !important;overflow: auto;">
+      <div nz-row>
+        <div nz-col nzSpan="18"> <h6 style="text-align: center;">Schedule Pending Jobs</h6></div>
+        <div nz-col nzSpan="6" style="text-align: end;"><span (click)="toggleSidebar()" style="cursor: pointer;font-size: 15px !important;" nz-icon nzType="close-circle" nzTheme="outline"></span></div>
+        <div nz-col nzSpan="24" style="padding-left: 10px;padding-right: 10px;">
+          <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input placeholder="Search Jobs" />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </div>
+      </div>
+       
+        <div nz-row style="max-height: 70vh !important;overflow: auto;padding: 5px;">
+          <div nz-col nzSpan="24" style="background-color: #FFF; cursor: pointer;
+          padding: 10px;
+          box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+          border: 1px solid #efefef;
+          border-radius: 10px;">
+             <div nz-row>
+              <div class="mainnam" nz-col nzSpan="24">
+                Job NO. 
+              </div>
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Date  
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Estimate Time 
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Description  
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Customer Name   
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Address   
+              </div> 
+              
+            </div>
+          </div>
+          <div nz-col nzSpan="24" style="background-color: #FFF;margin-top: 5px;margin-bottom: 5px;  cursor: pointer;
+          padding: 10px;
+          box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+          border: 1px solid #efefef;
+          border-radius: 10px;">
+             <div nz-row>
+              <div class="mainnam" nz-col nzSpan="24">
+                Job NO. 
+              </div>
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Date  
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Estimate Time 
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Description  
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Customer Name   
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Address   
+              </div> 
+              
+            </div>
+          </div>
+          <div nz-col nzSpan="24" style="background-color: #FFF;margin-top: 5px;margin-bottom: 5px; cursor: pointer;
+          padding: 10px;
+          box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+          border: 1px solid #efefef;
+          border-radius: 10px;">
+             <div nz-row>
+              <div class="mainnam" nz-col nzSpan="24">
+                Job NO. 
+              </div>
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Date  
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Estimate Time 
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Description  
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Customer Name   
+              </div> 
+              <div class="subnam" nz-col nzSpan="24" style="font-size: 10px !important;">
+                Address   
+              </div> 
+              
+            </div>
+          </div>
+          
+        </div>
+    </div>
+    <div nz-col [nzSpan]="isSidebarHidden ? 24 : 20" 
+    [style]="{ 'padding-left': isSidebarHidden ? '0px' : '20px', 'min-height': '70vh', 'max-height': '70vh' }"
+    >
+
+   
+  
+        <mbsc-eventcalendar
+        #calendar
+        class="md-work-order-scheduling"
+        [data]="myEvents"
+        [resources]="myResources"
+        [options]="calendarOptions"
+        [extendDefaultEvent]="extendDefaultEvent"
+        [dayTemplate]="dayTemp"
+        [scheduleEventContentTemplate]="eventTemp"
+      >
+        <ng-template #dayTemp let-day>
+          <div class="md-work-order-date" style="padding: 10px;">
+            {{ formatDate("DD DDD MMM YYYY", day.date) }}
+          </div>
+        </ng-template>
+        <ng-template #eventTemp let-event>
+          <div>
+            {{ event.title
+            }}<span class="md-work-order-price-tag"
+              >${{ getCostString(event.original.cost) }}</span
+            >
+          </div>
+        </ng-template>
+      </mbsc-eventcalendar>
+      <mbsc-popup
+        [options]="popupOptions"
+        [anchor]="popupAnchor"
+        [buttons]="popupButtons"
+        [headerText]="popupHeaderText"
+        #popup
+      >
+        <div class="mbsc-form-group">
+          <mbsc-input label="Title" [(ngModel)]="popupEventTitle"></mbsc-input>
+          <mbsc-input
+            label="Location"
+            [(ngModel)]="popupEventLocation"
+          ></mbsc-input>
+          <mbsc-input
+            label="Bill to customer ($)"
+            [(ngModel)]="popupEventBill"
+          ></mbsc-input>
+          <mbsc-textarea
+            label="Notes"
+            [(ngModel)]="popupEventNotes"
+          ></mbsc-textarea>
+        </div>
+        <div class="mbsc-form-group">
+          <mbsc-datepicker
+            [(ngModel)]="popupEventDates"
+            [options]="datePickerOptions"
+            [startInput]="startInput"
+            [endInput]="endInput"
+          ></mbsc-datepicker>
+          <mbsc-input #startInput label="Starts"></mbsc-input>
+          <mbsc-input #endInput label="Ends"></mbsc-input>
+        </div>
+        <div class="mbsc-form-group">
+          <div class="mbsc-grid mbsc-no-padding">
+            <div class="mbsc-row">
+              <ng-container *ngFor="let resources of myResources">
+                <ng-container *ngFor="let res of resources.children">
+                  <div class="mbsc-col-sm-4">
+                    <ng-container>
+                      <div class="mbsc-form-group-title">{{ res.name }}</div>
+                      <mbsc-checkbox
+                        *ngFor="let r of res.children"
+                        label="{{ r.name }}"
+                        [(ngModel)]="r['checked']"
+                        theme="material"
+                        class="md-work-order-checkbox-label"
+                      ></mbsc-checkbox>
+                    </ng-container>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="mbsc-form-group">
+          <div *ngIf="isEdit" class="mbsc-button-group">
+            <mbsc-button
+              class="mbsc-button-block"
+              color="danger"
+              variant="outline"
+              (click)="onDeleteClick()"
+              >Delete work order</mbsc-button
+            >
+          </div>
+        </div>
+      </mbsc-popup>
+    </div>
+</div>
+ -->
+
+
+
+<!-- <div *ngIf="drawerVisible">
+
+  <nz-drawer [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
+    [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="false" [nzWidth]="400" [nzVisible]="drawerVisible"
+    [nzTitle]="drawerTitle" (nzOnClose)="drawerClose()" (nzKeyboard)="true">
+    <ng-container *nzDrawerContent>
+      <app-orderview [drawerClose]="closeCallback" >
+      </app-orderview>
+    </ng-container>
+  </nz-drawer>
+</div> -->
+
+
+
+
+
+
+

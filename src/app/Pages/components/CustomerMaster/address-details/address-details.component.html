@@ -1,0 +1,149 @@
+<div>
+     
+    <form nz-form #accountMasterPage="ngForm">
+        <nz-spin [nzSpinning]="isSpinning">
+            <div class="hh">
+                <div class="my-box" style="margin-bottom: 0px !important">
+                    <div nz-row>
+                        <div nz-col nzSpan="12">
+                            <nz-form-item>
+                                <nz-form-label nzRequired nzNoColon>Address Type</nz-form-label>
+
+                                <nz-form-control nzHasFeedback nzErrorTip="Please Select Address Type">
+                                    <nz-select nzPlaceHolder="Select Type" [(ngModel)]="data.TYPE" name="Type"
+                                        autocomplete="off" required>
+                                        <nz-option nzValue="H" nzLabel="Home"></nz-option>
+                                        <nz-option nzValue="F" nzLabel="Office"></nz-option>
+                                        <nz-option nzValue="B" nzLabel="Branch"></nz-option>
+                                        <nz-option nzValue="O" nzLabel="Other"></nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                    <div nz-row>
+                        <div nz-col nzSpan="24">
+                            <nz-form-item>
+                                <nz-form-label nzRequired nzNoColon>Address Line 1</nz-form-label>
+
+                                <nz-form-control nzErrorTip="Enter Address Line 1">
+                                    <textarea nz-input rows="2" name="address1" autocomplete="off"
+                                        placeholder="Enter Address Line 1" maxlength="512" required="required"
+                                        [(ngModel)]="data.ADDRESS_LINE_1"></textarea>
+                                    <small style="color: red;" *ngIf="data.ADDRESS_LINE_1!=undefined">{{data.ADDRESS_LINE_1.length}}/512</small>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+
+
+                    </div>
+                    <div nz-row>
+                        <div nz-col nzSpan="24">
+                            <nz-form-item>
+                                <nz-form-label nzNoColon>Address Line 2</nz-form-label>
+
+                                <nz-form-control nzErrorTip="Enter Address Line 2">
+                                    <textarea nz-input rows="2" name="address" autocomplete="off"
+                                        placeholder="Enter Address Line 2" maxlength="512" required="required"
+                                        [(ngModel)]="data.ADDRESS_LINE_2"></textarea>
+                                    <small style="color: red;" *ngIf="data.ADDRESS_LINE_2!=undefined">{{data.ADDRESS_LINE_2.length}}/512</small>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+
+
+                    </div>
+                    <div nz-row>
+                        <div nz-col nzSpan="12">
+                            <nz-form-item>
+                                <nz-form-label nzRequired nzNoColon>Country</nz-form-label>
+
+                                <nz-form-control nzHasFeedback nzErrorTip="Please Select Country">
+                                    <nz-select nzAllowClear nzShowSearch nzAllowClear nzPlaceHolder="Select Country"
+                                        name="country" (ngModelChange)="getstate($event)" [(ngModel)]="data.COUNTRY_ID">
+                                        <nz-option *ngFor="let role of country" [nzValue]="role.ID"
+                                            [nzLabel]="role.NAME">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzSpan="12">
+                            <nz-form-item>
+                                <nz-form-label nzRequired nzNoColon>State</nz-form-label>
+
+                                <nz-form-control nzHasFeedback nzErrorTip="Please Select State">
+                                    <nz-select nzAllowClear nzShowSearch nzAllowClear nzPlaceHolder="Select State"
+                                        name="TEMP_STATE_ID" (ngModelChange)="getCityyy1($event)"
+                                        [(ngModel)]="data.STATE_ID">
+                                        <nz-option *ngFor="let role of state" [nzValue]="role.ID" [nzLabel]="role.NAME">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+
+
+
+                    </div>
+                    <div nz-row>
+                        <div nz-col nzSpan="12">
+                            <nz-form-item>
+                                <nz-form-label nzRequired nzNoColon>City</nz-form-label>
+
+                                <nz-form-control nzHasFeedback nzErrorTip="Please Select City">
+                                    <nz-select nzAllowClear nzShowSearch nzAllowClear nzPlaceHolder="Select City"
+                                        name="TEMP_CITY_ID" [(ngModel)]="data.CITY_ID" (ngModelChange)="getpincode($event)">
+                                        <nz-option *ngFor="let role of City1" [nzValue]="role.ID" [nzLabel]="role.NAME">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+
+                        <div nz-col nzSpan="12">
+                            <nz-form-item>
+                                <nz-form-label nzRequired nzNoColon>Pin Code</nz-form-label>
+                                <nz-form-control nzHasFeedback nzErrorTip="Please Select Pincode">
+                                    <nz-select nzAllowClear nzShowSearch nzAllowClear nzPlaceHolder="Select Pincode"
+                                        name="PINCODE" [(ngModel)]="data.PINCODE_ID">
+                                        <nz-option *ngFor="let role of pincode" [nzValue]="role.ID"
+                                            [nzLabel]="role.PINCODE">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                    <div nz-row>
+                        <div nz-col nzSpan="9">
+                            <nz-form-item>
+                                <nz-form-label nzNoColon>Set as Default Address</nz-form-label>
+
+                                <nz-form-control>
+                                    <nz-switch name="Status" nzCheckedChildren="Yes" nzUnCheckedChildren="No"
+                                        [(ngModel)]="data.IS_DEFAULT">
+                                    </nz-switch>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </nz-spin>
+
+    </form>
+    <div class="footer">
+        <button type="button" nz-button style="margin-right: 8px;" class="ant-btn" style="margin-right: 8px;"
+            (click)="close(accountMasterPage)"><span>Cancel</span></button>
+
+        <button *ngIf="!data.ID" type="button"(click)="save(accountMasterPage)" class="ant-btn ant-btn-primary" nz-button nz-dropdown><span>Save & Close</span></button>
+      
+        <button type="button" class="ant-btn ant-btn-primary"  nz-button [nzLoading]="isSpinning" *ngIf="data.ID"
+        (click)="save(accountMasterPage)"><span>Update & close</span></button>
+
+
+    </div>
+</div>

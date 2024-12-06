@@ -1,0 +1,152 @@
+<div>
+<form nz-form #teritorymaster="ngForm">
+<div nz-row>
+          <div nz-col nzSpan="10">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>State</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Please Select State">
+            <nz-select
+              nzAllowClear="true"
+              nzPlaceHolder="Select State"
+              name="STATE_ID"
+              [(ngModel)]="saveData.STATE_ID"
+              style="width:100%"
+              (ngModelChange)="getPincodeData(saveData.STATE_ID)"
+              nzShowSearch
+              required
+            >
+              <nz-option
+                *ngFor="let data of stateData"
+                [nzValue]="data.ID"
+                [nzLabel]="data.NAME"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="10">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>Select Pincodes</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Please Select Pincodes">
+            <nz-select
+              nzAllowClear="true"
+              nzPlaceHolder="Select Pincodes"
+              name="PINCODE"
+              [(ngModel)]="saveData.PINCODE_ID"
+              style="margin-right: 8px; width:100%"
+              nzShowSearch
+              required
+              nzMode="multiple"
+              [nzMaxTagCount]="3"
+            >
+              <nz-option
+                *ngFor="let data of pincodeData"
+                [nzValue]="data.ID"
+                [nzLabel]="data.PINCODE"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="4" >
+        <button style="margin-top: 26px; width:100%; margin-right: 8px;" 
+        nz-button nzType="primary" (click)="add(teritorymaster)">
+            Add
+          </button>
+        </div>
+    </div>
+  </form>
+</div>
+    <div nz-row>
+        <div nz-col nzSpan="24">
+          <div style="position: relative">
+            <nz-table
+              class="my-scroll no-wrap1"
+              nzBordered
+              #table
+              [nzData]="PincodeMappingdata"
+              [nzSize]="'small'"
+              [nzFrontPagination]="false"
+              style="white-space: pre-line"
+            >
+              <thead>
+                <tr>
+                    
+                  <th nzWidth="250px">State</th>
+                  <th nzWidth="140px">Pincode</th>
+                  <th nzWidth="80px">Is Mapped</th>
+                </tr>
+              </thead>
+      
+              <tbody>
+                <tr *ngFor="let data of table.data; let i = index">
+                    
+                  <!-- <td style="white-space: pre-line">{{ data.NAME }}</td> -->
+                  <td align="left">
+                    <span *ngIf="data['STATE_NAME'] != null">
+                      <span
+                        *ngIf="data['STATE_NAME'].length >= 40"
+                        nz-popover
+                        [nzPopoverContent]="data['STATE_NAME']"
+                        nzPopoverPlacement="topLeft"
+                      >
+                        {{
+                          data["STATE_NAME"] == null
+                            ? "-"
+                            : (data["STATE_NAME"] | slice : 0 : 40)
+                        }}{{ data["STATE_NAME"].length > 40 ? "..." : "" }}
+                      </span>
+                      <span *ngIf="data['STATE_NAME'].length < 40">
+                        {{
+                          data["STATE_NAME"] == null
+                            ? "-"
+                            : (data["STATE_NAME"] | slice : 0 : 40)
+                        }}
+                        {{ data["STATE_NAME"].length > 40 ? "..." : "" }}
+                      </span>
+                    </span>
+                    <span *ngIf="data['STATE_NAME'] == null">-</span>
+                  </td>
+                 
+                 <td>{{data.PINCODE}}</td>
+                  <!-- Status Switch Column -->
+                  <td align="center" style="white-space: pre-line">
+                    <nz-switch
+                      name="STATUS"
+                      nzCheckedChildren="Yes"
+                  nzUnCheckedChildren="No"
+                      [(ngModel)]="data['STATUS']"
+                    ></nz-switch>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+      
+            <!-- Loading Message -->
+            <!-- <div *ngIf="isSpinning" class="loading-overlay">
+              <nz-spin nzTip="Please wait, processing right now..."></nz-spin>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <button
+          type="button"
+          nz-button
+          (click)="close()"
+          class="ant-btn"
+          style="margin-right: 8px"
+        >
+          <span>Cancel</span>
+        </button>
+      
+        <button
+          type="button"
+          class="ant-btn ant-btn-primary"
+          nz-button
+          [nzLoading]="isSpinning"
+          (click)="save()"
+        >
+          <span>Map & Close</span>
+        </button>
+      </div>

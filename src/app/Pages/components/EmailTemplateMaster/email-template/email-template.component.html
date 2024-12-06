@@ -1,0 +1,264 @@
+<div>
+   
+
+    <form nz-form>
+
+        <div nz-row>
+            <div nz-col nzSpan="15">
+              <div nz-col nzSpan="24" class="my-box">
+                <div nz-row>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>Template Name </nz-form-label>
+                            <input id="Gstno" nzErrorTip="Please enter valid Name" nz-input autocomplete="off" name="name"
+                                type="text" [(ngModel)]="data.TEMPLATE_NAME" [pattern]="namepatt" PlaceHolder="Enter Email Template Name"
+                                required maxlength="512" />
+                            <h6 style="color: red" *ngIf="data.TEMPLATE_NAME!=undefined">{{data.TEMPLATE_NAME.length}}/512
+                            </h6>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <nz-form-item>
+                          <nz-form-label nzRequired nzNoColon>Language</nz-form-label>
+            
+                          <nz-form-control nzHasFeedback nzErrorTip="language is required">
+                            <nz-select
+                              nzShowSearch
+                              nzAllowClear
+                              nzPlaceHolder="Select Language"
+                              name="agent"
+                              [(ngModel)]="data.LANGUAGE_CODE"
+                            >
+                             <nz-option nzValue="en" nzLabel="English"></nz-option>
+                              <nz-option nzValue="en_US" nzLabel="English(US)"></nz-option>
+                              <nz-option nzValue="en_UK" nzLabel="English(UK)"></nz-option>
+                              <nz-option nzValue="mr" nzLabel="Marathi"></nz-option>
+                              <nz-option nzValue="hi" nzLabel="Hindi"></nz-option>
+                              <nz-option nzValue="ja" nzLabel="Japanese"></nz-option>
+                              <nz-option nzValue="ko" nzLabel="Korean"></nz-option>
+                              <nz-option nzValue="ru" nzLabel="Russian"></nz-option>
+                              <nz-option nzValue="de" nzLabel="German"></nz-option>
+                            </nz-select>
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                </div>
+        
+                <div nz-row>
+                    <div nz-col nzSpan="24">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>Subject </nz-form-label>
+                            <input id="Gstno" nzErrorTip="Please enter valid Subject" nz-input autocomplete="off"
+                                name="name" type="text" [(ngModel)]="data.SUBJECT" PlaceHolder="Enter Subject" required
+                                maxlength="512" />
+                            <h6 style="color: red" *ngIf="data.SUBJECT!=undefined">{{data.SUBJECT.length}}/512</h6>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row>
+        
+                    <div nz-col nzSpan="24" >
+                        <nz-form-item>
+                          <nz-form-label nzRequired nzNoColon>Body</nz-form-label> 
+                          <nz-form-control nzHasFeedback nzErrorTip="Body is required">
+                            <button nz-button style="color: #efefef;width: 40px;"><span style="color: black;"><b>B</b></span></button>
+                            <button nz-button style="color: #efefef;width: 40px;"><span style="color: black;"><i>I</i></span></button>
+                            <button nz-button style="font-size: 15px;color: #efefef;width: 38px;" iconClass="fa fa-smile-o"  (click)="showEmojiPicker = !showEmojiPicker"><span style="color:black"nz-icon nzType="smile"  nzTheme="outline"  ></span> </button>
+                            <textarea #textArea id='messages2'  style="margin-top: 5px;"nz-input rows="2" name="description" [(ngModel)]="data.TEMPLATE_BODY" required ></textarea>
+                            <!-- <emoji-mart *ngIf="showEmojiPicker" (emojiSelect)="onEmojiSelect($event)" ></emoji-mart> -->
+                            <!-- <h6 style="color: red" *ngIf="inputBody!=undefined">{{inputBody.length}}/1020</h6> -->
+                          </nz-form-control>
+                        </nz-form-item>
+                        <span *ngIf="showDynamicInput1">
+                          <nz-form-item>
+                            <nz-form-label nzRequired nzNoColon>Sample Values For Body Content</nz-form-label>
+                            <nz-form-control >
+                              
+                              <nz-select 
+                                style="width: 100%"
+                                nzMode="tags"
+                                nzPlaceHolder="Enter Sample Values"
+                                name="tag1"
+                                [(ngModel)]="data.BODY_VALUES" 
+                              >
+                                <nz-option
+                                  *ngFor="let option of inputValuess1"
+                                  [nzLabel]="option"
+                                  [nzValue]="option"
+                                  
+                                ></nz-option>
+                              </nz-select>
+                             
+                            </nz-form-control>
+                          </nz-form-item>
+                        </span>
+                      </div>
+        
+                    <div nz-col nzSpan="24">
+                        <nz-form-label nzRequired nzNoColon>Attachment </nz-form-label>
+        
+        
+                        <div nz-col>
+                            <div nz-row nzSpan="24">
+                                <div nz-col nzSpan="8">
+                                    <nz-form-item>
+                                        <nz-form-label nzNoColon>Image </nz-form-label>
+                                        <nz-form-control nzHasFeedback nzErrorTip="Upload Image.">
+                                            <button nz-button style="height: 28px; padding: 0px 7px; font-size: 12px"
+                                                (click)="fileInput.click()" [disabled]="visiblemedia">
+                                                Upload Image
+                                                <input accept="image/*" #fileInput name="albumimage" type="file"
+                                                    (change)="onFileSelected($event)" style="display: none" required />
+                                            </button>
+                                        </nz-form-control>
+                                    </nz-form-item>
+        
+                                    <div nz-col nzSpan="24" *ngIf="fileURL != null"
+                                        style="margin-top: -39px;margin-left: 10px;">
+                                        {{fileURL.name | slice:0:15 }}{{ fileURL.name.length > 15 ? "..." : "" }}
+        
+                                        <p nz-icon nzType="delete" nzTheme="outline" nzTooltipTitle="Remove Image"
+                                            nzTooltipPlacement="top" nz-tooltip
+                                            style="cursor: pointer;color: red;margin-top: 38px;" (click)="clearimg()"></p>
+                                    </div>
+        
+                                </div>
+        
+        
+                                <div nz-col nzSpan="8">
+                                    <nz-form-item>
+                                        <nz-form-label nzNoColon>Video </nz-form-label>
+                                        <nz-form-control nzHasFeedback nzErrorTip="Please select Video.... ">
+                                            <button nz-button [disabled]="visiblemedia"
+                                                style="height: 28px; padding: 0px 7px; font-size: 12px"
+                                                (click)="fileInput1.click()">
+                                                Upload Video
+                                                <input #fileInput1 name="video" type="file" (click)="fileInput1.value = ''"
+                                                    value="" (change)="onFileSelected1($event)" style="display: none"
+                                                    accept="video/*" required />
+                                            </button>
+                                        </nz-form-control>
+                                    </nz-form-item>
+        
+                                    <div nz-col nzSpan="23" *ngIf="fileDataIMAGE_URL != null" style="margin-top: -39px;">
+                                        {{fileDataIMAGE_URL.name | slice:0:15 }}{{ fileDataIMAGE_URL.name.length > 15 ?
+                                        "..." : "" }}
+        
+                                        <span nz-icon nzType="delete" nzTheme="outline" nzTooltipTitle="Remove Video"
+                                            nzTooltipPlacement="top" nz-tooltip
+                                            style="cursor: pointer;color: red;margin-top: 38px;"
+                                            (click)="clearvid()"></span>
+                                    </div>
+                                </div>
+        
+        
+                                <div nz-col nzSpan="8">
+                                    <nz-form-item>
+                                        <nz-form-label nzNoColon>Document
+                                        </nz-form-label>
+                                        <nz-form-control nzHasFeedback nzErrorTip="Upload File">
+                                            <button [disabled]="visiblemedia" nz-button (click)="fileInput12.click()"
+                                                style="height: 28px; padding: 0px 7px; font-size: 12px">
+                                                Upload Document
+                                                <input #fileInput12 name="otherimage" type="file"
+                                                    accept="application/pdf, application/vnd.ms-excel" (change)="
+                            onFileSelected3($event); 
+                          " style="display: none" required />
+                                            </button>
+                                        </nz-form-control>
+                                    </nz-form-item>
+        
+                                    <div nz-col nzSpan="23" *ngIf="fileURLPDF != null"
+                                        style="margin-top: -39px;margin-left: 10px;">
+                                        {{fileURLPDF.name | slice:0:15 }}{{ fileURLPDF.name.length > 15 ? "..." : "" }}
+        
+                                        <span nz-icon nzType="delete" nzTheme="outline" nzTooltipTitle="Remove Document"
+                                            nzTooltipPlacement="top" nz-tooltip
+                                            style="cursor: pointer;color: red;margin-top: 38px;"
+                                            (click)="cleardoc()"></span>
+                                    </div>
+                                </div>
+        
+        
+        
+                            </div>
+                            <h6 style="color: blue;
+        font-size: 10px;
+        margin-left: 10px;">Note:You are limited to upload single attachment.</h6>
+                        </div>
+                    </div>
+        
+        
+        
+        
+                </div>
+                 
+                  <div nz-row>
+                    <div nz-col nzSpan="24">
+                        <nz-form-item>
+                            <nz-form-label nzNoColon>Description</nz-form-label>
+                            <nz-form-control>
+                                <textarea nz-input rows="2" name="description"    maxlength="512" [(ngModel)]="data.DESCRIPTION"
+                                    ></textarea>
+                                    <h6
+                                    style="color: red; font-size: 10px"
+                                    *ngIf="
+                                      data.DESCRIPTION != undefined &&
+                                      data.DESCRIPTION != null &&
+                                      data.DESCRIPTION != ''
+                                    "
+                                  >
+                                    {{ data.DESCRIPTION.length }}/512
+                                  </h6>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row>
+                  <div nz-col nzSpan="4">
+                    <nz-form-item>
+                      <nz-form-label nzNoColon>Status</nz-form-label>
+        
+                      <nz-form-control>
+                        <nz-switch name="Status" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                          [(ngModel)]="data.IS_ACTIVE">
+                        </nz-switch>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+              </div>
+        
+            </div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="8"  class="vertical-card">
+              <div style="margin-top: 10px;margin-left: 12px;margin-bottom: 10px;color: #2E2E2E;">
+               <span><b>Template  Preview</b></span>
+             </div>
+         
+         
+               <div nz-row>
+               <div nz-col nzSpan="1"></div>
+               <div nz-col nzSpan="22">
+               <nz-card  class="vertical" >
+                <nz-form-item>
+          
+             
+              <br/>
+              <span style="font-size: 13px;" [innerHTML]="inputBody"></span>
+              <br/>
+               
+              <hr>
+        
+            <span style="font-size: 11px;font-weight: lighter;color: #0a0a09b0;float: right;">{{Date | date:'hh:mm:a'}} </span> 
+           </nz-form-item>
+             </nz-card>
+             </div>
+               <div nz-col nzSpan="1"></div>
+             </div>
+             </div>
+          </div>
+
+    </form>
+</div>
+

@@ -1,0 +1,113 @@
+<div style="margin-top: 10px">
+  <form nz-form #Taxmaster="ngForm" >
+
+    <div nz-row>
+      <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>Tax Name</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Enter Tax Name">
+            <input
+              nz-input
+              name="name"
+              placeholder="Enter Tax Name"
+              required
+              [(ngModel)]="data.NAME"
+              #nameField="ngModel"
+              (keypress)="commonFunction.alphaOnly($event)"
+              maxlength="256"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row>
+      <div nz-col nzXs="14">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>Short Code</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Enter Short Code">
+            <input
+              nz-input
+              name="shortcode"
+              placeholder="Enter Short Code"
+              required
+              [(ngModel)]="data.SHORT_CODE"
+              #nameField="ngModel"
+              (keypress)="commonFunction.alphaOnly($event)"
+              maxlength="8"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="8">
+        <nz-form-item>
+          <nz-form-label nzNoColon>Status</nz-form-label>
+          <nz-form-control>
+            <nz-switch
+              name="status"
+              nzCheckedChildren="Active"
+              nzUnCheckedChildren="Inactive"
+              [(ngModel)]="data.IS_ACTIVE"
+            ></nz-switch>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="footer">
+  <button
+    nz-button
+    nzType="default"
+    (click)="close()"
+    class="ant-btn"
+    style="margin-right: 12px"
+  >
+    Cancel
+  </button>
+
+  <button
+    nz-button
+    *ngIf="!data.ID"
+    nzType="primary"
+    nz-dropdown
+    [nzDropdownMenu]="menu"
+    [nzLoading]="isSpinning"
+    (click)="save(false, Taxmaster)"
+    class="ant-btn ant-btn-primary"
+  >
+    Save & Close
+  </button>
+
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li
+        nz-menu-item
+        class="menuc"
+        style="border-radius: 4px; background-color: #40a9ff"
+      >
+        <a
+          class="footer-button"
+          style="color: white"
+          (click)="save(true, Taxmaster)"
+          >Save & New</a
+        >
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+
+  <button
+    type="button"
+    class="ant-btn ant-btn-primary"
+    nz-button
+    [nzLoading]="isSpinning"
+    *ngIf="data.ID"
+    (click)="save(false, Taxmaster)"
+  >
+    <span>Update & Close</span>
+  </button>
+</div>
+
+
+

@@ -1,0 +1,90 @@
+<div>
+   
+    <form nz-form #accountMasterPage="ngForm">
+        <nz-spin [nzSpinning]="isSpinning">
+       
+               
+                 
+                        <div nz-row> 
+                      
+                             
+                            <div nz-col nzSpan="24">
+                                <nz-form-item>
+                                    <nz-form-label nzRequired nzNoColon>Country</nz-form-label>
+                                    <nz-form-control nzHasFeedback nzErrorTip="Please Select Country">
+                                        <nz-select   nzShowSearch nzPlaceHolder="Select Country" name="Country"
+                                          [(ngModel)]="data.COUNTRY_ID" (ngModelChange)="getstates($event)">
+                                          <nz-option *ngFor="let role of CountryList" [nzValue]="role.ID" [nzLabel]="role.NAME">
+                                          </nz-option>
+                                        </nz-select>
+                                      </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                           
+                        </div> 
+                        <div nz-row>
+                            <div nz-col nzSpan="24">
+                                <nz-form-item>
+                                    <nz-form-label nzRequired nzNoColon>State</nz-form-label>
+
+                                    <nz-form-control nzHasFeedback nzErrorTip="Please Select State">
+                                        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select State" name="tempState"
+                                          [(ngModel)]="data.STATE_ID" required  >
+                    
+                                          <nz-option *ngFor="let role of state " [nzValue]="role.ID" [nzLabel]="role.NAME">
+                                          </nz-option>
+                                        </nz-select>
+                                      </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                        <div nz-row> 
+                            <div nz-col nzSpan="12">
+                                <nz-form-item>
+                                    <nz-form-label nzRequired nzNoColon>Pincode</nz-form-label>
+
+                                    <nz-form-control nzHasFeedback nzErrorTip="Please Enter Pincode">
+                                        <input (keypress)="omit($event)" [(ngModel)]="data.PINCODE" name="pincode1"
+                                            autocomplete="off" placeholder="Enter Pincode" type="text"
+                                         nz-input maxlength="6" required>
+                                          
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzSpan="8">
+                                <nz-form-item>
+                                    <nz-form-label  nzNoColon>Status </nz-form-label>
+
+                                    <nz-switch name="Status" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+                                    [(ngModel)]="data.IS_ACTIVE">
+                                  </nz-switch>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                               
+  
+                    
+              
+  
+        </nz-spin>
+    </form>
+
+    <div class="footer">
+        <button type="button" nz-button style="margin-right: 8px;" class="ant-btn" style="margin-right: 8px;"
+            (click)="close(accountMasterPage)"><span>Cancel</span></button>
+
+        <button type="button" class="ant-btn ant-btn-primary" *ngIf="!data.ID" nz-button nz-dropdown
+            [nzDropdownMenu]="menu" (click)="save(false,accountMasterPage)"><span>Save & Close</span></button>
+
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item class="menuc" style="border-radius: 4px;background-color: #40a9ff;">
+                    <a (click)="save(true,accountMasterPage)">Save & New</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+
+        <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.ID"
+            (click)="save(false,accountMasterPage)"><span>Update & close</span></button>
+    </div>
+</div>

@@ -1,0 +1,172 @@
+<div>
+  <form nz-form #skillMappingForm="ngForm">
+    <nz-spin [nzSpinning]="isSpinning">
+      <div nz-row>
+
+        <!-- Skill Dropdown -->
+        <div nz-col nzSpan="20">
+          <nz-form-item>
+            <nz-form-label nzNoColon nzRequired>Skill</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Select Skill">
+              <nz-select
+                name="SKILL_ID"
+               nzPlaceHolder="Select Skill"
+               nzShowSearch
+               [(ngModel)]="addData.SKILL_ID"
+               nzAllowClear="true"
+                     required
+                [nzLoading]="skillLoading"
+                 [nzMode]="'multiple'"
+                 >
+                 <nz-option
+              *ngFor="let data of filteredSkillData"
+             [nzValue]="data.ID"
+             [nzLabel]="data.NAME"
+            ></nz-option>
+            </nz-select>
+
+
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+
+
+
+        <!-- Add Button -->
+        <div
+          nz-col
+          nzSpan="3"
+          style="display: flex; align-items: center; margin-top: 20px"
+        >
+          <button
+            nz-button
+            nzType="primary"
+            (click)="add(skillMappingForm)"
+            style="width: 100%"
+            [nzLoading]="btnLoading"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </nz-spin>
+  </form>
+</div>
+
+
+
+
+<div nz-row>
+  <div nz-col nzSpan="24">
+    <div style="position: relative">
+      <nz-table
+        class="my-scroll no-wrap1"
+        nzBordered
+        #table
+        [nzData]="dataList"
+        [nzLoading]="isSpinning"
+        [nzSize]="'small'"
+        [nzFrontPagination]="false"
+        [nzScroll]="{ y: '100vh' }"
+        style="white-space: pre-line"
+        (nzQueryParams)="sort($event)"
+      >
+        <thead>
+          <tr>
+            <th
+            nzWidth="120px"
+            nzColumnKey="{{ 'IS_ACTIVE' }}"
+            [nzSortFn]="true"
+            >Is Mapped ?
+            </th>
+
+            <th
+            nzWidth="300px"
+            nzColumnKey="{{ 'SKILL_NAME' }}"
+            [nzSortFn]="true"
+            >
+            Skills
+          </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let data of table.data; let i = index">
+            <!-- Status Switch Column -->
+              <td align="center" style="white-space: pre-line">
+                <nz-switch
+                 name="STATUS"
+                 nzCheckedChildren="Yes"
+                 nzUnCheckedChildren="No"
+                 [(ngModel)]="data['IS_ACTIVE']"
+                 ></nz-switch>
+                </td>
+
+
+            <td align="left">
+              <span *ngIf="data['SKILL_NAME'] != null">
+                <span
+                  *ngIf="data['SKILL_NAME'].length >= 40"
+                  nz-popover
+                  [nzPopoverContent]="data['SKILL_NAME']"
+                  nzPopoverPlacement="topLeft"
+                >
+                  {{
+                    data["SKILL_NAME"] == null
+                      ? "-"
+                      : (data["SKILL_NAME"] | slice : 0 : 40)
+                  }}{{ data["SKILL_NAME"].length > 40 ? "..." : "" }}
+                </span>
+                <span *ngIf="data['SKILL_NAME'].length < 40">
+                  {{
+                    data["SKILL_NAME"] == null
+                      ? "-"
+                      : (data["SKILL_NAME"] | slice : 0 : 40)
+                  }}
+                  {{ data["SKILL_NAME"].length > 40 ? "..." : "" }}
+                </span>
+              </span>
+              <span *ngIf="data['SKILL_NAME'] == null">-</span>
+            </td>
+
+          </tr>
+        </tbody>
+      </nz-table>
+
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <button
+    type="button"
+    nz-button
+    (click)="close()"
+    class="ant-btn"
+    style="margin-right: 8px"
+  >
+    <span>Cancel</span>
+  </button>
+
+  <button
+    type="button"
+    class="ant-btn ant-btn-primary"
+    nz-button
+    [nzLoading]="isSpinning"
+    (click)="save()"
+  >
+    <span>Map & Close</span>
+  </button>
+</div>
+
+<div>
+  <div nz-row>
+    <!-- Skill Dropdown -->
+    <div nz-col nzSpan="20">
+      </div>
+
+</div>
+
+

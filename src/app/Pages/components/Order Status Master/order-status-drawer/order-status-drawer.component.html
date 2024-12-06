@@ -1,0 +1,138 @@
+<div style="margin-top: 10px" class="my-box">
+  <form nz-form #OrderStatusmaster="ngForm">
+
+    <div nz-row>
+      <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>Status Title</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Enter Status Title">
+            <input nz-input name="name" placeholder="Enter Status Title" required [(ngModel)]="data.NAME"
+              #nameField="ngModel" (keypress)="commonFunction.alphaOnly($event)" maxlength="256" />
+            <h6 style="color: red; font-size: 10px" *ngIf="
+            data.NAME != undefined &&
+            data.NAME != null &&
+            data.NAME != ''
+          ">
+              {{ data.NAME.length }}/256
+            </h6>
+
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row>
+      <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>Description</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Enter Description">
+            <textarea nz-input name="desc" placeholder="Enter Description" required [(ngModel)]="data.DESCRIPTION"
+              #nameField="ngModel" [nzAutosize]="{ minRows: 3, maxRows: 6 }"
+              (keypress)="commonFunction.alphaOnly($event)" style="width: 100%" maxlength="2024"></textarea>
+            <h6 style="color: red; font-size: 10px" *ngIf="
+            data.DESCRIPTION != undefined &&
+            data.DESCRIPTION != null &&
+            data.DESCRIPTION != ''
+          ">
+              {{ data.DESCRIPTION.length }}/2024
+            </h6>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row>
+      <div nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>Icon</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Select Icon">
+            <button *ngIf="data.ICON == ' ' || data.ICON == null" nz-button
+              style="height: 28px; padding: 0px 7px; font-size: 12px; width: 30%" (click)="icon.click()">
+              <i nz-icon nzType="upload" nzTheme="outline"></i>
+              <input #icon name="icon" type="file" accept=".png, .jpg, .jpeg" (change)="onFileSelected($event)"
+                style="display: none" maxlength="32" />
+            </button>
+            <span *ngIf="!data.ICON || data.ICON.trim() === ''" style="
+              color: red;
+              font-size: 10px !important;
+              display: block;
+              margin-top: 5px;
+            ">
+              Please select an image file (PNG, JPG, JPEG) with a size up to 1MB.
+            </span>
+            <div *ngIf="data.ICON != null && data.ICON != undefined && data.ICON != ' '"
+              style="display: flex; justify-content: left">
+              <span> <span *ngIf="data['ICON'] != null">
+                  <span *ngIf="data['ICON'].length >= 36" nz-popover [nzPopoverContent]="data['ICON']"
+                    nzPopoverPlacement="topLeft">
+                    {{ data["ICON"] == null ? "-" : (data["ICON"] | slice : 0 : 36)
+                    }}{{ data["ICON"].length > 36 ? "..." : "" }}
+                  </span>
+                  <span *ngIf="data['ICON'].length < 36">
+                    {{
+                    data["ICON"] == null ? "-" : (data["ICON"] | slice : 0 : 36)
+                    }}
+                    {{ data["ICON"].length > 36 ? "..." : "" }}
+                  </span>
+                </span></span> &nbsp;&nbsp; <a style="color: blue; margin-right: 9px" (click)="viewImage(data.ICON)"
+                nz-tooltip nzTooltipTitle="Click Here To View Uploaded Icon">
+                <span nz-icon nzType="eye" nzTheme="outline"></span>
+              </a>
+              <span *ngIf="data.ID">
+                <span style="cursor: pointer" nz-popconfirm nzPopconfirmTitle="Are you sure want delete Icon?"
+                  nzPopconfirmPlacement="top" (nzOnConfirm)="IconDeleteConfirm(data)" (nzOnCancel)="deleteCancel()">
+                  <span nz-icon nzType="delete" nzTheme="twotone" nz-tooltip nzTooltipTitle="Delete">
+                  </span>
+                </span>
+              </span>
+              <span *ngIf="!data.ID">
+                <span style="cursor: pointer; margin-left: 10px" nz-popconfirm
+                  nzPopconfirmTitle="Are you sure want Delete?" nzPopconfirmPlacement="top"
+                  (nzOnConfirm)="removeImage()" (nzOnCancel)="deleteCancel()">
+                  <span nz-icon nzType="delete" nzTheme="twotone" nz-tooltip nzTooltipTitle="Delete">
+                  </span>
+                </span>
+              </span>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzNoColon>Status</nz-form-label>
+          <nz-form-control>
+            <nz-switch name="status" nzCheckedChildren="Active" nzUnCheckedChildren="Inactive"
+              [(ngModel)]="data.IS_ACTIVE"></nz-switch>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+    </div>
+
+  </form>
+</div>
+
+<div class="footer">
+  <button nz-button nzType="default" (click)="close()" class="ant-btn" style="margin-right: 12px">
+    Cancel
+  </button>
+
+  <button nz-button *ngIf="!data.ID" nzType="primary" nz-dropdown [nzDropdownMenu]="menu" [nzLoading]="isSpinning"
+    (click)="save(false, OrderStatusmaster)" class="ant-btn ant-btn-primary">
+    Save & Close
+  </button>
+
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item class="menuc" style="border-radius: 4px; background-color: #40a9ff">
+        <a class="footer-button" style="color: white" (click)="save(true, OrderStatusmaster)">Save & New</a>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+
+  <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" *ngIf="data.ID"
+    (click)="save(false, OrderStatusmaster)">
+    <span>Update & Close</span>
+  </button>
+</div>

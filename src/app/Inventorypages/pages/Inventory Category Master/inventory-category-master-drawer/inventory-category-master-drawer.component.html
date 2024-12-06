@@ -1,0 +1,127 @@
+
+<div >
+    <form nz-form #Taxmaster="ngForm" >
+
+      <div nz-row>
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Category Name</nz-form-label>
+            <nz-form-control nzHasFeedback nzErrorTip="Please Enter Category Name">
+              <input
+                nz-input
+                name="name"
+                placeholder="Enter Category Name"
+                required
+                [(ngModel)]="data.CATEGORY_NAME"
+                #nameField="ngModel"
+                (keypress)="commonFunction.alphaOnly($event)"
+
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzNoColon>Description</nz-form-label>
+            <nz-form-control nzErrorTip="Enter Description">
+              <textarea nz-input rows="2" name="description" placeholder="Please Enter Description" required=""
+                [(ngModel)]="data.DESCRIPTION" #description="ngModel"></textarea>
+              <br />
+              <!-- <small *ngIf="data.DESCRIPTION" style="font-size: 9px; color: red">
+                {{ data.DESCRIPTION.length }}/ 1024
+              </small> -->
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+
+
+      <div nz-row>
+          <div nz-col nzXs="14">
+
+            <nz-form-item>
+              <nz-form-label nzRequired nzNoColon>Sequence No.</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Please Enter Valid Sequence Number">
+                  <nz-input-number disabled style="width: 100%;" name="seqno"
+                      [(ngModel)]="data.SEQ_NO" [nzMin]="1" [nzStep]="1" required>
+                  </nz-input-number>
+              </nz-form-control>
+          </nz-form-item>
+          </div>
+
+        <div nz-col nzSpan="8">
+          <nz-form-item>
+            <nz-form-label nzNoColon>Status</nz-form-label>
+            <nz-form-control>
+              <nz-switch
+                name="status"
+                nzCheckedChildren="Active"
+                nzUnCheckedChildren="Inactive"
+                [(ngModel)]="data.IS_ACTIVE"
+              ></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="footer">
+    <button
+      nz-button
+      nzType="default"
+      (click)="close()"
+      class="ant-btn"
+      style="margin-right: 12px"
+    >
+      Cancel
+    </button>
+
+    <button
+      nz-button
+      *ngIf="!data.ID"
+      nzType="primary"
+      nz-dropdown
+      [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning"
+      (click)="save(false, Taxmaster)"
+      class="ant-btn ant-btn-primary"
+    >
+      Save & Close
+    </button>
+
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li
+          nz-menu-item
+          class="menuc"
+          style="border-radius: 4px; background-color: #40a9ff"
+        >
+          <a
+            class="footer-button"
+            style="color: white"
+            (click)="save(true, Taxmaster)"
+            >Save & New</a
+          >
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <button
+      type="button"
+      class="ant-btn ant-btn-primary"
+      nz-button
+      [nzLoading]="isSpinning"
+      *ngIf="data.ID"
+      (click)="save(false, Taxmaster)"
+    >
+      <span>Update & Close</span>
+    </button>
+  </div>
+
+
+

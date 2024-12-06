@@ -1,0 +1,19 @@
+export class ServiceCatMasterData
+{
+
+NAME=''
+DESCRIPTION=''
+CATEGORY_ID:number
+SUBCATEGORY_ID:number
+REGULAR_PRICE_B2B:number
+REGULAR_PRICE_B2C:number
+EXPRESS_PRICE_B2B:number
+EXPRESS_PRICE_B2C:number
+CURRENCY_ID:number
+DURATION:any;
+SERVICE_IMAGE_URL:any
+AVAILABILITY_STATUS:boolean=true
+
+
+
+}

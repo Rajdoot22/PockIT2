@@ -1,0 +1,164 @@
+ 
+<div nz-row nzType="flex">
+    <div nz-col nzXs="24" nzSm="24" nzMd="20" nzLg="20" nzXl="8">
+      <div class="formname"> {{formTitle}}</div>
+    </div>
+  
+  
+    <div nz-col nzXs="24" nzSm="24" nzMd="4" nzLg="6" nzXl="16"  style="display: flex;justify-content: flex-end">
+      <form nz-form [nzLayout]="'inline'">
+        <nz-form-item>
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" (keyup)="search(true)" name="searchbranch" nz-input placeholder="Min 3 chars required."
+              [(ngModel)]="searchText" />
+          </nz-input-group>
+  
+          <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" (click)="search(true)" nzSearch><i nz-icon nzType="search"></i></button>
+          </ng-template>
+        </nz-form-item>
+  
+        <nz-form-item>
+          <button nz-button nzType="primary" (click)="add()" nzJustify="end">
+            <i nz-icon nzType="plus"></i>Add new E-mail Template
+          </button>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
+    <!-- <div nz-row>
+      <div nz-col nzSpan="24">
+          <div class="filter {{filterClass}}">
+              <div class="filter-box">
+                  <form nz-form>
+                      <div nz-row nzGutter="5">
+                       
+                          <div nz-col nzSpan="5" style="margin-top: 9px;" >
+                              <nz-form-item>
+                                  <nz-form-label nzNoColon>Category
+                                  </nz-form-label>
+                                  <nz-select name="role" nzShowSearch nzAllowClear
+                                      style="width: 100%" nzPlaceHolder="Select Category" 
+                                      [(ngModel)]="TYPE" 
+                                   >
+            
+                                   <nz-option nzValue="UTILITY" nzLabel="Utility"></nz-option>
+                                    <nz-option nzValue="MARKETING" nzLabel="Marketing"></nz-option>
+                                    <nz-option nzValue="AUTHENTICATION" nzLabel="Authentication"></nz-option>
+                                    
+                                  </nz-select>
+                              </nz-form-item>
+                          </div>
+                          
+                          <div nz-col nzSpan="5" style="margin-top: 9px;" >
+                            <nz-form-item>
+                                <nz-form-label nzNoColon>Template Status
+                                </nz-form-label>
+                                <nz-select name="status" nzShowSearch nzAllowClear
+                                    style="width: 100%" nzPlaceHolder="Select Template Status" 
+                                    [(ngModel)]="STATUS" 
+                                 >
+          
+                                 <nz-option nzValue="APPROVED" nzLabel="Approved"></nz-option>
+                                  <nz-option nzValue="REJECTED" nzLabel="Rejected"></nz-option>
+                                  <nz-option nzValue="PENDING" nzLabel="Pending"></nz-option>
+                                  
+                                </nz-select>
+                            </nz-form-item>
+                        </div>
+                      
+                          <div nz-col nzSpan="8"  style="margin-top: 39px;">
+  
+                              <nz-form-item style=" margin-left: 10px;">
+                                  <button style="margin-right: 10px" nz-button nzType="primary"
+                                      (click)="applyFilter()" nzJustify="end">
+                                      <i nz-icon nzType="filter"></i>Apply filter
+                                  </button>
+                                  <button nz-button nzType="primary" (click)="clearFilter()">
+                                      <i nz-icon nzType="filter"></i>Clear Filter
+                                  </button>
+                              </nz-form-item>
+                          </div>
+                      </div>    
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div> -->
+    
+    <div nz-row style="margin-top: 10px;">
+      <div nz-col nzSpan="24">
+        <nz-table
+          class="my-scroll no-wrap1"
+          nzBordered
+          #table
+          nzShowSizeChanger
+          [nzFrontPagination]="true"
+          [nzData]="dataList" 
+          [nzTotal]="totalRecords"
+          [(nzPageIndex)]="pageIndex"
+          [(nzPageSize)]="pageSize"
+          (nzQueryParams)="sort($event)"
+          [nzSize]="'small'"  
+          style="white-space: pre-line"
+        >
+          <thead>
+            <tr>
+              <th  nzWidth="80px"  style="text-align: center;" nzAlign="center"><b>Preview</b></th>
+              <th nzWidth="150px" nzAlign="center"  nzColumnKey="TEMPLATE_NAME" [nzSortFn]="true"><b> Template Name</b></th>
+              <th nzWidth="150px" nzAlign="center"  nzColumnKey="CATEGORY" [nzSortFn]="true"><b> Subject</b></th>
+              <th nzWidth="150px" nzAlign="center"  nzColumnKey="LANGUAGE" [nzSortFn]="true"><b> Attachment Type</b></th>
+            
+              <th nzWidth="150px" nzAlign="center" nzColumnKey="TEMPLATE_STATUS" [nzSortFn]="true"><b> Status</b></th>
+            </tr>
+          </thead>
+    
+          <tbody>
+            <tr *ngFor="let data of table.data">
+              <td style="text-align: center;">
+                <a (click)="edit(data)">
+                  <span nz-icon nzType="eye" nzTheme="outline"></span>
+                </a></td>
+              <td  >{{data['TEMPLATE_NAME']}}</td>
+              <td  >{{data['CATEGORY']}}</td>
+              <td  >
+             
+                <span *ngIf="data['LANGUAGE']=='mr'">Marathi</span>
+                <span *ngIf="data['LANGUAGE']=='hi'">Hindi</span>
+                <span *ngIf="data['LANGUAGE']=='ja'">Japanese</span>
+                <span *ngIf="data['LANGUAGE']=='ko'">Korean</span>
+                <span *ngIf="data['LANGUAGE']=='ru'">Russian</span>
+                <span *ngIf="data['LANGUAGE']=='en'">English</span>
+                <span *ngIf="data['LANGUAGE']=='en_US'">English(US)</span>
+                <span *ngIf="data['LANGUAGE']=='en_UK'">English(UK)</span>
+                <span *ngIf="data['LANGUAGE']=='de'">German</span>
+              </td>
+              <td align="center">
+                <span *ngIf="data['TEMPLATE_STATUS']== 'APPROVED'">
+                  <nz-tag [nzColor]="'green'">Approved</nz-tag>
+              </span>
+                <span *ngIf="data['TEMPLATE_STATUS']== 'REJECTED'">
+                  <nz-tag [nzColor]="'red'">Rejected</nz-tag>
+              </span>
+              <span   *ngIf="data['TEMPLATE_STATUS']== 'PENDING'">
+                  <nz-tag [nzColor]="'yellow'">Pending</nz-tag>
+              </span>
+             
+          
+            
+            </td>
+            
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    <nz-drawer [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
+  [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="true" [nzWidth]="1000" [nzVisible]="drawerVisible"
+  [nzTitle]="drawerTitle" (nzOnClose)="drawerClose()" (nzKeyboard)="true">
+
+      <app-email-template *nzDrawerContent [drawerClose]="closeCallback" [data]="drawerData"></app-email-template>
+    </nz-drawer>
+  
+    
+  

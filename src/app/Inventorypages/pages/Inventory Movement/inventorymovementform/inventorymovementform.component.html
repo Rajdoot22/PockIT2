@@ -1,0 +1,158 @@
+<div>
+	<form #accountMasterPage="ngForm"
+		nz-form>
+		<nz-spin [nzSpinning]="isSpinning">
+
+			<!-- Inventory Details Section -->
+			<div nz-row>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+						  Source Warehouse
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please select a valid source warehouse">
+							<nz-select [(ngModel)]="data.SOURCE_WAREHOUSE_ID"
+								name="sourceWarehouse"
+								nzPlaceHolder="Select Source Warehouse"
+								nzAllowClear
+								style="width: 100%;">
+								<nz-option *ngFor="let item of warehouseList"
+									[nzValue]="item.ID"
+									[nzLabel]="item.NAME">
+								</nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+						    Destination Warehouse
+						</nz-form-label>
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please select a valid destination warehouse">
+							<nz-select [(ngModel)]="data.DESTINATION_WAREHOUSE_ID"
+								name="destinationWarehouse"
+								nzPlaceHolder="Select Destination Warehouse"
+								nzAllowClear
+								style="width: 100%;">
+								<nz-option *ngFor="let item of warehouseList"
+									[nzValue]="item.ID"
+									[nzLabel]="item.NAME">
+								</nz-option>
+							</nz-select>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+			</div>
+			<div nz-row>
+
+				<div nz-col
+					nzSpan="24">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Reason
+						</nz-form-label>
+						<nz-form-control>
+							<textarea [(ngModel)]="data.REASON"
+								nz-input
+								rows="3"
+								name="reason"
+								placeholder="Enter Reason"
+								maxlength="512">
+							</textarea>
+                            <h6 *ngIf="data.REASON"
+                            style="font-size: 10px; color: red">
+                            {{ data.REASON.length }}/ 512
+                        </h6>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+			</div>
+			<div nz-row>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Date
+						</nz-form-label>
+						<nz-form-control>
+							<nz-date-picker [(ngModel)]="data.DATE"
+								name="datePicker"
+								nzPlaceHolder="Select Date"
+								nzFormat="dd/MM/yyyy"
+								style="width: 100%;">
+							</nz-date-picker>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="6">
+					<nz-form-item>
+						<nz-form-label nzNoColon>Status</nz-form-label>
+						<nz-switch [(ngModel)]="data.STATUS"
+							style="line-height: 2.2;"
+							name="statusSwitch"
+							nzCheckedChildren="Active"
+							nzUnCheckedChildren="Inactive">
+						</nz-switch>
+					</nz-form-item>
+				</div>
+
+			</div>
+
+		
+
+		</nz-spin>
+	</form>
+	<div class="footer">
+		<button (click)="close(accountMasterPage)"
+			type="button"
+			nz-button
+			class="ant-btn"
+			style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+
+		<button *ngIf="!data.ID"
+			[nzLoading]="isSpinning"
+			[nzDropdownMenu]="menu"
+			(click)="save(false,accountMasterPage)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button
+			nz-dropdown>
+			<span>
+				Save &
+                Close
+			</span>
+		</button>
+
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item
+					class="menuc"
+					style="border-radius: 4px;background-color: #40a9ff;color: #ffffff;">
+					<a (click)="save(true,accountMasterPage)">Save & New</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+
+		<button *ngIf="data.ID"
+			[nzLoading]="isSpinning"
+			(click)="save(false,accountMasterPage)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button>
+			<span>Update & close</span>
+		</button>
+	</div>
+</div>

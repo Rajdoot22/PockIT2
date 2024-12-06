@@ -1,0 +1,131 @@
+<div style="margin-top: 10px">
+    <form nz-form #websitebannerPage="ngForm" >
+        <div nz-row>
+
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzRequired nzNoColon>Category Name</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="Please Enter Category Name">
+                  <input
+                    nz-input
+                    name="NAME"
+                    placeholder="Enter Category Name"
+                    required
+                    [(ngModel)]="data.NAME"
+                    (keypress)="commonFunction.alphaOnly($event)"
+                    autocomplete="off"
+                    maxlength="128"
+                  />
+                  <h6
+                  style="color: red; font-size: 10px"
+                  *ngIf="
+                    data.CATEGORY_NAME != undefined &&
+                    data.CATEGORY_NAME != null &&
+                    data.CATEGORY_NAME != ''
+                  "
+                >
+                  {{ data.CATEGORY_NAME.length }}/128
+                </h6>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>
+   <div nz-row>
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="24">
+            <nz-form-item>
+              <nz-form-label  nzNoColon>Description</nz-form-label>
+              <nz-form-control >
+                <textarea
+                nz-input
+                name="desc"
+                placeholder="Enter Description"
+                [(ngModel)]="data.DESCRIPTION"
+                (keypress)="commonFunction.alphaOnly($event)"
+                maxlength="2024"
+                [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+              ></textarea>
+              <h6
+              style="color: red; font-size: 10px"
+              *ngIf="
+                data.DESCRIPTION != undefined &&
+                data.DESCRIPTION != null &&
+                data.DESCRIPTION != ''
+              "
+            >
+              <!-- {{ data.DESCRIPTION.length }}/1024 -->
+            </h6>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+      </div>
+        
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label nzNoColon>Status</nz-form-label>
+        <nz-form-control>
+          <nz-switch
+            name="IS_ACTIVE"
+            nzCheckedChildren="Active"
+            nzUnCheckedChildren="Inactive"
+            [(ngModel)]="data.STATUS"
+          ></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    </form>
+  </div>
+  
+  <div class="footer">
+    <button
+      nz-button
+      nzType="default"
+      (click)="close()"
+      class="ant-btn"
+      style="margin-right: 12px"
+    >
+      Cancel
+    </button>
+  
+    <button
+      nz-button
+      *ngIf="!data.ID"
+      nzType="primary"
+      nz-dropdown
+      [nzDropdownMenu]="menu"
+      [nzLoading]="isSpinning"
+      (click)="save(false, websitebannerPage)"
+      class="ant-btn ant-btn-primary"
+    >
+      Save & Close
+    </button>
+  
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li
+          nz-menu-item
+          class="menuc"
+          style="border-radius: 4px; background-color: #40a9ff"
+        >
+          <a
+            class="footer-button"
+            style="color: white"
+            (click)="save(true, websitebannerPage)"
+            >Save & New</a
+          >
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+  
+    <button
+      type="button"
+      class="ant-btn ant-btn-primary"
+      nz-button
+      [nzLoading]="isSpinning"
+      *ngIf="data.ID"
+      (click)="save(false, websitebannerPage)"
+    >
+      <span>Update & Close</span>
+    </button>
+  
+  </div>

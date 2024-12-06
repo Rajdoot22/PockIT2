@@ -1,0 +1,156 @@
+<div nz-row nzType="flex">
+    <div nz-col nzXs="24" nzSm="24" nzMd="20" nzLg="20" nzXl="8">
+      <div class="formname">
+        <b> {{ formTitle }} </b>
+      </div>
+    </div>
+    <div
+      nz-col
+      nzXs="24"
+      nzSm="24"
+      nzMd="4"
+      nzLg="6"
+      nzXl="16"
+      style="display: flex; justify-content: flex-end"
+    >
+      <form nz-form [nzLayout]="'inline'">
+        <!-- <nz-form-item style="width: 47px">
+          <button
+            nz-button
+            nzTooltipTitle="Filter"
+            nzTooltipPlacement="top"
+            nz-tooltip
+            
+          >
+            <i nz-icon nzType="filter"></i>
+          </button>
+        </nz-form-item> -->
+        <nz-form-item>
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input
+              type="text"
+              name="search"
+             
+              [(ngModel)]="searchText"
+              nz-input
+              placeholder="Min 3 chars required."
+            />
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <button nz-button nzType="primary"   nzSearch>
+              <i nz-icon nzType="search"></i>
+            </button>
+          </ng-template>
+        </nz-form-item>
+        <nz-form-item style="margin-right: 0px">
+          <button nz-button nzType="primary" (click)="add()" nzJustify="end">
+            <i nz-icon nzType="plus"></i>Add New WhatsApp service Config
+          </button>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
+  <div nz-row style="margin-top: 10px;">
+    <div nz-col nzSpan="24">
+      <nz-table
+        nzBordered
+        #table
+        nzShowSizeChanger
+        [nzData]="smsServiceConfigData"
+        [nzTotal]="totalRecords"
+        [(nzPageIndex)]="pageIndex"
+        [(nzPageSize)]="pageSize"
+        [nzSize]="'small'"
+        (nzQueryParams)="sort($event)"
+        [nzScroll]="{  x: '1500px' }"
+      >
+        <thead>
+          <tr>
+            <th nzWidth="80px" style="text-align: center;" nzAlign="center"><b>Action</b></th>
+            <th nzWidth="150px" nzAlign="center" nzColumnKey="SERVICE_PROVIDER" [nzSortFn]="true">
+              <b>Service Provider</b>
+            </th>
+            <th nzWidth="150px" nzAlign="center" nzColumnKey="SMTP_HOST" [nzSortFn]="true">
+              <b>SMTP Host</b>
+            </th>
+            <th nzWidth="150px" nzAlign="center" nzColumnKey="SMTP_PORT" [nzSortFn]="true">
+              <b>SMTP Port</b>
+            </th>
+            <th nzWidth="150px" nzAlign="center" nzColumnKey="USERNAME" [nzSortFn]="true">
+              <b>Username</b>
+            </th>
+            <th nzWidth="150px" nzAlign="center" nzColumnKey="SENDER_EMAIL" [nzSortFn]="true">
+              <b>Sender Email</b>
+            </th>
+            <th nzWidth="150px" nzAlign="center" nzColumnKey="SENDER_NAME" [nzSortFn]="true">
+              <b>Sender Name</b>
+            </th>
+            <th nzWidth="150px" nzAlign="center" nzColumnKey="ENCRYPTION_TYPE" [nzSortFn]="true">
+              <b>Encryption Type</b>
+            </th>
+            <th nzWidth="150px" nzAlign="center" nzColumnKey="RETRY_ATTEMPTS" [nzSortFn]="true">
+              <b>Retry Attempts</b>
+            </th>
+            <th nzWidth="150px" nzAlign="center" nzColumnKey="TIMEOUT_SECONDS" [nzSortFn]="true">
+              <b>Timeout (Seconds)</b>
+            </th>
+            <th nzWidth="150px" nzAlign="center" nzColumnKey="IS_ACTIVE" [nzSortFn]="true">
+              <b>Status</b>
+            </th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let data of smsServiceConfigData">
+            <td style="text-align: center;">
+              <a (click)="edit(data)">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </a>
+           
+            </td>
+            <td>{{data.SERVICE_PROVIDER}}</td>
+            <td>{{data.SMTP_HOST}}</td>
+            <td>{{data.SMTP_PORT}}</td>
+            <td>{{data.USERNAME}}</td>
+            <td>{{data.SENDER_EMAIL}}</td>
+            <td>{{data.SENDER_NAME}}</td>
+            <td>{{data.ENCRYPTION_TYPE}}</td>
+            <td>{{data.RETRY_ATTEMPTS}}</td>
+            <td>{{data.TIMEOUT_SECONDS}}</td>
+            <td>
+              <nz-tag *ngIf="data.IS_ACTIVE" [nzColor]="'green'">Active</nz-tag>
+              <nz-tag *ngIf="!data.IS_ACTIVE" [nzColor]="'red'">Inactive</nz-tag>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+  
+  
+  
+  
+  <nz-drawer
+  [nzBodyStyle]="{
+    height: 'calc(100% - 55px)',
+    overflow: 'auto',
+    'padding-bottom': '53px'
+  }"
+  [nzClosable]="true"
+  [nzMask]="true"
+  [nzMaskClosable]="true"
+  [nzWidth]="600"
+  [nzVisible]="drawerVisible"
+  [nzTitle]="drawerTitle"
+  (nzOnClose)="drawerClose()"
+  (nzKeyboard)="(true)"
+>
+  <ng-container *nzDrawerContent>
+    <app-whatsapp-service-config
+      [drawerClose]="closeCallback"
+      [drawerVisible]="drawerVisible"
+      [data]="drawerData"
+    >
+    </app-whatsapp-service-config>
+  </ng-container>
+</nz-drawer>

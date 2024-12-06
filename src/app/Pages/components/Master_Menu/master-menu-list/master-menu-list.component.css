@@ -1,0 +1,35 @@
+nz-card{
+    width: 230px;
+    height: 270px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+}
+ 
+ 
+ 
+  /* your-component.component.css or your-component.component.scss */
+:host ::ng-deep .ant-card-head {
+    border-bottom: none;
+    padding: 0px 15px;
+    min-height: 0px;
+}
+ 
+:host ::ng-deep .ant-card-head-title {
+    border-bottom: none;
+    padding: 10px 0px 5px 0px;
+    color: blueviolet;
+}
+ 
+:host ::ng-deep .ant-card-body {
+    padding: 0px 15px;
+}
+ 
+p{
+    margin-bottom: 5px;
+}
+ 
+p.hovered:hover {
+    color: #1890ff; /* Adjust hover color here */
+  }
+ 

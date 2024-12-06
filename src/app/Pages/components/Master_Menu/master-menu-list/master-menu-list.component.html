@@ -1,0 +1,37 @@
+<div>
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <b style="font-size: 21px; font-weight: 500"
+        ><span
+          style="
+            margin-right: 5px;
+            color: #202020;
+            font-size: 22px !important;
+          "
+          nz-icon
+          nzType="setting"
+          nzTheme="outline"
+        ></span
+        >Setup</b
+      >
+    </div>
+    <div nz-col nzSpan="6" *ngFor="let title of objectKeys(titleWiseChildren)">
+      <nz-card
+        [nzBordered]="false"
+        [nzTitle]="title"
+        [nzBodyStyle]="{ 'border-bottom': 'none' }"
+      >
+        <div style="border-top: 1px solid #454545; margin-bottom: 5px"></div>
+        <div *ngFor="let child of titleWiseChildren[title]">
+          <p
+            [routerLink]="child.link"
+            [ngStyle]="{ cursor: 'pointer' }"
+            [ngClass]="{ hovered: true }"
+          >
+            {{ child.title }}
+          </p>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+</div>

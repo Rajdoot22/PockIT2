@@ -1,0 +1,70 @@
+nz-form-item {
+    display: inline-block;
+    margin-bottom: 5px;
+    width: -webkit-fill-available;
+    padding: 0px 10px;
+  }
+
+  .payment-summary {
+    float: right;
+    direction: rtl; /* Aligns the content from right to left */
+    text-align: right; /* Ensures text aligns to the right */
+   
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
+  
+  thead tr {
+    background-color: #f4f4f4;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  td {
+    text-align: center;
+  }
+  
+  tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #ffffff;
+  }
+  
+  tbody tr:hover {
+    background-color: #e8f5ff;
+  }
+  
+  button[nz-button] {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+  }
+  
+  button[nz-button] span {
+    margin-right: 4px;
+  }
+  
+  button[nz-button][nzDanger] {
+    color: #f5222d;
+  }
+  
+  button[nz-button][nzType="link"] {
+    padding: 0;
+  }
+  
+  

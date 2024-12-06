@@ -1,0 +1,170 @@
+<div nz-row nzType="flex">
+  <div nz-col nzXs="24" nzSm="24" nzMd="20" nzLg="20" nzXl="12">
+    <h2 class="formname">{{ formTitle }}</h2>
+  </div>
+  <div nz-col nzXs="24" nzSm="24" nzMd="4" nzLg="6" nzXl="12" style="display: flex; justify-content: flex-end">
+    <form nz-form [nzLayout]="'inline'">
+      <nz-form-item>
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+          <input type="text" 
+          name="search" 
+          nz-input 
+          placeholder="Min 3 chars required." 
+          [(ngModel)]="searchText" 
+          (keyup)="keyup()"/>
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" (click)="search()" nzSearch>
+            <i nz-icon nzType="search"></i>
+          </button>
+        </ng-template>
+      </nz-form-item>
+      <nz-form-item>
+        <button nz-button nzType="primary" (click)="add()" nzJustify="end">
+          <i nz-icon nzType="plus"></i>Add New User
+        </button>
+      </nz-form-item>
+    </form>
+  </div>
+</div>
+<br />
+<div nz-row>
+  <div nz-col nzSpan="24">
+    <nz-table class="my-scroll no-wrap1" nzBordered #table nzShowSizeChanger [nzFrontPagination]="false"
+      [nzData]="dataList" [nzLoading]="loadingRecords" [nzTotal]="totalRecords" [(nzPageIndex)]="pageIndex"
+      [(nzPageSize)]="pageSize" (nzPageIndexChange)="search()" (nzPageSizeChange)="search(true)"
+      (nzQueryParams)="sort($event)" [nzSize]="'small'" [nzScroll]="{ y: '50vh' }" style="white-space: pre-line">
+      <thead nzSingleSort>
+        <tr>
+          <th nzWidth="70px" nzLeft>Edit</th>
+          <th nzWidth="120px" 
+          nzShowSort 
+          align="center" 
+          nzColumnKey="{{ 'ROLE_NAME' }}" 
+          [nzSortFn]="true">
+            Role
+          </th>
+
+          <th nzWidth="250px" 
+          nzShowSort align="left" 
+          nzColumnKey="{{ 'NAME' }}" 
+          [nzSortFn]="true">
+            Name
+          </th>
+          
+          <th nzWidth="180px" 
+          nzShowSort 
+          align="left" 
+          nzColumnKey="{{ 'DESIGNATION_NAME' }}" 
+          [nzSortFn]="true">
+            Designation
+          </th>
+          <th nzWidth="180px" 
+          nzShowSort 
+          align="left" 
+          nzColumnKey="{{ 'ROOM_NO' }}" 
+          [nzSortFn]="true">
+            Room No
+          </th>
+          <th nzWidth="250px" 
+          nzShowSort 
+          align="left" 
+          nzColumnKey="{{ 'EMAIL_ID' }}" 
+          [nzSortFn]="true">
+            Email
+          </th>
+          <th nzWidth="110px" 
+          nzShowSort 
+          nzColumnKey="{{ 'MOBILE_NUMBER' }}" 
+          [nzSortFn]="true">
+            Mobile No.
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of table.data">
+          <td align="center" nzLeft>
+            <a (click)="edit(data)">
+              <span nz-icon nzType="edit" nzTheme="twotone" style="font-size: 15px" nzTooltipTitle="Edit"
+                nz-tooltip></span>
+            </a>
+          </td>
+          <td align="left">
+            <span *ngIf="
+                data.ROLE_ID == 0 ||
+                data.ROLE_ID == null ||
+                data.ROLE_ID == undefined
+              ">
+              None
+            </span>
+            <span *ngIf="
+                data.ROLE_ID != 0 &&
+                data.ROLE_ID != null &&
+                data.ROLE_ID != undefined
+              ">
+              {{ data.ROLE_NAME }}
+            </span>
+          </td>
+          <!-- <td align="left">{{ data.NAME }}</td> -->
+          <td align="left">
+            <span *ngIf="data['NAME'] != null">
+              <span
+                *ngIf="data['NAME'].length >= 30"
+                nz-popover
+                [nzPopoverContent]="data['NAME']"
+                nzPopoverPlacement="topLeft"
+              >
+                {{ data["NAME"] == null ? "-" : (data["NAME"] | slice : 0 : 30)
+                }}{{ data["NAME"].length > 30 ? "..." : "" }}
+              </span>
+              <span *ngIf="data['NAME'].length < 30">
+                {{
+                  data["NAME"] == null ? "-" : (data["NAME"] | slice : 0 : 30)
+                }}
+                {{ data["NAME"].length > 30 ? "..." : "" }}
+              </span>
+            </span>
+            <span *ngIf="data['NAME'] == null">-</span>
+          </td>
+          <td align="left">{{ data.DESIGNATION_NAME }}</td>
+          <td align="left">{{ data.ROOM_NO}}</td>
+          <!-- <td align="left">{{ data.EMAIL_ID }}</td> -->
+          <td align="left">
+            <span *ngIf="data['EMAIL_ID'] != null">
+              <span
+                *ngIf="data['EMAIL_ID'].length >= 25"
+                nz-popover
+                [nzPopoverContent]="data['EMAIL_ID']"
+                nzPopoverPlacement="topLeft"
+              >
+                {{ data["EMAIL_ID"] == null ? "-" : (data["EMAIL_ID"] | slice : 0 : 25)
+                }}{{ data["EMAIL_ID"].length > 25 ? "..." : "" }}
+              </span>
+              <span *ngIf="data['EMAIL_ID'].length < 25">
+                {{
+                  data["EMAIL_ID"] == null ? "-" : (data["EMAIL_ID"] | slice : 0 : 25)
+                }}
+                {{ data["EMAIL_ID"].length > 25 ? "..." : "" }}
+              </span>
+            </span>
+            <span *ngIf="data['EMAIL_ID'] == null">-</span>
+          </td>
+          <td align="center">{{ data.MOBILE_NUMBER }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+<div *ngIf="drawerVisible">
+  <nz-drawer [nzBodyStyle]="{
+      height: 'calc(100% - 55px)',
+      overflow: 'auto',
+      'padding-bottom': '53px'
+    }" [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="false" [nzWidth]="320" [nzVisible]="drawerVisible"
+    [nzTitle]="drawerTitle" (nzOnClose)="drawerClose()" (nzKeyboard)="(true)">
+    <ng-container *nzDrawerContent>
+      <app-user [drawerClose]="closeCallback" [drawerVisible]="drawerVisible" [data]="drawerData"></app-user>
+    </ng-container>
+  </nz-drawer>
+</div>
