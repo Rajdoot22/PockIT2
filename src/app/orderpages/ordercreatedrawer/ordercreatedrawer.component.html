@@ -1,17 +1,15 @@
-<form>
+<form #websitebannerPage="ngForm">
+  <nz-spin [nzSpinning]="isSpinning">
   <div class="my-box">
     <b>Customer Details</b>
     <div nz-row>
-
-
-      
       <div style="width: 47%;">
         <nz-form-item>
           <nz-form-label nzRequired nzNoColon>Customer Name</nz-form-label>
           <nz-form-control nzHasFeedback nzErrorTip="Please Select Customer">
 
             <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Customer"
-              [(ngModel)]="selectedCustomer" name="customerName" (ngModelChange)="getaddress($event)">
+              [(ngModel)]="data.CUSTOMER_ID" [nzOptionHeightPx]="100" name="customerName" (ngModelChange)="getaddress($event)">
               <nz-option nzCustomContent *ngFor="let customer of custaddress" [nzValue]="customer.ID"
                 [nzLabel]="customer.SALUTATION + ' ' + customer.NAME">
                 <div nz-row>
@@ -58,10 +56,10 @@
       
       <div style="width: 47%;">
         <nz-form-item>
-          <nz-form-label nzRequired nzNoColon>Address</nz-form-label>
-          <nz-form-control nzHasFeedback nzErrorTip="Please Select Address">
-            <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Address" (ngModelChange)="getteritory($event)"
-              [(ngModel)]="selectedAddress" name="address" [nzOptionHeightPx]="70" [nzOptionOverflowSize]="4" >
+          <nz-form-label nzRequired nzNoColon>Service Address</nz-form-label>
+          <nz-form-control >
+            <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Service Address" (ngModelChange)="getteritory($event)"
+              [(ngModel)]="data.ADDRESS_ID" name="address" [nzOptionHeightPx]="70" [nzOptionOverflowSize]="4" >
               <nz-option nzCustomContent *ngFor="let address of addresses" [nzValue]="address.ID"
                 [nzLabel]="address.ADDRESS_LINE_1 + ', ' + (address.ADDRESS_LINE_2 || '') + ', ' + address.CITY_NAME + ', ' + address.PINCODE">
                 <div nz-row>
@@ -98,6 +96,7 @@
             Note: Kindly select a customer first to seamlessly load respective address details.</div>
         </nz-form-item>
       </div>
+      
       <div style="width: 3%;margin-top: 24px;">
 
         <button nz-button nzType="primary" nzTooltipTitle="Add Address" nz-tooltip [disabled]="!showbutton"
@@ -106,10 +105,64 @@
         </button>
 
       </div>
+      <div style="width: 47%;" *ngIf="storeCustomerType!='I'">
+        <nz-form-item>
+          <div style="display: flex;justify-content: space-between;">
+            <div>
+          <nz-form-label nzRequired nzNoColon>Billing Address</nz-form-label>
+            </div>
+            <div>
+              <nz-form-label>Copy Service Address</nz-form-label>
+              <span nz-icon nzType="copy" nzTheme="twotone"></span>
+            </div>
+          </div>
+          <nz-form-control >
+            <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Billing Address" (ngModelChange)="getteritory1($event)"
+              [(ngModel)]="data.ADDRESS_ID1" name="address" [nzOptionHeightPx]="70" [nzOptionOverflowSize]="4" >
+              <nz-option nzCustomContent *ngFor="let address of addresses" [nzValue]="address.ID"
+                [nzLabel]="address.ADDRESS_LINE_1 + ', ' + (address.ADDRESS_LINE_2 || '') + ', ' + address.CITY_NAME + ', ' + address.PINCODE">
+                <div nz-row>
+                  
+                  <div nz-col nzSpan="24" style="font-size: 14px; color: #2D3748; font-weight: 500;">
+                    <i nz-icon nzType="home" style="color: #3182CE; margin-right: 5px;"></i>
+                    {{ address.ADDRESS_LINE_1 }}
+                    <ng-container *ngIf="address.ADDRESS_LINE_2">
+                      , {{ address.ADDRESS_LINE_2 }}
+                    </ng-container>
+                    , {{ address.CITY_NAME }}, {{ address.PINCODE }}
+                  </div>
 
-    </div>
-    <div nz-row>
-      
+                  
+                  <div nz-col nzSpan="12" style="font-size: 12px; color: #4A5568;">
+                    <i nz-icon nzType="global" style="color: #2B6CB0; margin-right: 5px;"></i>
+                    {{ address.STATE_NAME }}, {{ address.COUNTRY_NAME }}
+                  </div>
+
+                  
+                  <div nz-col nzSpan="12" style="font-size: 12px; color: #718096;">
+                    <i nz-icon nzType="tag" style="color: #718096; margin-right: 5px;"></i>
+                    Address Type: <span *ngIf="address.TYPE=='H'">Home</span>
+                    <span *ngIf="address.TYPE=='F'">Office</span>
+                    <span *ngIf="address.TYPE=='B'">Branch</span>
+                    <span *ngIf="address.TYPE=='O'">Other</span>
+                  </div>
+                </div>
+              </nz-option>
+
+            </nz-select>
+          </nz-form-control>
+          <div style="font-size: 10px;color: blue;">
+            Note: Kindly select a customer first to seamlessly load respective address details.</div>
+        </nz-form-item>
+      </div>
+      <div style="width: 3%;margin-top: 24px;" *ngIf="storeCustomerType!='I'">
+
+        <button nz-button nzType="primary" nzTooltipTitle="Add Address" nz-tooltip [disabled]="!showbutton"
+          (click)="addcustomerAddress()">
+          <span nz-icon nzType="plus" nzTheme="outline"></span>
+        </button>
+
+      </div>
       <div style="width: 25%;">
         <nz-form-item>
           <nz-form-label nzRequired nzNoColon>Territory Name</nz-form-label>
@@ -117,7 +170,7 @@
 
           <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Territory"
             [(ngModel)]="selectedTerritory" name="territoryName">
-            <nz-option *ngFor="let territory of territories" [nzValue]="territory.ID" [nzLabel]="territory.TERRITORY_NAME">
+            <nz-option *ngFor="let territory of territories" [nzValue]="territory.TERRITORY_ID" [nzLabel]="territory.TERRITORY_NAME">
               {{ territory }}
             </nz-option>
           </nz-select>
@@ -126,13 +179,13 @@
       </div>
 
       
-      <div style="width: 26%;">
+      <div style="width: 25%;">
         <nz-form-item>
           <nz-form-label nzRequired nzNoColon>Order Medium</nz-form-label>
           <nz-form-control nzHasFeedback nzErrorTip="Please Select Order Medium">
 
           <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Order Medium"
-            [(ngModel)]="selectedOrderMedium" name="orderMedium">
+            [(ngModel)]="data.ORDER_MEDIUM" name="orderMedium">
             <nz-option *ngFor="let medium of orderMediums" [nzValue]="medium" [nzLabel]="medium">
               {{ medium }}
             </nz-option>
@@ -140,7 +193,9 @@
           </nz-form-control>
         </nz-form-item>
       </div>
+
     </div>
+    
   </div>
 
   <div nz-row>
@@ -151,13 +206,13 @@
         <b>Purchase Details</b>
 
         <div nz-row>
-          <div nz-col nzSpan="12">
+          <div nz-col nzSpan="8">
             <nz-form-item>
               <nz-form-label nzRequired nzNoColon>Category Name</nz-form-label>
               <nz-form-control   nzErrorTip="Please Select Category">
 
               <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Category"
-                [(ngModel)]="selectedCategory" name="selectedCategory">
+                [(ngModel)]="selectedCategory" name="selectedCategory" (ngModelChange)="categorychange($event)">
                 <nz-option *ngFor="let territory of categories" [nzValue]="territory.ID" [nzLabel]="territory.CATEGORY_NAME">
                   {{ territory }}
                 </nz-option>
@@ -167,15 +222,30 @@
           </div>
 
           
-          <div nz-col nzSpan="12">
+          <div nz-col nzSpan="8">
             <nz-form-item>
               <nz-form-label nzRequired nzNoColon>Sub Category</nz-form-label>
               <nz-form-control   nzErrorTip="Please Select Sub Category">
 
               <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Sub Category"
-                [(ngModel)]="selectedSubcategory" name="selectedSubcategory">
+                [(ngModel)]="selectedSubcategory" name="selectedSubcategory" (ngModelChange)="Subcategorychange($event)">
                 <nz-option *ngFor="let medium of subcategories" [nzValue]="medium.ID" [nzLabel]="medium.NAME">
                   {{ medium }}
+                </nz-option>
+              </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzSpan="8">
+            <nz-form-item>
+              <nz-form-label nzRequired nzNoColon>Service Catalog</nz-form-label>
+              <nz-form-control>
+
+              <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Catalog Service"
+                [(ngModel)]="selectedServices" name="services" (ngModelChange)="servicechange($event)">
+                <nz-option *ngFor="let medium of servicescatalogue" [nzValue]="medium.ID" [nzLabel]="medium.NAME">
+               
                 </nz-option>
               </nz-select>
               </nz-form-control>
@@ -188,14 +258,15 @@
         <div nz-row style="margin-top: 16px">
 
           
-          <div nz-col nzSpan="8">
+          <div nz-col nzSpan="11">
             <nz-form-item>
-              <nz-form-label nzRequired nzNoColon>Service</nz-form-label>
-              <nz-form-control   nzErrorTip="Please Select Service Item">
-
-              <nz-tree-select style="width: 100%" [nzNodes]="nodes" nzShowSearch nzPlaceHolder="Select Service Item"
-                [(ngModel)]="selectedService" name="serviceName"
-                (ngModelChange)="onServiceChange($event)"></nz-tree-select>
+              <nz-form-label nzRequired nzNoColon>Service Item</nz-form-label>
+              <nz-form-control>
+                <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Service Item"
+                [(ngModel)]="selectedService" name="serviceName"  (ngModelChange)="onServiceChange($event)">
+                <nz-option *ngFor="let medium of services" [nzValue]="medium.ID" [nzLabel]="medium.NAME">
+                </nz-option>
+              </nz-select>
               </nz-form-control>
 
             </nz-form-item>
@@ -218,7 +289,6 @@
             <nz-form-item>
               <nz-form-label nzRequired nzNoColon>Rate</nz-form-label>
               <nz-form-control nzHasFeedback nzErrorTip="Please Enter Rate">
-
               <input nz-input [(ngModel)]="rate" name="rate" style="width: 100%" (keypress)="omit($event)" />
               </nz-form-control>
             </nz-form-item>
@@ -226,7 +296,20 @@
 
           <div nz-col nzSpan="5">
             <nz-form-item>
-              <nz-form-label nzRequired nzNoColon>Total</nz-form-label>
+              <nz-form-label nzRequired nzNoColon>Unit</nz-form-label>
+              <nz-form-control >
+                <nz-select nzShowSearch nzAllowClear style="width: 100%" nzPlaceHolder="Select Unit"
+                [(ngModel)]="unit" name="Units">
+                <nz-option *ngFor="let unit of uniteDta" [nzValue]="unit.ID" [nzLabel]="unit.NAME">
+                </nz-option>
+              </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzSpan="5">
+            <nz-form-item>
+              <nz-form-label nzRequired nzNoColon>Total Amount</nz-form-label>
               <nz-form-control nzHasFeedback nzErrorTip="Please Enter Total">
 
               <input nz-input [(ngModel)]="total" name="total" style="width: 100%" (keypress)="omit($event)" />
@@ -237,7 +320,7 @@
             <nz-form-item>
               <button nz-button nzType="primary" style="margin-top: 24px"
                 (click)="isEditing ? updateRow() : addToTable()">
-                {{ isEditing ? "Update" : "Add Data" }}
+                {{ isEditing ? "Update Data" : "Add Data" }}
               </button>
             </nz-form-item>
           </div>
@@ -272,9 +355,9 @@
                 <td>{{ data.subcategory }}</td>
                 <td><span class="truncate">{{ data.serviceName }}</span></td>
                 <td><span class="truncate">{{ data.serviceItem }}</span></td>
-                <td>{{ data.quantity }}</td>
-                <td>{{ data.rate }}</td>
-                <td>{{ data.total }}</td>
+                <td>{{ data.QUANTITY }}</td>
+                <td>{{ data.RATE }}</td>
+                <td>{{ data.TOTAL_AMOUNT }}</td>
               </tr>
             </tbody>
           </table>
@@ -295,7 +378,7 @@
       <nz-form-item>
         <div>
           
-          <div style=" margin-top: 25px;padding-right: 10px;">
+          <div style=" margin-top: 5px;padding-right: 0px;">
             <b>Summary</b><br />
             <div nz-row>
               <div nz-col nzSpan="16" style="text-align: right;">Total Amount</div>
@@ -303,19 +386,19 @@
               <div nz-col nzSpan="6" style="text-align: right;">{{ calculateTotalAmount() }}</div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="16" style="text-align: right;">Tax Amount</div>
+              <div nz-col nzSpan="16" style="text-align: right;">Tax Amount <span style="font-size: 9px !important;"> {{gettotaltax()}}</span></div>
               <div nz-col nzSpan="2" style="text-align: right;">₹</div>
-              <div nz-col nzSpan="6" style="text-align: right;">200</div>
+              <div nz-col nzSpan="6" style="text-align: right;">{{totaltaxamount}}</div>
             </div>
-            <div nz-row>
+            <!-- <div nz-row>
               <div nz-col nzSpan="16" style="text-align: right;">Service Fee</div>
               <div nz-col nzSpan="2" style="text-align: right;">₹</div>
               <div nz-col nzSpan="6" style="text-align: right;">20</div>
-            </div>
+            </div> -->
             <div nz-row style="border-top: 2px dashed #7e7272; margin: 10px 0; ">
               <div nz-col nzSpan="16" style="font-weight: bold;text-align: right;">Net Amount</div>
               <div nz-col nzSpan="2" style="font-weight: bold;text-align: right;">₹</div>
-              <div nz-col nzSpan="6" style="font-weight: bold;text-align: right;">{{ calculateTotalAmount() + 220 }}
+              <div nz-col nzSpan="6" style="font-weight: bold;text-align: right;">{{ calculateTotalAmount() + totaltaxamount }}
               </div>
             </div>
           </div>
@@ -325,18 +408,20 @@
             <div nz-col nzSpan="12">
               <nz-form-item>
                 <nz-form-label nzRequired nzNoColon>Expected Date</nz-form-label>
-                <nz-form-control nzHasFeedback nzErrorTip="Please Select Expected Date">
+                <nz-form-control >
 
-                <nz-date-picker style="width: 100%" [(ngModel)]="expectedDate" name="expectedDate"></nz-date-picker>
+                <nz-date-picker style="width: 100%" [(ngModel)]="expectedDate" [nzDisabledDate]="disabledPastDates" name="expectedDate"></nz-date-picker>
                 </nz-form-control>
               </nz-form-item>
             </div>
             <div nz-col nzSpan="12">
               <nz-form-item>
                 <nz-form-label nzRequired nzNoColon>Expected Time</nz-form-label>
-                <nz-form-control nzHasFeedback nzErrorTip="Please Select Expected Time">
+                <nz-form-control >
 
-                <nz-time-picker [(ngModel)]="time" name="time"style="width:100%"></nz-time-picker>
+                <nz-time-picker [(ngModel)]="time" name="time"style="width:100%"  [nzDisabledHours]="disableHours"
+                [nzDisabledMinutes]="disableMinutes"
+                [nzDisabledSeconds]="disableSeconds"></nz-time-picker>
                 </nz-form-control>
               </nz-form-item>
             </div>
@@ -356,21 +441,20 @@
       </nz-form-item>
     </div>
   </div>
-
-  
+</nz-spin>
 </form>
 
 <div class="footer">
-  <button type="button" nz-button class="ant-btn" style="margin-right: 8px;"><span>Cancel</span></button>
+  <button type="button" nz-button class="ant-btn" style="margin-right: 8px;" [nzLoading]="isSpinning" (click)="close()"><span>Cancel</span></button>
 
   <button type="button" class="ant-btn ant-btn-primary" nz-button [nzLoading]="isSpinning" nz-dropdown
-    [nzDropdownMenu]="menu"><span>Save &
+    [nzDropdownMenu]="menu" (click)="save(false, websitebannerPage)"><span>Save &
       Close</span></button>
 
   <nz-dropdown-menu #menu="nzDropdownMenu">
     <ul nz-menu>
       <li nz-menu-item class="menuc" style="border-radius: 4px;background-color: #40a9ff;color: #ffffff;">
-        <a>Save & New</a>
+        <a (click)="save(true, websitebannerPage)">Save & New</a>
       </li>
     </ul>
   </nz-dropdown-menu>

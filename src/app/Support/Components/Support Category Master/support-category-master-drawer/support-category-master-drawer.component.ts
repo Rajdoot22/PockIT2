@@ -34,18 +34,41 @@ export class SupportCategoryMasterDrawerComponent {
     this.isSpinning = false;
     this.isOk = true;
     if (
+    (  this.data.CATEGORY_NAME == null ||
+      this.data.CATEGORY_NAME == undefined ||
+      this.data.CATEGORY_NAME.trim() == '') &&
+      (
+        this.data.DESCRIPTION == null ||
+        this.data.DESCRIPTION == undefined ||
+        this.data.DESCRIPTION.trim() == ''
+      )
+    ) {
+      this.isOk = false;
+      this.message.error('Please Fill All The Required Fields .', '');
+    }
+   else if (
       this.data.CATEGORY_NAME == null ||
       this.data.CATEGORY_NAME == undefined ||
       this.data.CATEGORY_NAME.trim() == ''
     ) {
       this.isOk = false;
-      this.message.error(' Please Enter Category Name.', '');
+      this.message.error(' Please Enter Category Nmae.', '');
     }
+   else if (
+      this.data.DESCRIPTION == null ||
+      this.data.DESCRIPTION == undefined ||
+      this.data.DESCRIPTION.trim() == ''
+    ) {
+      this.isOk = false;
+      this.message.error(' Please Enter Description.', '');
+    }
+
+    
     if (this.isOk) {
       this.isSpinning = true;
       {
         if (this.data.ID) {
-          this.api.updateKnowledgeBaseCategoryData(this.data).subscribe((successCode: any) => {
+          this.api.UpdateCustomersupport(this.data).subscribe((successCode: any) => {
             if (successCode.code == '200') {
               this.message.success('Support Category Updated Successfully', '');
               if (!addNew) this.drawerClose();
@@ -56,7 +79,7 @@ export class SupportCategoryMasterDrawerComponent {
             }
           });
         } else {
-          this.api.createKnowledgeBaseCategoryData(this.data).subscribe((successCode: any) => {
+          this.api.CreateCustomersupport(this.data).subscribe((successCode: any) => {
             if (successCode.code == '200') {
               this.message.success('Support Category Created Successfully', '');
               if (!addNew) this.drawerClose();
@@ -74,6 +97,7 @@ export class SupportCategoryMasterDrawerComponent {
       }
     }
   }
+
 
   close() {
     this.drawerClose();

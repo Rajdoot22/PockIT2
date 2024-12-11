@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { OrderMasterData } from 'src/app/Pages/Models/OrderMasterData';
+import { orderMasterData } from 'src/app/Pages/Models/orderMasterData';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { ApiServiceService } from 'src/app/Service/api-service.service';
 export class OrderStatusTableComponent {
 
   drawerVisible: boolean = false;
-  drawerData: OrderMasterData = new OrderMasterData();
+  drawerData: orderMasterData = new orderMasterData();
   searchText: string = '';
   formTitle = "Manage Order Status";
   pageIndex = 1;
@@ -192,7 +192,7 @@ export class OrderStatusTableComponent {
 
   add(): void {
     this.drawerTitle = 'Create New Order Status';
-    this.drawerData = new OrderMasterData();
+    this.drawerData = new orderMasterData();
     this.drawerVisible = true;
   }
   drawerClose(): void {
@@ -204,7 +204,7 @@ export class OrderStatusTableComponent {
     return this.drawerClose.bind(this);
   }
 
-  edit(data: OrderMasterData): void {
+  edit(data: orderMasterData): void {
     this.drawerTitle = 'Update Order Status';
     this.drawerData = Object.assign({}, data);
     this.drawerVisible = true;

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InventorycategorymasterformComponent } from './inventorycategorymasterform.component';
+import { InventorysubcategorymasterformComponent } from './inventorysubcategorymasterform.component'; 
 
 describe('InventorycategorymasterformComponent', () => {
-  let component: InventorycategorymasterformComponent;
-  let fixture: ComponentFixture<InventorycategorymasterformComponent>;
+  let component: InventorysubcategorymasterformComponent;
+  let fixture: ComponentFixture<InventorysubcategorymasterformComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InventorycategorymasterformComponent ]
+      declarations: [ InventorysubcategorymasterformComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(InventorycategorymasterformComponent);
+    fixture = TestBed.createComponent(InventorysubcategorymasterformComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

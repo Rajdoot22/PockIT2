@@ -50,7 +50,7 @@ export class InventorysubcategorymasterformComponent {
   ) {}
 
   ngOnInit() {
-    // this.getSubCategory()
+    this.getInventoryCategory()
     // this.getUnits()
   }
 
@@ -58,7 +58,16 @@ export class InventorysubcategorymasterformComponent {
     this.drawerClose();
     this.resetDrawer(accountMasterPage);
   }
-
+  getInventoryCategory(){
+    this.api.getInventoryCategory(0,0,'id','desc',' AND IS_ACTIVE=1').subscribe(data=>{
+      if(data['code']==200){
+        this.InventoryCategoryList=data['data']
+      }
+      else{
+        this.InventoryCategoryList=[]
+      }
+    })
+  }
   resetDrawer(accountMasterPage: NgForm) {
     accountMasterPage.form.markAsPristine();
     accountMasterPage.form.markAsUntouched();
@@ -66,16 +75,19 @@ export class InventorysubcategorymasterformComponent {
   }
 
   add(): void {
-    // this.api.getAllBranch(1, 1, 'SEQ_NO', 'desc', '').subscribe(data => {
-    //   if (data['count'] == 0) {
-    //     this.data.SEQ_NO = 1;
-    //   } else {
-    //     this.data.SEQ_NO = Number(data['data'][0]['SEQ_NO']) + 1;
-    //     this.data.IS_ACTIVE = true;
-    //   }
-    // }, err => {
-    //   console.log(err);
-    // })
+    this.api.getInventorySubCategory(1, 1, "SEQ_NO", "desc", "").subscribe(
+      (data) => {
+        if (data["count"] == 0) {
+          this.data.SEQ_NO = 1;
+        } else {
+          this.data.SEQ_NO = Number(data["data"][0]["SEQ_NO"]) + 1;
+          this.data.IS_ACTIVE = true;
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   alphanumchar(event) {
@@ -118,14 +130,9 @@ export class InventorysubcategorymasterformComponent {
     this.isOk = true;
 
     if (
-     ( this.data.INVENTRY_CATEGORY_ID == undefined ||
-      this.data.INVENTRY_CATEGORY_ID == "") &&
-     ( this.data.ITEM_ID == undefined ||
-      this.data.ITEM_ID == "" )&&
-    (  this.data.NAME == undefined ||
-      this.data.NAME == "" )&&
-     ( this.data.DESCRIPTION == undefined ||
-      this.data.DESCRIPTION == "") 
+      (this.data.INVENTRY_CATEGORY_ID == undefined ||
+        this.data.INVENTRY_CATEGORY_ID == "") &&
+      (this.data.NAME == undefined || this.data.NAME == "")
     ) {
       this.isOk = false;
       this.message.error("Please Fill All Required Fields", "");
@@ -135,19 +142,54 @@ export class InventorysubcategorymasterformComponent {
     ) {
       this.isOk = false;
       this.message.error("Please Select Inventory Category", "");
-    } else if (this.data.ITEM_ID == undefined || this.data.ITEM_ID == "") {
+    }
+    // else if (this.data.ITEM_ID == undefined || this.data.ITEM_ID == "") {
+    //   this.isOk = false;
+    //   this.message.error("Please Select Item", "");
+    // }
+    else if (this.data.NAME == undefined || this.data.NAME == "") {
       this.isOk = false;
-      this.message.error("Please Select Item", "");
-    } else if (this.data.NAME == undefined || this.data.NAME == "") {
-      this.isOk = false;
-      this.message.error("Please Enter Name", "");
-    } else if (
-      this.data.DESCRIPTION == undefined ||
-      this.data.DESCRIPTION == ""
-    ) {
-      this.isOk = false;
-      this.message.error("Please Enter Description", "");
-    }  else if (this.isOk) {
+      this.message.error("Please Enter Sub Category Name", "");
+    }
+    // else if (
+    //   this.data.DESCRIPTION == undefined ||
+    //   this.data.DESCRIPTION == ""
+    // ) {
+    //   this.isOk = false;
+    //   this.message.error("Please Enter Description", "");
+    // }
+    if (this.isOk) {
+      this.isSpinning = true;
+      {
+        if (this.data.ID) {
+          this.api.updateInventorySubCategory(this.data).subscribe((successCode) => {
+            if (successCode.code == '200') {
+              this.message.success('Inventory Sub Category Updated Successfully', '');
+              if (!addNew) this.drawerClose();
+              this.isSpinning = false;
+            } else {
+              this.message.error('Inventory Sub Category Not Updated', '');
+              this.isSpinning = false;
+            }
+          });
+        } else {          
+          this.api.createInventorySubCategory(this.data).subscribe((successCode) => {
+            if (successCode.code == '200') {
+              this.message.success('Inventory Sub Category Saved Successfully', '');
+              this.isSpinning = false;
+              if (!addNew) this.drawerClose();
+              else {
+                this.resetDrawer(accountMasterPage);
+                this.data = new InventorySubCategory();
+              }
+              this.isSpinning = false;
+            } else {
+              this.message.error('Inventory Sub Category Not Saved', '');
+              this.isSpinning = false;
+            }
+          });
+        }
+      }
     }
   }
 

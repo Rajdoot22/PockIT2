@@ -1,0 +1,135 @@
+<div>
+  <form nz-form #teritorymaster="ngForm">
+    <div nz-row class="my-box">
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>Skill</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Please Select State">
+            <nz-select
+              nzAllowClear="true"
+              nzPlaceHolder="Select Skill"
+              name="SKILL_ID"
+              [(ngModel)]="saveData.SKILL_ID"
+              style="width: 100%"
+              nzShowSearch
+              required
+              [nzLoading]="isSkillSpinning"
+            >
+              <nz-option
+                *ngFor="let data of skilldata"
+                [nzValue]="data.ID"
+                [nzLabel]="data.NAME"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="5">
+        <button
+          style="margin-top: 26px"
+          nz-button
+          nzType="primary"
+          [nzLoading]="issaveSpinning"
+          (click)="add(teritorymaster)"
+        >
+          Add Into Table
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<div nz-row>
+  <div nz-col nzSpan="24">
+    <div style="position: relative">
+      <nz-table
+        class="my-scroll no-wrap1"
+        nzBordered
+        #table
+        [nzData]="SkillsMappingdata"
+        [nzSize]="'small'"
+        [nzFrontPagination]="false"
+        style="white-space: pre-line"
+      >
+        <thead>
+          <tr>
+            <th nzWidth="400px">Skill</th>
+            <th nzWidth="140px">Skill Level</th>
+            <th nzWidth="100px">Is Mapped</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let data of table.data; let i = index">
+            <!-- <td style="white-space: pre-line">{{ data.NAME }}</td> -->
+            <td align="left">
+              <span *ngIf="data['SKILL_NAME'] != null">
+                <span
+                  *ngIf="data['SKILL_NAME'].length >= 55"
+                  nz-popover
+                  [nzPopoverContent]="data['SKILL_NAME']"
+                  nzPopoverPlacement="topLeft"
+                >
+                  {{
+                    data["SKILL_NAME"] == null
+                      ? "-"
+                      : (data["SKILL_NAME"] | slice : 0 : 55)
+                  }}{{ data["SKILL_NAME"].length > 55 ? "..." : "" }}
+                </span>
+                <span *ngIf="data['SKILL_NAME'].length < 55">
+                  {{
+                    data["SKILL_NAME"] == null
+                      ? "-"
+                      : (data["SKILL_NAME"] | slice : 0 : 55)
+                  }}
+                  {{ data["SKILL_NAME"].length > 55 ? "..." : "" }}
+                </span>
+              </span>
+              <span *ngIf="data['SKILL_NAME'] == null">-</span>
+            </td>
+            <!-- Start Date Column with Date Picker and Date Format -->
+            <td style="white-space: pre-line">
+              <nz-rate [(ngModel)]="data['SKILL_LEVEL']"></nz-rate>
+            </td>
+
+            <!-- End Date Column with Date Picker and Date Format -->
+
+            <!-- Status Switch Column -->
+            <td align="center" style="white-space: pre-line">
+              <nz-switch
+                name="status"
+                [(ngModel)]="data['IS_ACTIVE']"
+              ></nz-switch>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+      <!-- Loading Message -->
+      <div *ngIf="isSpinning" class="loading-overlay">
+        <nz-spin nzTip="Please wait, processing right now..."></nz-spin>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<div class="footer">
+  <button
+    type="button"
+    nz-button
+    (click)="close()"
+    class="ant-btn"
+    style="margin-right: 8px"
+  >
+    <span>Cancel</span>
+  </button>
+
+  <button
+    type="button"
+    class="ant-btn ant-btn-primary"
+    nz-button
+    [nzLoading]="isSpinning"
+    (click)="save()"
+  >
+    <span>Map & Close</span>
+  </button>
+</div>

@@ -1,0 +1,347 @@
+<div>
+  <form nz-form #teritorymaster="ngForm">
+    <div nz-row class="my-box">
+      <div nz-col nzSpan="5">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>State</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Please Select State">
+            <nz-select
+              nzAllowClear="true"
+              nzPlaceHolder="Select State"
+              name="STATE_ID"
+              [(ngModel)]="saveData.STATE_ID"
+              style="width: 100%"
+              (ngModelChange)="getCityData($event)"
+              nzShowSearch
+              required
+              [nzLoading]="isStateSpinning"
+            >
+              <nz-option
+                *ngFor="let data of stateData"
+                [nzValue]="data.ID"
+                [nzLabel]="data.NAME"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="5">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>City</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Please Select City">
+            <nz-select
+              nzAllowClear="true"
+              nzPlaceHolder="Select City"
+              name="CITY_ID"
+              [(ngModel)]="saveData.CITY_ID"
+              style="width: 100%"
+              (ngModelChange)="getPincodeData($event)"
+              nzShowSearch
+              required
+              [nzLoading]="isCitySpinning"
+            >
+              <nz-option
+                *ngFor="let data of cityData"
+                [nzValue]="data.ID"
+                [nzLabel]="data.NAME"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="9">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>Select Pincodes</nz-form-label>
+
+          <nz-switch
+            style="margin-left: 55px"
+            name="IS_ACTIVE"
+            nzCheckedChildren="Select All"
+            nzUnCheckedChildren="Deselect All"
+            [(ngModel)]="isSelectAll"
+            (ngModelChange)="toggleSelectAll($event)"
+          ></nz-switch>
+          <nz-form-control nzHasFeedback nzErrorTip="Please Select Pincodes">
+            <nz-select
+              nzAllowClear="true"
+              nzPlaceHolder="Select Pincodes"
+              name="PINCODE"
+              [(ngModel)]="saveData.PINCODE_ID"
+              nzShowSearch
+              required
+              nzMode="multiple"
+              [nzMaxTagCount]="3"
+              [nzLoading]="isPincodeSpinning"
+            >
+              <nz-option
+                *ngFor="let data of pincodeData"
+                [nzValue]="data.ID"
+                [nzLabel]="data.PINCODE"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="5">
+        <button
+          style="margin-top: 26px"
+          nz-button
+          nzType="primary"
+          [nzLoading]="issaveSpinning"
+          (click)="add(teritorymaster)"
+        >
+          Add Into Table
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- filter -->
+<div>
+  <form nz-form #filter="ngForm">
+    <div nz-row>
+      <div nz-col nzSpan="10">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>State</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Please Select State">
+            <nz-select
+              nzAllowClear="true"
+              nzPlaceHolder="Select State"
+              name="state"
+              [(ngModel)]="state"
+              style="width: 100%"
+              (ngModelChange)="getCityData($event)"
+              nzShowSearch
+            >
+              <nz-option
+                *ngFor="let data of stateData"
+                [nzValue]="data.ID"
+                [nzLabel]="data.NAME"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="9">
+        <nz-form-item>
+          <nz-form-label nzRequired nzNoColon>City</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Please Select City">
+            <nz-select
+              nzAllowClear="true"
+              nzPlaceHolder="Select City"
+              name="city"
+              [(ngModel)]="city"
+              style="width: 100%"
+              nzShowSearch
+            >
+              <nz-option
+                *ngFor="let data of cityData"
+                [nzValue]="data.ID"
+                [nzLabel]="data.NAME"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="5">
+        <button
+          style="margin-top: 26px"
+          nz-button
+          nzType="primary"
+          [nzLoading]="issaveSpinning"
+          (click)="apply()"
+        >
+          Apply
+        </button>
+        <button
+          nz-button
+          nzType="default"
+          (click)="clear(filter)"
+          class="ant-btn"
+          style="margin-left: 12px"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- table -->
+<div nz-row>
+  <div nz-col nzSpan="24">
+    <div style="position: relative">
+      <nz-table
+        class="my-scroll no-wrap1"
+        nzBordered
+        #table
+        [nzData]="PincodeMappingdata"
+        (nzQueryParams)="sort($event)"
+        [nzSize]="'small'"
+        [nzFrontPagination]="false"
+        style="white-space: pre-line"
+        [nzLoading]="isSpinning"
+        [nzScroll]="{ y: '70vh' }"
+      >
+        <thead>
+          <tr>
+            <th nzWidth="50px">
+              <label
+                (ngModelChange)="toggleAll($event)"
+                nz-checkbox
+                [(ngModel)]="allSelected"
+                [nzIndeterminate]="tableIndeterminate"
+                >All</label
+              >
+            </th>
+            <th
+              nzWidth="100px"
+              nzShowSort
+              [nzSortFn]="true"
+              nzColumnKey="{{ 'IS_ACTIVE' }}"
+            >
+              Is Mapped ?
+            </th>
+            <th
+              nzWidth="160px"
+              nzShowSort
+              [nzSortFn]="true"
+              nzColumnKey="{{ 'STATE_NAME' }}"
+            >
+              State
+            </th>
+            <th
+              nzWidth="160px"
+              nzShowSort
+              [nzSortFn]="true"
+              nzColumnKey="{{ 'CITY_NAME' }}"
+            >
+              City
+            </th>
+            <th
+              nzWidth="90px"
+              nzShowSort
+              [nzSortFn]="true"
+              nzColumnKey="{{ 'PINCODE' }}"
+            >
+              Pincode
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let data of table.data; let i = index">
+            <td style="text-align: center">
+              <label
+                nz-checkbox
+                [(ngModel)]="data.selected"
+                (ngModelChange)="onPincodeSelecttable(data, $event)"
+              ></label>
+            </td>
+            <!-- Status Switch Column -->
+            <td align="center" style="white-space: pre-line">
+              <nz-switch
+                name="IS_ACTIVE"
+                nzCheckedChildren="Yes"
+                nzUnCheckedChildren="No"
+                [(ngModel)]="data['IS_ACTIVE']"
+              ></nz-switch>
+            </td>
+            <!-- <td style="white-space: pre-line">{{ data.NAME }}</td> -->
+            <td align="left">
+              <span *ngIf="data['STATE_NAME'] != null">
+                <span
+                  *ngIf="data['STATE_NAME'].length >= 25"
+                  nz-popover
+                  [nzPopoverContent]="data['STATE_NAME']"
+                  nzPopoverPlacement="topLeft"
+                >
+                  {{
+                    data["STATE_NAME"] == null
+                      ? "-"
+                      : (data["STATE_NAME"] | slice : 0 : 25)
+                  }}{{ data["STATE_NAME"].length > 25 ? "..." : "" }}
+                </span>
+                <span *ngIf="data['STATE_NAME'].length < 25">
+                  {{
+                    data["STATE_NAME"] == null
+                      ? "-"
+                      : (data["STATE_NAME"] | slice : 0 : 25)
+                  }}
+                  {{ data["STATE_NAME"].length > 25 ? "..." : "" }}
+                </span>
+              </span>
+              <span *ngIf="data['STATE_NAME'] == null">-</span>
+            </td>
+            <td align="left">
+              <span *ngIf="data['CITY_NAME'] != null">
+                <span
+                  *ngIf="data['CITY_NAME'].length >= 25"
+                  nz-popover
+                  [nzPopoverContent]="data['CITY_NAME']"
+                  nzPopoverPlacement="topLeft"
+                >
+                  {{
+                    data["CITY_NAME"] == null
+                      ? "-"
+                      : (data["CITY_NAME"] | slice : 0 : 25)
+                  }}{{ data["CITY_NAME"].length > 25 ? "..." : "" }}
+                </span>
+                <span *ngIf="data['CITY_NAME'].length < 25">
+                  {{
+                    data["CITY_NAME"] == null
+                      ? "-"
+                      : (data["CITY_NAME"] | slice : 0 : 25)
+                  }}
+                  {{ data["CITY_NAME"].length > 25 ? "..." : "" }}
+                </span>
+              </span>
+              <span *ngIf="data['CITY_NAME'] == null">-</span>
+            </td>
+            <td align="center">{{ data.PINCODE }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+      <div style="text-align: right">
+        <div style="padding: 0px 10px">
+          {{ selectedPincode.length }} Records Selected
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <button
+    type="button"
+    nz-button
+    (click)="close()"
+    class="ant-btn"
+    style="margin-right: 8px"
+  >
+    <span>Cancel</span>
+  </button>
+
+  <button
+    type="button"
+    class="ant-btn ant-btn-primary"
+    nz-button
+    [nzLoading]="isSpinning"
+    (click)="mapSelected()"
+    style="margin-right: 8px"
+  >
+    <span>Map Selected</span>
+  </button>
+
+  <button
+    type="button"
+    class="ant-btn ant-btn-primary"
+    nz-button
+    [nzLoading]="isSpinning"
+    (click)="unmapSelected()"
+  >
+    <span>Unmap Selected</span>
+  </button>
+</div>

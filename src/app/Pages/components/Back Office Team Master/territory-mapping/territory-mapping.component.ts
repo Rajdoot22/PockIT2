@@ -9,7 +9,7 @@ export class Data {
   COUNTRY_ID: any;
   COUNTRY_NAME: any;
   TERITORY_ID: any;
-  TERRITORY_NAME: any;
+  TERITORY_NAME: any;
   IS_ACTIVE: boolean = true;
 }
 
@@ -32,11 +32,10 @@ export class TerritoryMappingComponent {
 
   // Loading
   isLoading = true;
-  countryloading =false;
-  territoryloading =false;
-  btnLoading =false;
+  countryloading = false;
+  territoryloading = false;
+  btnLoading = false;
   loadingRecords = false;
-
 
   dataList: any = [];
   addData: any = new Data();
@@ -45,14 +44,11 @@ export class TerritoryMappingComponent {
   ngOnInit(): void {
     this.getCountryData();
     // this.getMappedData();
-
   }
 
   @Input() data;
   @Input() drawerVisible: boolean = false;
   @Input() drawerClose: any = Function;
-
-
 
   constructor(
     private message: NzNotificationService,
@@ -62,32 +58,32 @@ export class TerritoryMappingComponent {
 
   // Coutry
   getCountryData() {
-    this.countryloading=true;
+    this.countryloading = true;
     this.api.getCountryData(0, 0, "", "", "").subscribe(
       (data) => {
         if (data["code"] == 200) {
           this.countryData = data["data"];
-          this.countryloading=false;
+          this.countryloading = false;
         } else {
           this.countryData = [];
-          this.countryloading=false;
+          this.countryloading = false;
           this.message.error("Failed To Get Country Data", "");
         }
       },
       () => {
-        this.countryloading=false;
+        this.countryloading = false;
         this.message.error("Something Went Wrong", "");
       }
     );
   }
 
   getMappedData() {
-    this.loadingRecords =true;
+    this.loadingRecords = true;
     var sort: string;
     try {
-      sort = this.sortValue.startsWith('a') ? 'asc' : 'desc';
+      sort = this.sortValue.startsWith("a") ? "asc" : "desc";
     } catch (error) {
-      sort = '';
+      sort = "";
     }
 
     this.api
@@ -103,18 +99,18 @@ export class TerritoryMappingComponent {
           if (data["code"] == 200) {
             this.dataList = data["data"];
 
-            console.log('this.mappedTerritoryIds',this.mappedTerritoryIds);
+            console.log("this.mappedTerritoryIds", this.mappedTerritoryIds);
 
-            this.loadingRecords =false;
+            this.loadingRecords = false;
           } else {
             this.dataList = [];
             this.mappedTerritoryIds = [];
-            this.loadingRecords =false;
+            this.loadingRecords = false;
             this.message.error("Failed To Get Mapping Data", "");
           }
         },
         () => {
-          this.loadingRecords =false;
+          this.loadingRecords = false;
           this.message.error("Something Went Wrong", "");
         }
       );
@@ -126,14 +122,13 @@ export class TerritoryMappingComponent {
       this.territoryData = []; // Reset pincode data if no state is selected
       return;
     }
-    this.territoryloading =true;
+    this.territoryloading = true;
     this.api
       .getTeritory(0, 0, "", "", " AND COUNTRY_ID=" + countryId)
       .subscribe(
         (data) => {
           if (data["code"] === 200) {
-
-              const fetchedteritory = data["data"];
+            const fetchedteritory = data["data"];
             this.mappedTerritoryIds = this.dataList.map(
               (item) => item.TERITORY_ID
             );
@@ -141,15 +136,15 @@ export class TerritoryMappingComponent {
             this.territoryData = fetchedteritory.filter(
               (teritory) => !this.mappedTerritoryIds.includes(teritory.ID)
             );
-            this.territoryloading =false;
+            this.territoryloading = false;
           } else {
             this.territoryData = [];
-            this.territoryloading =false;
+            this.territoryloading = false;
             this.message.error("Failed To Get Territory Data...", "");
           }
         },
         () => {
-          this.territoryloading =false;
+          this.territoryloading = false;
           this.message.error("Something Went Wrong...", "");
         }
       );
@@ -181,38 +176,84 @@ export class TerritoryMappingComponent {
       this.message.error("Please select Territory.", "");
       return;
     } else {
-      this.btnLoading=true
+      this.btnLoading = true;
       // Find the selected territory name
-      const selectedTerritory = this.territoryData.find(
-        (territory) => territory.ID === this.addData.TERITORY_ID
-      )?.NAME;
+      // const selectedTerritory = this.territoryData.find(
+      //   (territory) => territory.ID !== this.addData.TERITORY_ID
+      // )?.NAME;
+
+      // Map the selected territory to their names and IDs
+      const selectedTerritory = this.addData.TERITORY_ID.map((territoryId) => {
+        const territory = this.territoryData.find(
+          (ter) => ter.ID === territoryId
+        );
+        return {
+          TERITORY_NAME: territory?.NAME,
+          TERITORY_ID: territoryId,
+        };
+      });
+
+      console.log("selectedTerritory", selectedTerritory);
+
+      // console.log('territoryData',this.territoryData);
+      // console.log('selectedTerritory',selectedTerritory);
+      // console.log('TERITORY_ID',this.addData.TERITORY_ID);
 
       const selectedCountry = this.countryData.find(
         (data) => data.ID === this.addData.COUNTRY_ID
       )?.NAME;
 
+      // Add entries for each selected Territory to the table
+      console.log("selectedTerritory", selectedTerritory);
+
       // Create the entry
-      const entry = {
-        COUNTRY_ID: this.addData.COUNTRY_ID,
-        COUNTRY_NAME: selectedCountry,
-        TERITORY_ID: this.addData.TERITORY_ID,
-        TERRITORY_NAME: selectedTerritory,
-        IS_ACTIVE: true, // Default IS_ACTIVE
-      };
+      // const entry = {
+      //   COUNTRY_ID: this.addData.COUNTRY_ID,
+      //   COUNTRY_NAME: selectedCountry,
+      //   TERITORY_ID: this.addData.TERITORY_ID,
+      //   TERITORY_NAME: selectedTerritory,
+      //   IS_ACTIVE: true,
+      // };
 
       // Prevent duplicate entries
-      const exists = this.dataList.some(
-        (item) =>
-          item.TERITORY_ID === entry.TERITORY_ID &&
-          item.COUNTRY_ID === entry.COUNTRY_ID
-      );
+      // const exists = this.dataList.some(
+      //   (item) =>
+      //     item.TERITORY_ID === entry.TERITORY_ID &&
+      //     item.COUNTRY_ID === entry.COUNTRY_ID
+      // );
 
-      if (!exists) {
-        this.dataList.push(entry);
-      }
+      // if (!exists) {
+      //   this.dataList.push(entry);
+      // }
 
       // Update data list reference
-      this.dataList = [...this.dataList];
+      // this.dataList = [...this.dataList];
+
+      // console.log("this.dataList", this.dataList);
+
+      selectedTerritory.forEach((territory) => {
+        const entry = {
+          COUNTRY_NAME: selectedCountry,
+          COUNTRY_ID: this.addData.COUNTRY_ID,
+          ...territory,
+          IS_ACTIVE: true, // Default status
+        };
+        console.log("entry", entry);
+
+        // Prevent duplicate entries
+        const exists = this.dataList.some(
+          (item) =>
+            item.COUNTRY_ID === entry.COUNTRY_ID &&
+            item.TERITORY_ID === entry.TERITORY_ID
+        );
+        console.log("exists", exists);
+
+        if (!exists) {
+          this.dataList.push(entry);
+        }
+        // console.log('entry',entry);
+        this.dataList = [...[], ...this.dataList];
+      });
 
       console.log("this.dataList", this.dataList);
 
@@ -221,8 +262,8 @@ export class TerritoryMappingComponent {
       this.addData.COUNTRY_ID = null;
 
       // Notify success
-      this.message.success("Data added successfully.", "");
-      this.btnLoading=false;
+      this.message.success("Territory added successfully.", "");
+      this.btnLoading = false;
       this.territoryData = [];
       this.reset(TerritoryMappingForm);
     }
@@ -244,11 +285,10 @@ export class TerritoryMappingComponent {
     // Proceed with saving data if all entries are valid
     console.log("this.dataList", this.dataList);
 
-    const dataToSave = this.dataList
-      .map((data) => ({
-        TERITORY_ID: data.TERITORY_ID,
-        IS_ACTIVE: data.IS_ACTIVE,
-      }));
+    const dataToSave = this.dataList.map((data) => ({
+      TERITORY_ID: data.TERITORY_ID,
+      IS_ACTIVE: data.IS_ACTIVE,
+    }));
     console.log("dataToSave", dataToSave);
 
     // Call the API to save the task mapping data
@@ -283,8 +323,8 @@ export class TerritoryMappingComponent {
     this.loadingRecords = true;
     const { pageSize, pageIndex, sort } = params;
     const currentSort = sort.find((item) => item.value !== null);
-    const sortField = (currentSort && currentSort.key) || 'id';
-    const sortOrder = (currentSort && currentSort.value) || 'desc';
+    const sortField = (currentSort && currentSort.key) || "id";
+    const sortOrder = (currentSort && currentSort.value) || "desc";
     this.pageIndex = pageIndex;
     this.pageSize = pageSize;
 
@@ -301,6 +341,5 @@ export class TerritoryMappingComponent {
     this.sortKey = sortField;
     this.sortValue = sortOrder;
     this.getMappedData();
-
   }
 }

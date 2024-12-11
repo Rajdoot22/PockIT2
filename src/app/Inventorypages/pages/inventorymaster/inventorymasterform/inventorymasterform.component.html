@@ -1,0 +1,391 @@
+<div>
+	<form #accountMasterPage="ngForm"
+		nz-form>
+		<nz-spin [nzSpinning]="isSpinning">
+
+			<!-- Inventory Details Section -->
+
+			<div nz-row>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Inventory Category
+						</nz-form-label>
+
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please Select Valid Inventory Category">
+							<nz-select [(ngModel)]="data.INVENTORY_CATEGORY_ID"
+								(ngModelChange)="onCategoryChange($event)"
+								nz-input
+								name="inventorycat"
+								nzPlaceHolder="Select Inventory Category"
+								nzAllowClear
+								style="width: 100%;"
+								nzShowSearch>
+								<nz-option *ngFor="let item of InventoryCategoryList"
+									[nzValue]="item.ID"
+									[nzLabel]="item.CATEGORY_NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+						<!-- <h6 style="color: red; font-size: 10px" *ngIf="
+								  data.NAME != undefined &&
+								  data.NAME != null &&
+								  data.NAME != ''
+								">
+						{{ data.NAME.length }}/128
+					</h6> -->
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Inventory Sub Category
+						</nz-form-label>
+
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please Select Valid Sub Category">
+							<nz-select [(ngModel)]="data.INVENTRY_SUB_CATEGORY_ID"
+								nz-input
+								name="selectsubcat"
+								nzPlaceHolder="Select Inventory Sub Category"
+								nzAllowClear
+								nzShowSearch
+								style="width: 100%;">
+								<nz-option *ngFor="let item of InventorySubCategoryList"
+									[nzValue]="item.ID"
+									[nzLabel]="item.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+						<!-- <h6 style="color: red; font-size: 10px" *ngIf="
+                                      data.NAME != undefined &&
+                                      data.NAME != null &&
+                                      data.NAME != ''
+                                    ">
+                            {{ data.NAME.length }}/128
+                        </h6> -->
+					</nz-form-item>
+				</div>
+
+			</div>
+			<div nz-row>
+				<div nz-col
+					nzSpan="24">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Item Name
+						</nz-form-label>
+
+						<nz-form-control>
+							<input [(ngModel)]="data.ITEM_NAME"
+								(keypress)="alphanumchar($event)"
+								name="itemname"
+								nz-input
+								maxlength="10"
+								placeholder="Enter Item Name">
+						</nz-form-control>
+						<h6 *ngIf="
+                data.ITEM_NAME != undefined &&
+                data.ITEM_NAME != null &&
+                data.ITEM_NAME != ''
+              "
+							style="color: red; font-size: 10px">
+							{{ data.ITEM_NAME.length }}/10
+						</h6>
+					</nz-form-item>
+				</div>
+
+			</div>
+			<div nz-row>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Opening Stock
+						</nz-form-label>
+
+						<nz-form-control>
+							<input [(ngModel)]="data.QUANTITY"
+								(keypress)="omit($event)"
+								name="qty1"
+								nz-input
+								maxlength="10"
+								placeholder="Enter Opening Stock">
+						</nz-form-control>
+						<h6 *ngIf="
+					data.QUANTITY != undefined &&
+					data.QUANTITY != null &&
+					data.QUANTITY != ''
+				  "
+							style="color: red; font-size: 10px">
+							{{ data.QUANTITY.length }}/10
+						</h6>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Base Unit
+						</nz-form-label>
+
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please Select Valid Unit">
+							<nz-select [(ngModel)]="data.UNIT_ID"
+								nz-input
+								name="selectunit"
+								nzPlaceHolder="Select Base Unit"
+								nzAllowClear
+								style="width: 100%;"
+								nzShowSearch>
+								<nz-option *ngFor="let item of UnitList"
+									[nzValue]="item.ID"
+									[nzLabel]="item.NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+						<!-- <h6 style="color: red; font-size: 10px" *ngIf="
+						  data.NAME != undefined &&
+						  data.NAME != null &&
+						  data.NAME != ''
+						">
+				{{ data.NAME.length }}/128
+			</h6> -->
+					</nz-form-item>
+				</div>
+			</div>
+			<div nz-row>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Purchase Price
+						</nz-form-label>
+
+						<nz-form-control>
+							<nz-input-group nzAddOnBefore="₹">
+								<input [(ngModel)]="data.PURCHASE_PRICE"
+									(keypress)="omit($event)"
+									name="purchaseprice"
+									nz-input
+									maxlength="10"
+									placeholder="Enter Purchase Price">
+							</nz-input-group>
+						</nz-form-control>
+						<h6 *ngIf="
+								  data.PURCHASE_PRICE != undefined &&
+								  data.PURCHASE_PRICE != null &&
+								  data.PURCHASE_PRICE != ''
+								"
+							style="color: red; font-size: 10px">
+							{{ data.PURCHASE_PRICE.length }}/10
+						</h6>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Selling Price
+						</nz-form-label>
+
+						<nz-form-control>
+							<nz-input-group nzAddOnBefore="₹">
+								<input [(ngModel)]="data.SELLING_PRICE"
+									(keypress)="omit($event)"
+									name="sellingprice"
+									nz-input
+									maxlength="10"
+									placeholder="Enter Selling Price">
+							</nz-input-group>
+						</nz-form-control>
+						<h6 *ngIf="
+                        data.SELLING_PRICE != undefined &&
+                        data.SELLING_PRICE != null &&
+                        data.SELLING_PRICE != ''
+                      "
+							style="color: red; font-size: 10px">
+							{{ data.SELLING_PRICE.length }}/10
+						</h6>
+					</nz-form-item>
+				</div>
+
+			</div>
+			<div nz-row>
+				<div nz-col
+				nzSpan="12">
+				<nz-form-item>
+					<nz-form-label nzRequired
+						nzNoColon>
+						Warehouse
+					</nz-form-label>
+
+					<nz-form-control nzHasFeedback
+						nzErrorTip="Please Select Valid Warehouse">
+						<nz-select [(ngModel)]="data.WAREHOUSE_ID"
+						   (ngModelChange)="onWarehousechange($event)"
+							nz-input
+							name="selectwarehouselocation"
+							nzPlaceHolder="Select Warehouse"
+							nzAllowClear
+							style="width: 100%;"
+							nzShowSearch>
+							<nz-option *ngFor="let item of warehouseList"
+								[nzValue]="item.ID"
+								[nzLabel]="item.NAME"></nz-option>
+						</nz-select>
+					</nz-form-control>
+					<!-- <h6 style="color: red; font-size: 10px" *ngIf="
+								  data.NAME != undefined &&
+								  data.NAME != null &&
+								  data.NAME != ''
+								">
+						{{ data.NAME.length }}/128
+					</h6> -->
+				</nz-form-item>
+			</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Storage Location
+						</nz-form-label>
+
+						<nz-form-control nzHasFeedback
+							nzErrorTip="Please Select Valid Storage Location">
+							<nz-select [(ngModel)]="data.LOCATION_ID"
+								nz-input
+								name="selectlocation"
+								nzPlaceHolder="Select Storage Location"
+								nzAllowClear
+								style="width: 100%;"
+								nzShowSearch>
+								<nz-option *ngFor="let item of storageLocationlist"
+									[nzValue]="item.ID"
+									[nzLabel]="item.LOCATION_NAME"></nz-option>
+							</nz-select>
+						</nz-form-control>
+						<!-- <h6 style="color: red; font-size: 10px" *ngIf="
+                                      data.NAME != undefined &&
+                                      data.NAME != null &&
+                                      data.NAME != ''
+                                    ">
+                            {{ data.NAME.length }}/128
+                        </h6> -->
+					</nz-form-item>
+				</div>
+
+			</div>
+			<div nz-row>
+				<div nz-col
+					nzSpan="24">
+					<nz-form-item>
+						<nz-form-label nzNoColon>Remark</nz-form-label>
+						<nz-form-control>
+							<textarea [(ngModel)]="data.REMARKS"
+								nz-input
+								rows="3"
+								name="remark"
+								placeholder="Enter Remark"
+								maxlength="512"></textarea>
+							<br>
+							<small *ngIf="data.REMARKS"
+								style="font-size: 9px; color: red">
+								{{ data.REMARKS.length }}/ 512
+							</small>
+						</nz-form-control>
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="12">
+					<nz-form-item>
+						<nz-form-label nzRequired
+							nzNoColon>
+							Date of Entry
+						</nz-form-label>
+
+						<nz-form-control>
+							<nz-date-picker [(ngModel)]="data.DATE_OF_ENTRY"
+								nz-input
+								name="datepick"
+								nzPlaceHolder="Select Date"
+								nzFormat="dd/MM/yyyy"
+								style="width: 100%;"></nz-date-picker>
+						</nz-form-control>
+						<!-- <h6 *ngIf="
+                    data.LOCATION != undefined &&
+                    data.LOCATION != null &&
+                    data.LOCATION != ''
+                  "
+							style="color: red; font-size: 10px">
+							{{ data.LOCATION.length }}/10
+						</h6> -->
+					</nz-form-item>
+				</div>
+				<div nz-col
+					nzSpan="6">
+					<nz-form-item>
+						<nz-form-label nzNoColon>Status</nz-form-label>
+
+						<nz-switch [(ngModel)]="data.STATUS"
+							style="line-height: 2.2;"
+							name="Status"
+							nzCheckedChildren="Active"
+							nzUnCheckedChildren="Inactive">
+						</nz-switch>
+					</nz-form-item>
+				</div>
+			</div>
+		</nz-spin>
+	</form>
+	<div class="footer">
+		<button (click)="close(accountMasterPage)"
+			type="button"
+			nz-button
+			class="ant-btn"
+			style="margin-right: 8px;">
+			<span>Cancel</span>
+		</button>
+
+		<button *ngIf="!data.ID"
+			[nzLoading]="isSpinning"
+			[nzDropdownMenu]="menu"
+			(click)="save(false,accountMasterPage)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button
+			nz-dropdown>
+			<span>
+				Save &
+                Close
+			</span>
+		</button>
+
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<ul nz-menu>
+				<li nz-menu-item
+					class="menuc"
+					style="border-radius: 4px;background-color: #40a9ff;color: #ffffff;">
+					<a (click)="save(true,accountMasterPage)">Save & New</a>
+				</li>
+			</ul>
+		</nz-dropdown-menu>
+
+		<button *ngIf="data.ID"
+			[nzLoading]="isSpinning"
+			(click)="save(false,accountMasterPage)"
+			type="button"
+			class="ant-btn ant-btn-primary"
+			nz-button>
+			<span>Update & close</span>
+		</button>
+	</div>
+</div>

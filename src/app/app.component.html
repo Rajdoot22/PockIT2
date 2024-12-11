@@ -94,67 +94,134 @@
     <nz-header>
       <div nz-row style="display: flex; align-items: center" class="app-header">
         <div nz-col nzSpan="8" style="padding-left: 40px; padding-top: 5px">
-          <svg xmlns="http://www.w3.org/2000/svg" width="89" height="20" viewBox="0 0 89 20">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="89"
+            height="20"
+            viewBox="0 0 89 20"
+          >
             <g fill="#000" fill-rule="evenodd">
               <path
-                d="M28.175 1.161h5.913c.88 0 1.677.151 2.392.453a5.516 5.516 0 0 1 1.837 1.243c.51.526.903 1.134 1.178 1.823.275.689.412 1.413.412 2.172a5.78 5.78 0 0 1-.412 2.183 5.516 5.516 0 0 1-3.016 3.054c-.714.302-1.511.453-2.39.453h-3.205v4.877h-2.709V1.161zm5.913 8.989c.471 0 .9-.09 1.284-.267.385-.178.711-.418.978-.72s.475-.65.624-1.046a3.55 3.55 0 0 0 .224-1.265 3.55 3.55 0 0 0-.224-1.266 3.348 3.348 0 0 0-.624-1.045 2.929 2.929 0 0 0-.978-.72 3.02 3.02 0 0 0-1.284-.267h-3.204v6.596h3.204zm11.76 7.548c-.88 0-1.673-.15-2.38-.453a5.416 5.416 0 0 1-1.813-1.242 5.672 5.672 0 0 1-1.167-1.812 5.78 5.78 0 0 1-.412-2.183c0-.759.138-1.483.412-2.172a5.64 5.64 0 0 1 1.167-1.823 5.416 5.416 0 0 1 1.814-1.243c.706-.302 1.5-.453 2.38-.453.879 0 1.676.151 2.39.453a5.516 5.516 0 0 1 1.838 1.243c.51.526.903 1.134 1.178 1.823.275.69.412 1.413.412 2.172a5.78 5.78 0 0 1-.412 2.183 5.516 5.516 0 0 1-3.016 3.054c-.714.302-1.511.453-2.39.453zm0-2.253c.487 0 .93-.093 1.331-.279a3.184 3.184 0 0 0 1.685-1.834c.157-.418.235-.86.235-1.324 0-.465-.078-.906-.235-1.324a3.184 3.184 0 0 0-1.684-1.835 3.125 3.125 0 0 0-1.332-.279c-.487 0-.927.093-1.32.279-.392.186-.73.434-1.012.743-.283.31-.499.674-.648 1.092-.15.418-.224.86-.224 1.324 0 .464.075.906.224 1.324.15.418.365.782.648 1.091.282.31.62.558 1.013.743.392.186.832.28 1.32.28zm15.27-4.9c-.078-.589-.31-1.065-.695-1.429-.385-.364-1.017-.546-1.896-.546-.503 0-.935.093-1.296.279a2.78 2.78 0 0 0-.919.755 3.13 3.13 0 0 0-.553 1.091c-.118.41-.177.848-.177 1.313 0 .464.059.906.177 1.324.117.418.302.782.553 1.091.251.31.573.558.966.743.393.186.864.28 1.414.28.753 0 1.307-.156 1.66-.465.354-.31.617-.736.79-1.278h2.568a5.347 5.347 0 0 1-.519 1.568 4.134 4.134 0 0 1-1.024 1.277c-.432.364-.95.647-1.555.848-.605.201-1.308.302-2.109.302-.895 0-1.684-.159-2.368-.476a5.143 5.143 0 0 1-1.72-1.266 5.368 5.368 0 0 1-1.048-1.811 6.492 6.492 0 0 1-.353-2.137c0-.728.118-1.436.353-2.125a5.346 5.346 0 0 1 1.049-1.824 5.175 5.175 0 0 1 1.708-1.265c.675-.318 1.46-.477 2.356-.477.895 0 1.66.124 2.297.372.636.248 1.162.57 1.578.964.416.395.73.844.942 1.347.212.503.342 1.018.389 1.545h-2.568zm9.993 1.463l4.57 5.411h-3.204l-4.028-4.76v4.76H65.88V1.161h2.568v10.22l4.028-4.785h3.204l-4.57 5.412zm6.035-5.412h2.568V17.42h-2.568V6.596zM88.741 17.42a14.271 14.271 0 0 1-1.908.14c-.315 0-.676-.027-1.084-.082a2.716 2.716 0 0 1-1.166-.452c-.37-.248-.68-.628-.93-1.139-.252-.51-.378-1.223-.378-2.136V8.71h-1.86V6.596h1.86V3.321h2.568v3.275h2.52V8.71h-2.52v4.459c0 .465.035.836.106 1.115.07.279.177.491.318.639.142.147.31.243.507.29.196.046.42.07.671.07.204 0 .44-.008.707-.024a3.56 3.56 0 0 0 .589-.07v2.23zM76.533 2.648c0-.527.185-.972.554-1.336.37-.364.813-.546 1.331-.546.534 0 .986.182 1.355.546.369.364.553.81.553 1.336 0 .51-.184.948-.553 1.312-.37.364-.82.546-1.355.546-.518 0-.962-.182-1.33-.546a1.777 1.777 0 0 1-.555-1.312z" />
+                d="M28.175 1.161h5.913c.88 0 1.677.151 2.392.453a5.516 5.516 0 0 1 1.837 1.243c.51.526.903 1.134 1.178 1.823.275.689.412 1.413.412 2.172a5.78 5.78 0 0 1-.412 2.183 5.516 5.516 0 0 1-3.016 3.054c-.714.302-1.511.453-2.39.453h-3.205v4.877h-2.709V1.161zm5.913 8.989c.471 0 .9-.09 1.284-.267.385-.178.711-.418.978-.72s.475-.65.624-1.046a3.55 3.55 0 0 0 .224-1.265 3.55 3.55 0 0 0-.224-1.266 3.348 3.348 0 0 0-.624-1.045 2.929 2.929 0 0 0-.978-.72 3.02 3.02 0 0 0-1.284-.267h-3.204v6.596h3.204zm11.76 7.548c-.88 0-1.673-.15-2.38-.453a5.416 5.416 0 0 1-1.813-1.242 5.672 5.672 0 0 1-1.167-1.812 5.78 5.78 0 0 1-.412-2.183c0-.759.138-1.483.412-2.172a5.64 5.64 0 0 1 1.167-1.823 5.416 5.416 0 0 1 1.814-1.243c.706-.302 1.5-.453 2.38-.453.879 0 1.676.151 2.39.453a5.516 5.516 0 0 1 1.838 1.243c.51.526.903 1.134 1.178 1.823.275.69.412 1.413.412 2.172a5.78 5.78 0 0 1-.412 2.183 5.516 5.516 0 0 1-3.016 3.054c-.714.302-1.511.453-2.39.453zm0-2.253c.487 0 .93-.093 1.331-.279a3.184 3.184 0 0 0 1.685-1.834c.157-.418.235-.86.235-1.324 0-.465-.078-.906-.235-1.324a3.184 3.184 0 0 0-1.684-1.835 3.125 3.125 0 0 0-1.332-.279c-.487 0-.927.093-1.32.279-.392.186-.73.434-1.012.743-.283.31-.499.674-.648 1.092-.15.418-.224.86-.224 1.324 0 .464.075.906.224 1.324.15.418.365.782.648 1.091.282.31.62.558 1.013.743.392.186.832.28 1.32.28zm15.27-4.9c-.078-.589-.31-1.065-.695-1.429-.385-.364-1.017-.546-1.896-.546-.503 0-.935.093-1.296.279a2.78 2.78 0 0 0-.919.755 3.13 3.13 0 0 0-.553 1.091c-.118.41-.177.848-.177 1.313 0 .464.059.906.177 1.324.117.418.302.782.553 1.091.251.31.573.558.966.743.393.186.864.28 1.414.28.753 0 1.307-.156 1.66-.465.354-.31.617-.736.79-1.278h2.568a5.347 5.347 0 0 1-.519 1.568 4.134 4.134 0 0 1-1.024 1.277c-.432.364-.95.647-1.555.848-.605.201-1.308.302-2.109.302-.895 0-1.684-.159-2.368-.476a5.143 5.143 0 0 1-1.72-1.266 5.368 5.368 0 0 1-1.048-1.811 6.492 6.492 0 0 1-.353-2.137c0-.728.118-1.436.353-2.125a5.346 5.346 0 0 1 1.049-1.824 5.175 5.175 0 0 1 1.708-1.265c.675-.318 1.46-.477 2.356-.477.895 0 1.66.124 2.297.372.636.248 1.162.57 1.578.964.416.395.73.844.942 1.347.212.503.342 1.018.389 1.545h-2.568zm9.993 1.463l4.57 5.411h-3.204l-4.028-4.76v4.76H65.88V1.161h2.568v10.22l4.028-4.785h3.204l-4.57 5.412zm6.035-5.412h2.568V17.42h-2.568V6.596zM88.741 17.42a14.271 14.271 0 0 1-1.908.14c-.315 0-.676-.027-1.084-.082a2.716 2.716 0 0 1-1.166-.452c-.37-.248-.68-.628-.93-1.139-.252-.51-.378-1.223-.378-2.136V8.71h-1.86V6.596h1.86V3.321h2.568v3.275h2.52V8.71h-2.52v4.459c0 .465.035.836.106 1.115.07.279.177.491.318.639.142.147.31.243.507.29.196.046.42.07.671.07.204 0 .44-.008.707-.024a3.56 3.56 0 0 0 .589-.07v2.23zM76.533 2.648c0-.527.185-.972.554-1.336.37-.364.813-.546 1.331-.546.534 0 .986.182 1.355.546.369.364.553.81.553 1.336 0 .51-.184.948-.553 1.312-.37.364-.82.546-1.355.546-.518 0-.962-.182-1.33-.546a1.777 1.777 0 0 1-.555-1.312z"
+              />
               <g fill-rule="nonzero">
                 <path
-                  d="M.654 5.58l2.153-1.064c.912 1.952 3.444 3.352 6.376 3.352 2.902 0 5.414-1.371 6.35-3.297L17.67 5.67c-1.37 2.819-4.733 4.654-8.486 4.654-3.794 0-7.188-1.876-8.529-4.743z" />
+                  d="M.654 5.58l2.153-1.064c.912 1.952 3.444 3.352 6.376 3.352 2.902 0 5.414-1.371 6.35-3.297L17.67 5.67c-1.37 2.819-4.733 4.654-8.486 4.654-3.794 0-7.188-1.876-8.529-4.743z"
+                />
                 <path
-                  d="M4.847 3.122c-.892 0-1.616.7-1.616 1.562v8.435c0 .579.332 1.11.863 1.38l4.314 2.198c.472.24 1.036.24 1.507 0L14.23 14.5c.53-.27.862-.802.862-1.381V4.684c0-.863-.723-1.562-1.616-1.562H4.847zm0-3.122h8.63c2.676 0 4.847 2.097 4.847 4.684v8.435c0 1.738-.996 3.332-2.587 4.143l-4.315 2.198a4.997 4.997 0 0 1-4.52 0l-4.315-2.198C.996 16.452 0 14.857 0 13.119V4.684C0 2.097 2.17 0 4.847 0z" />
+                  d="M4.847 3.122c-.892 0-1.616.7-1.616 1.562v8.435c0 .579.332 1.11.863 1.38l4.314 2.198c.472.24 1.036.24 1.507 0L14.23 14.5c.53-.27.862-.802.862-1.381V4.684c0-.863-.723-1.562-1.616-1.562H4.847zm0-3.122h8.63c2.676 0 4.847 2.097 4.847 4.684v8.435c0 1.738-.996 3.332-2.587 4.143l-4.315 2.198a4.997 4.997 0 0 1-4.52 0l-4.315-2.198C.996 16.452 0 14.857 0 13.119V4.684C0 2.097 2.17 0 4.847 0z"
+                />
               </g>
             </g>
           </svg>
         </div>
         <div nz-col nzSpan="8">
-
           <nz-button-group style="display: flex; align-items: center">
             <!-- Button with search and down arrow icons -->
-            <button nzTrigger="click" nz-button nz-dropdown [nzDropdownMenu]="menu2" nzPlacement="bottomLeft" style="
+            <button
+              nzTrigger="click"
+              nz-button
+              nz-dropdown
+              [nzDropdownMenu]="menu2"
+              nzPlacement="bottomLeft"
+              style="
                 display: flex;
                 align-items: center;
                 width: max-content;
                 padding: 0px 10px;
-              ">
-              <span _ngcontent-cjc-c105="" nz-icon="" nztype="search" ng-reflect-nz-type="search"
-                class="anticon anticon-search"><svg viewBox="64 64 896 896" focusable="false" fill="currentColor"
-                  width="16px" height="16px" data-icon="search" aria-hidden="true">
+              "
+            >
+              <span
+                _ngcontent-cjc-c105=""
+                nz-icon=""
+                nztype="search"
+                ng-reflect-nz-type="search"
+                class="anticon anticon-search"
+                ><svg
+                  viewBox="64 64 896 896"
+                  focusable="false"
+                  fill="currentColor"
+                  width="16px"
+                  height="16px"
+                  data-icon="search"
+                  aria-hidden="true"
+                >
                   <path
-                    d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z">
-                  </path>
-                </svg></span>
-              <span _ngcontent-ytg-c105="" nz-icon="" nztype="down" ng-reflect-nz-type="down"
-                class="anticon anticon-down" style="margin-left: 0px"><svg viewBox="64 64 896 896" focusable="false"
-                  fill="currentColor" width="9px" height="9px" data-icon="down" aria-hidden="true">
+                    d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"
+                  ></path></svg
+              ></span>
+              <span
+                _ngcontent-ytg-c105=""
+                nz-icon=""
+                nztype="down"
+                ng-reflect-nz-type="down"
+                class="anticon anticon-down"
+                style="margin-left: 0px"
+                ><svg
+                  viewBox="64 64 896 896"
+                  focusable="false"
+                  fill="currentColor"
+                  width="9px"
+                  height="9px"
+                  data-icon="down"
+                  aria-hidden="true"
+                >
                   <path
-                    d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z">
-                  </path>
-                </svg></span>
+                    d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                  ></path></svg
+              ></span>
             </button>
 
             <nz-input-group [nzSuffix]="inputClearTpl" style="height: 32px">
-              <input nz-input type="text" [(ngModel)]="searchQuery" (keyup)="onSearch1()"
-                [placeholder]="'Search in ' + (selectedMaster1.name)" />
+              <input
+                nz-input
+                type="text"
+                [(ngModel)]="searchQuery"
+                (keyup)="onSearch1()"
+                [placeholder]="'Search in ' + selectedMaster1.name"
+              />
             </nz-input-group>
             <ng-template #inputClearTpl>
-              <span nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle" *ngIf="searchQuery"
-                (click)="reset()"></span>
+              <span
+                nz-icon
+                class="ant-input-clear-icon"
+                nzTheme="fill"
+                nzType="close-circle"
+                *ngIf="searchQuery"
+                (click)="reset()"
+              ></span>
             </ng-template>
 
             <!-- Tooltip for "Enter more characters to search" -->
-            <span class="tooltip-container" *ngIf="searchQuery && searchQuery.length < 3">
-              <span class="tooltip-container1">Enter more characters to search</span>
+            <span
+              class="tooltip-container"
+              *ngIf="searchQuery && searchQuery.length < 3"
+            >
+              <span class="tooltip-container1"
+                >Enter more characters to search</span
+              >
             </span>
 
             <!-- Tooltip for "No Data Found" -->
-            <span class="tooltip-container" *ngIf="searchQuery && searchQuery.length >= 3 && !matchedRecord">
-              <span class="tooltip-container1" style="color: red;">No Data Found</span>
+            <span
+              class="tooltip-container"
+              *ngIf="searchQuery && searchQuery.length >= 3 && !matchedRecord"
+            >
+              <span class="tooltip-container1" style="color: red"
+                >No Data Found</span
+              >
             </span>
 
             <!-- Tooltip to show filtered titles -->
-            <span class="tooltip-container" *ngIf="searchQuery && searchQuery.length >= 3 && matchedRecord">
-              <div class="tooltip-container1" style="color: green;cursor: pointer;" (click)="onMatchedRecordClick()">
+            <span
+              class="tooltip-container"
+              *ngIf="searchQuery && searchQuery.length >= 3 && matchedRecord"
+            >
+              <div
+                class="tooltip-container1"
+                style="color: green; cursor: pointer"
+                (click)="onMatchedRecordClick()"
+              >
                 {{ matchedRecord?.NAME }}
               </div>
             </span>
@@ -162,43 +229,68 @@
 
           <nz-dropdown-menu #menu2="nzDropdownMenu">
             <ul nz-menu nzSelectable>
-              <li nz-menu-item *ngFor="let master of masters" [nzSelected]="master === selectedMaster1"
-                (click)="onMasterChange(master)">{{master.name}}</li>
+              <li
+                nz-menu-item
+                *ngFor="let master of masters"
+                [nzSelected]="master === selectedMaster1"
+                (click)="onMasterChange(master)"
+              >
+                {{ master.name }}
+              </li>
             </ul>
           </nz-dropdown-menu>
         </div>
 
         <div nz-col nzSpan="8" style="text-align: right; padding-right: 10px">
           <!-- Master Menu Icon-->
-          <span style="
+          <span
+            style="
               font-size: 21px !important;
               margin-right: 10px;
               cursor: pointer;
               color: #202020;
-            " nz-tooltip nzTooltipTitle="Master Menu" nz-icon nzType="setting" nzTheme="outline"
-            routerLink="masters/menu"></span>
+            "
+            nz-tooltip
+            nzTooltipTitle="Master Menu"
+            nz-icon
+            nzType="setting"
+            nzTheme="outline"
+            routerLink="masters/menu"
+          ></span>
 
           <!-- Notification Icon -->
-          <span style="
+          <span
+            style="
               font-size: 21px !important;
               margin-right: 10px;
               cursor: pointer;
               color: #00002d;
-            " nz-tooltip nzTooltipTitle="Notifications" nz-icon nzType="bell" nzTheme="outline"
-            (click)="isNotification()"></span>
+            "
+            nz-tooltip
+            nzTooltipTitle="Notifications"
+            nz-icon
+            nzType="bell"
+            nzTheme="outline"
+            (click)="isNotification()"
+          ></span>
 
           <!-- Profile Icon -->
-          <span style="
+          <span
+            style="
               cursor: pointer;
               font-weight: 600;
               background: #af93ff;
               border-radius: 50%;
               color: white;
               padding: 13px 14px 8px;
-            " nz-tooltip nzTooltipTitle="Profile" (click)="isProfile()">
+            "
+            nz-tooltip
+            nzTooltipTitle="Profile"
+            (click)="isProfile()"
+          >
             <span style="font-size: 20px !important">{{
               decreptedUserName ? decreptedUserName.charAt(0).toUpperCase() : ""
-              }}</span>
+            }}</span>
           </span>
 
           <!-- <span style="
@@ -243,7 +335,10 @@
   </nz-layout>
 </nz-layout>
 
-<nz-layout *ngIf="!isLogedIn" style="height: 100vh !important; overflow: hidden !important">
+<nz-layout
+  *ngIf="!isLogedIn"
+  style="height: 100vh !important; overflow: hidden !important"
+>
   <app-login></app-login>
 </nz-layout>
 
@@ -338,16 +433,28 @@
 </nz-drawer> -->
 
 <!-- Drawer for Notification -->
-<nz-drawer nzMaskClosable="false" [nzClosable]="true" [nzVisible]="isNotificationVisible" nzPlacement="right"
-  nzTitle="Notifications" (nzOnClose)="isNotificationCancel()" nzWidth="40%">
+<nz-drawer
+  nzMaskClosable="false"
+  [nzClosable]="true"
+  [nzVisible]="isNotificationVisible"
+  nzPlacement="right"
+  nzTitle="Notifications"
+  (nzOnClose)="isNotificationCancel()"
+  nzWidth="40%"
+>
   <ng-container *nzDrawerContent>
     <div>
       <form nz-form #resetform="ngForm" *ngIf="!showConfirmPassword">
         <nz-spin [nzSpinning]="resetPasswordLoading">
           <!-- Search Bar -->
           <nz-input-group nzPrefixIcon="search">
-            <input name="notification" nz-input placeholder="Search notifications" [(ngModel)]="searchTerm"
-              (input)="onSearch()" />
+            <input
+              name="notification"
+              nz-input
+              placeholder="Search notifications"
+              [(ngModel)]="searchTerm"
+              (input)="onSearch()"
+            />
           </nz-input-group>
 
           <!-- Tabs -->
@@ -358,9 +465,17 @@
           </nz-tabset>
 
           <!-- Notifications -->
-          <ng-container *ngIf="filteredNotifications.length; else noNotifications">
-            <div *ngFor="let notification of filteredNotifications" style="margin-bottom: 10px">
-              <nz-alert [nzMessage]="notification.message" nzShowIcon></nz-alert>
+          <ng-container
+            *ngIf="filteredNotifications.length; else noNotifications"
+          >
+            <div
+              *ngFor="let notification of filteredNotifications"
+              style="margin-bottom: 10px"
+            >
+              <nz-alert
+                [nzMessage]="notification.message"
+                nzShowIcon
+              ></nz-alert>
             </div>
           </ng-container>
 
@@ -384,13 +499,27 @@
 </nz-drawer>
 
 <!-- Drawer for Profile -->
-<nz-drawer nzMaskClosable="false" [nzClosable]="true" [nzVisible]="isProfileVisible" nzPlacement="right"
-  nzTitle="Profile" (nzOnClose)="isProfileCancel()" nzWidth="30%" [nzBodyStyle]="{ padding: '0' }">
+<nz-drawer
+  nzMaskClosable="false"
+  [nzClosable]="true"
+  [nzVisible]="isProfileVisible"
+  nzPlacement="right"
+  nzTitle="Profile"
+  (nzOnClose)="isProfileCancel()"
+  nzWidth="30%"
+  [nzBodyStyle]="{ padding: '0' }"
+>
   <ng-container *nzDrawerContent>
     <form nz-form #resetform="ngForm" *ngIf="!showConfirmPassword">
-      <nz-card class="custom-card" style="border: none; background-color: #271459; padding: 15px 15px">
-        <nz-card-meta [nzAvatar]="avatarTemplate" [nzTitle]="titleTemplate"
-          [nzDescription]="descriptionTemplate"></nz-card-meta>
+      <nz-card
+        class="custom-card"
+        style="border: none; background-color: #271459; padding: 15px 15px"
+      >
+        <nz-card-meta
+          [nzAvatar]="avatarTemplate"
+          [nzTitle]="titleTemplate"
+          [nzDescription]="descriptionTemplate"
+        ></nz-card-meta>
 
         <ng-template #titleTemplate>
           <h5 style="font-size: 17px; margin-bottom: 1px; color: white">
@@ -399,39 +528,59 @@
         </ng-template>
 
         <ng-template #descriptionTemplate>
-          <div style="
+          <div
+            style="
               font-size: 12px;
               margin-bottom: 1px;
               font-weight: 500;
               color: white;
-            ">
+            "
+          >
             {{ "Email ID: " + decryptedEmail }}
           </div>
-          <div style="
+          <div
+            style="
               font-size: 12px;
               margin-bottom: 8px;
               font-weight: 600;
               padding-bottom: 3px;
               color: #fffed5;
               border-bottom: 1px solid #ffffff8a;
-            ">
+            "
+          >
             Last Login:
             {{ decryptedLastLogin | date : "dd/MMM/yyyy hh:mm:ss a" }}
           </div>
           <div>
-            <button nz-button nzType="primary" nzSize="small" style="margin-right: 10px" (click)="isChangePassword()">
+            <button
+              nz-button
+              nzType="primary"
+              nzSize="small"
+              style="margin-right: 10px"
+              (click)="isChangePassword()"
+            >
               Change Password
             </button>
-            <button nz-button nzSize="small" nzType="default" (click)="logout()">
+            <button
+              nz-button
+              nzSize="small"
+              nzType="default"
+              (click)="logout()"
+            >
               Logout
             </button>
           </div>
         </ng-template>
 
         <ng-template #avatarTemplate>
-          <nz-avatar [nzSize]="70" class="custom-avatar" [nzText]="
+          <nz-avatar
+            [nzSize]="70"
+            class="custom-avatar"
+            [nzText]="
               decreptedUserName ? decreptedUserName.charAt(0).toUpperCase() : ''
-            " nzShape="circle"></nz-avatar>
+            "
+            nzShape="circle"
+          ></nz-avatar>
         </ng-template>
       </nz-card>
 
@@ -449,36 +598,66 @@
                 </div>
               </nz-card> -->
 
-      <nz-card class="custom-card2" style="
+      <nz-card
+        class="custom-card2"
+        style="
           margin: 10px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           border-radius: 15px;
-        ">
+        "
+      >
         <h5 style="margin-bottom: 10px; font-size: 16px">Need Help?</h5>
         <div class="help-options">
           <div style="display: flex">
             <div style="text-align: center; margin-right: 25px">
-              <span _ngcontent-tft-c99="" nz-icon="" nztype="read" nztheme="outline" ng-reflect-nz-type="read"
-                ng-reflect-nz-theme="outline" class="anticon anticon-read"><svg viewBox="64 64 896 896"
-                  focusable="false" fill="currentColor" width="2em" height="2em" data-icon="read" aria-hidden="true">
+              <span
+                _ngcontent-tft-c99=""
+                nz-icon=""
+                nztype="read"
+                nztheme="outline"
+                ng-reflect-nz-type="read"
+                ng-reflect-nz-theme="outline"
+                class="anticon anticon-read"
+                ><svg
+                  viewBox="64 64 896 896"
+                  focusable="false"
+                  fill="currentColor"
+                  width="2em"
+                  height="2em"
+                  data-icon="read"
+                  aria-hidden="true"
+                >
                   <path
-                    d="M928 161H699.2c-49.1 0-97.1 14.1-138.4 40.7L512 233l-48.8-31.3A255.2 255.2 0 00324.8 161H96c-17.7 0-32 14.3-32 32v568c0 17.7 14.3 32 32 32h228.8c49.1 0 97.1 14.1 138.4 40.7l44.4 28.6c1.3.8 2.8 1.3 4.3 1.3s3-.4 4.3-1.3l44.4-28.6C602 807.1 650.1 793 699.2 793H928c17.7 0 32-14.3 32-32V193c0-17.7-14.3-32-32-32zM324.8 721H136V233h188.8c35.4 0 69.8 10.1 99.5 29.2l48.8 31.3 6.9 4.5v462c-47.6-25.6-100.8-39-155.2-39zm563.2 0H699.2c-54.4 0-107.6 13.4-155.2 39V298l6.9-4.5 48.8-31.3c29.7-19.1 64.1-29.2 99.5-29.2H888v488zM396.9 361H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm223.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c0-4.1-3.2-7.5-7.1-7.5H627.1c-3.9 0-7.1 3.4-7.1 7.5zM396.9 501H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm416 0H627.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5z">
-                  </path>
-                </svg></span>
+                    d="M928 161H699.2c-49.1 0-97.1 14.1-138.4 40.7L512 233l-48.8-31.3A255.2 255.2 0 00324.8 161H96c-17.7 0-32 14.3-32 32v568c0 17.7 14.3 32 32 32h228.8c49.1 0 97.1 14.1 138.4 40.7l44.4 28.6c1.3.8 2.8 1.3 4.3 1.3s3-.4 4.3-1.3l44.4-28.6C602 807.1 650.1 793 699.2 793H928c17.7 0 32-14.3 32-32V193c0-17.7-14.3-32-32-32zM324.8 721H136V233h188.8c35.4 0 69.8 10.1 99.5 29.2l48.8 31.3 6.9 4.5v462c-47.6-25.6-100.8-39-155.2-39zm563.2 0H699.2c-54.4 0-107.6 13.4-155.2 39V298l6.9-4.5 48.8-31.3c29.7-19.1 64.1-29.2 99.5-29.2H888v488zM396.9 361H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm223.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c0-4.1-3.2-7.5-7.1-7.5H627.1c-3.9 0-7.1 3.4-7.1 7.5zM396.9 501H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm416 0H627.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5z"
+                  ></path></svg
+              ></span>
               <div>Help Guide</div>
             </div>
             <div style="text-align: center; margin-right: 25px">
-              <span _ngcontent-aco-c99="" nz-icon="" nztype="question-circle" nztheme="outline"
-                ng-reflect-nz-type="question-circle" ng-reflect-nz-theme="outline"
-                class="anticon anticon-question-circle"><svg viewBox="64 64 896 896" focusable="false"
-                  fill="currentColor" width="2em" height="2em" data-icon="question-circle" aria-hidden="true">
+              <span
+                _ngcontent-aco-c99=""
+                nz-icon=""
+                nztype="question-circle"
+                nztheme="outline"
+                ng-reflect-nz-type="question-circle"
+                ng-reflect-nz-theme="outline"
+                class="anticon anticon-question-circle"
+                ><svg
+                  viewBox="64 64 896 896"
+                  focusable="false"
+                  fill="currentColor"
+                  width="2em"
+                  height="2em"
+                  data-icon="question-circle"
+                  aria-hidden="true"
+                >
                   <path
-                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z">
-                  </path>
+                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                  ></path>
                   <path
-                    d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z">
-                  </path>
-                </svg></span>
+                    d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z"
+                  ></path></svg
+              ></span>
               <div>FAQ</div>
             </div>
           </div>
@@ -488,8 +667,16 @@
   </ng-container>
 </nz-drawer>
 
-<nz-modal [nzStyle]="{ top: '30px' }" nzWidth="400px" nzMaskClosable="false" [(nzVisible)]="visiblesave"
-  nzTitle="Change Password" (nzOnCancel)="handleCancelTop()" (nzOnOk)="handleOkTop()" [nzOkText]="'Save'">
+<nz-modal
+  [nzStyle]="{ top: '30px' }"
+  nzWidth="400px"
+  nzMaskClosable="false"
+  [(nzVisible)]="visiblesave"
+  nzTitle="Change Password"
+  (nzOnCancel)="handleCancelTop()"
+  (nzOnOk)="handleOkTop()"
+  [nzOkText]="'Save'"
+>
   <ng-container *nzModalContent>
     <form nz-form #resetform="ngForm">
       <nz-spin [nzSpinning]="resetPasswordLoading">
@@ -497,18 +684,34 @@
           <!-- Current Password Field -->
           <div nz-col nzSpan="24">
             <nz-form-item>
-              <nz-form-label nzRequired nzNoColon>Current Password</nz-form-label>
+              <nz-form-label nzRequired nzNoColon
+                >Current Password</nz-form-label
+              >
 
               <nz-form-control nzErrorTip="Please Enter Valid Current Password">
-                <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplatePassword">
-                  <input style="border: none" nz-input [type]="passwordVisible ? 'text' : 'password'" name="currpass"
-                    [(ngModel)]="PASSWORD" placeholder="Enter Current Password" maxlength="100" autocomplete="off"
-                    required />
+                <nz-input-group
+                  nzPrefixIcon="lock"
+                  [nzSuffix]="suffixTemplatePassword"
+                >
+                  <input
+                    style="border: none"
+                    nz-input
+                    [type]="passwordVisible ? 'text' : 'password'"
+                    name="currpass"
+                    [(ngModel)]="PASSWORD"
+                    placeholder="Enter Current Password"
+                    maxlength="100"
+                    autocomplete="off"
+                    required
+                  />
                 </nz-input-group>
 
                 <ng-template #suffixTemplatePassword>
-                  <i nz-icon [nzType]="passwordVisible ? 'eye' : 'eye-invisible'"
-                    (click)="passwordVisible = !passwordVisible"></i>
+                  <i
+                    nz-icon
+                    [nzType]="passwordVisible ? 'eye' : 'eye-invisible'"
+                    (click)="passwordVisible = !passwordVisible"
+                  ></i>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
@@ -520,15 +723,30 @@
               <nz-form-label nzRequired nzNoColon>New Password</nz-form-label>
 
               <nz-form-control nzErrorTip="Please Enter Valid New Password">
-                <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplateNewPassword">
-                  <input nz-input style="border: none" [type]="newPasswordVisible ? 'text' : 'password'" name="newpass"
-                    [(ngModel)]="NEWPASSWORD" placeholder="Enter New Password" maxlength="100" autocomplete="off"
-                    required minlength="8" />
+                <nz-input-group
+                  nzPrefixIcon="lock"
+                  [nzSuffix]="suffixTemplateNewPassword"
+                >
+                  <input
+                    nz-input
+                    style="border: none"
+                    [type]="newPasswordVisible ? 'text' : 'password'"
+                    name="newpass"
+                    [(ngModel)]="NEWPASSWORD"
+                    placeholder="Enter New Password"
+                    maxlength="100"
+                    autocomplete="off"
+                    required
+                    minlength="8"
+                  />
                 </nz-input-group>
 
                 <ng-template #suffixTemplateNewPassword>
-                  <i nz-icon [nzType]="newPasswordVisible ? 'eye' : 'eye-invisible'"
-                    (click)="newPasswordVisible = !newPasswordVisible"></i>
+                  <i
+                    nz-icon
+                    [nzType]="newPasswordVisible ? 'eye' : 'eye-invisible'"
+                    (click)="newPasswordVisible = !newPasswordVisible"
+                  ></i>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
@@ -537,21 +755,38 @@
           <!-- Confirm Password Field -->
           <div nz-col nzSpan="24">
             <nz-form-item>
-              <nz-form-label nzRequired nzNoColon>Confirm Password</nz-form-label>
+              <nz-form-label nzRequired nzNoColon
+                >Confirm Password</nz-form-label
+              >
 
               <nz-form-control nzErrorTip="Please Re-Enter New Password">
-                <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplateReEnterNewPassword">
-                  <input style="border: none" nz-input [type]="reEnterNewPasswordVisible ? 'text' : 'password'"
-                    name="confpass" [(ngModel)]="CONFPASSWORD" placeholder="Re-Enter New Password" maxlength="120"
-                    autocomplete="off" required />
+                <nz-input-group
+                  nzPrefixIcon="lock"
+                  [nzSuffix]="suffixTemplateReEnterNewPassword"
+                >
+                  <input
+                    style="border: none"
+                    nz-input
+                    [type]="reEnterNewPasswordVisible ? 'text' : 'password'"
+                    name="confpass"
+                    [(ngModel)]="CONFPASSWORD"
+                    placeholder="Re-Enter New Password"
+                    maxlength="120"
+                    autocomplete="off"
+                    required
+                  />
                 </nz-input-group>
 
                 <ng-template #suffixTemplateReEnterNewPassword>
-                  <i nz-icon [nzType]="
+                  <i
+                    nz-icon
+                    [nzType]="
                       reEnterNewPasswordVisible ? 'eye' : 'eye-invisible'
-                    " (click)="
+                    "
+                    (click)="
                       reEnterNewPasswordVisible = !reEnterNewPasswordVisible
-                    "></i>
+                    "
+                  ></i>
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
@@ -562,18 +797,37 @@
   </ng-container>
 </nz-modal>
 
-<nz-drawer [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
-  [nzClosable]="true" [nzMask]="true" [nzMaskClosable]="true" [nzWidth]="600" [nzVisible]="drawerVisible"
-  [nzTitle]="drawerTitle" (nzOnClose)="drawerClose()" (nzKeyboard)="true">
-  <ng-container *nzDrawerContent>
-    <!-- Conditional rendering based on selected master -->
-    <app-customer *ngIf="selectedMaster1?.name === 'Customer'" [drawerClose]="closeCallback"
-      [drawerVisible]="drawerVisible" [data]="selectedRecord" [custid]="selectedRecord?.id">
+<!-- <nz-drawer
+  [nzBodyStyle]="{
+    height: 'calc(100% - 55px)',
+    overflow: 'auto',
+    'padding-bottom': '53px'
+  }"
+  [nzClosable]="true"
+  [nzMask]="true"
+  [nzMaskClosable]="true"
+  [nzWidth]="600"
+  [nzVisible]="drawerVisible"
+  [nzTitle]="drawerTitle"
+  (nzOnClose)="drawerClose()"
+  (nzKeyboard)="(true)"
+>
+  <ng-container *nzDrawerContent> 
+    <app-customer
+      *ngIf="selectedMaster1?.name === 'Customer'"
+      [drawerClose]="closeCallback"
+      [drawerVisible]="drawerVisible"
+      [data]="selectedRecord"
+      [custid]="selectedRecord.ID"
+    >
     </app-customer>
 
-    <app-vendor-master-drawer *ngIf="selectedMaster1?.name === 'Vendor'" [drawerClose]="closeCallback"
-      [drawerVisible]="drawerVisible" [data]="selectedRecord">
+    <app-vendor-master-drawer
+      *ngIf="selectedMaster1?.name === 'Vendor'"
+      [drawerClose]="closeCallback"
+      [drawerVisible]="drawerVisible"
+      [data]="selectedRecord2"
+    >
     </app-vendor-master-drawer>
-
   </ng-container>
-</nz-drawer>
+</nz-drawer> -->

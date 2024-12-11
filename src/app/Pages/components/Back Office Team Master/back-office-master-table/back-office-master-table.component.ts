@@ -216,7 +216,7 @@ export class BackOfficeMasterTableComponent
 
 
   add(): void {
-    this.drawerTitle = 'Create New Back Office ';
+    this.drawerTitle = 'Create New Back Office Staff';
     this.drawerData = new BackOfficeMasterData();
     this.drawerVisible = true;
   }
@@ -242,7 +242,7 @@ export class BackOfficeMasterTableComponent
 
 
   edit(data: BackOfficeMasterData): void {
-    this.drawerTitle = 'Update Back Office';
+    this.drawerTitle = 'Update Back Office Staff';
     this.drawerData = Object.assign({}, data);
     this.drawerVisible = true;
   }
@@ -263,6 +263,7 @@ export class BackOfficeMasterTableComponent
 // Main Filter
 
 columns1: { label: string; value: string }[] = [
+  { label: 'Role', value: 'ROLE_ID' },
   { label: 'Back Office Name', value: 'NAME' },
   { label: 'Email', value: 'EMAIL_ID' },
   { label: 'Mobile No.', value: 'MOBILE_NUMBER' },
@@ -771,7 +772,7 @@ showMainFilter() {
 
  mapTerritory(data :any)
  {
-  this.drawerMappingTitle = `Map Territory to ${data.NAME}  Back Office` ;
+  this.drawerMappingTitle = `Map Territory to ${data.NAME}  Back Office Staff` ;
   this.drawerData = Object.assign({}, data);
   this.drawerMappigVisible = true;
  }

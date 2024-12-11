@@ -3,14 +3,14 @@
   <div nz-row [nzGutter]="10" style="margin-bottom: 16px; padding: 10px; border: 1px solid #0000001f">
     <div nz-col [nzSpan]="8"></div>
     <div nz-col [nzSpan]="4">
-      <nz-select [(ngModel)]="selectedTerritor" style="width: 100%" nzPlaceHolder="Select Territorys"
-        nzMode="multiple">
+      <nz-select [(ngModel)]="selectedTerritor" style="width: 100%" nzPlaceHolder="Select Territorys" nzMode="multiple">
         <nz-option nzValue="Sangli" nzLabel="Sangli"></nz-option>
         <nz-option nzValue="Pune" nzLabel="Pune "></nz-option>
       </nz-select>
     </div>
     <div nz-col [nzSpan]="4">
-      <nz-date-picker [(ngModel)]="selectedDate" style="width: 100%"></nz-date-picker>
+      <nz-date-picker [nzDisabledDate]="disabledDate" [(ngModel)]="selectedDate" (ngModelChange)='dateformat($event)'
+        style="width: 100%"></nz-date-picker>
     </div>
     <div nz-col [nzSpan]="8"></div>
   </div>
@@ -24,7 +24,8 @@
           <div nz-col [nzSpan]="21">
             <nz-form-item>
               <nz-input-group [nzSuffix]="suffixIconSearch">
-                <input type="text" nz-input placeholder="Min 3 chars required" />
+                <input type="text" nz-input placeholder="Min 3 chars required"  [(ngModel)]="searchValue" 
+                (input)="onSearchChange(searchValue)" />
               </nz-input-group>
               <ng-template #suffixIconSearch>
                 <span nz-icon nzType="search"></span>
@@ -34,7 +35,7 @@
           <div nz-col [nzSpan]="3" style="text-align: center">
             <nz-form-item *ngIf="selectedmode == 'tech'">
               <button nz-button nzTooltipTitle="Filter" nzTooltipPlacement="top" nz-tooltip
-                [nzType]="false ? 'primary' : 'default'" (click)="addtechnicianfilter('Technician')">
+                [nzType]="false ? 'primary' : 'default'" (click)="isChangePassword()">
                 <i nz-icon nzType="filter"></i>
               </button>
             </nz-form-item>
@@ -65,23 +66,25 @@
               padding: 10px;
               box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
               border: 1px solid #efefef;
-              border-radius: 10px;" [ngStyle]="{'background-color': tech.status === 'off' ? '#80808030' : '#fff'}" 
-              *ngFor="let tech of technicians" (click)="onTechnicianCardClick(tech)">
+              border-radius: 10px;" [ngStyle]="{'background-color': tech.IS_ACTIVE === 0 ? '#d9d9d9' : '#fff'}"
+            *ngFor="let tech of techniciansdata" (click)="onTechnicianCardClick(tech)">
             <div nz-row>
               <div class="subname" nz-col nzSpan="24">
-                <b>Name: </b>{{ tech.name }}
+                <b>Name: </b>{{ tech?.NAME }}
               </div>
               <div class="subname" nz-col nzSpan="24">
-               <b>Email: </b> <a style="font-size: 12px !important;" href="mailto:{{ tech.email }}">{{ tech.email }}</a>
+                <b>Email: </b> <a style="font-size: 12px !important;" href="mailto:{{ tech?.EMAIL_ID }}">{{
+                  tech?.EMAIL_ID }}</a>
               </div>
               <div class="subname" nz-col nzSpan="24">
-                <b>Mobile: </b><a style="font-size: 12px !important;" href="tel:{{ tech.mobile }}">{{ tech.mobile }}</a> 
+                <b>Mobile: </b><a style="font-size: 12px !important;" href="tel:{{ tech?.MOBILE_NUMBER }}">{{
+                  tech?.MOBILE_NUMBER }}</a>
               </div>
-              <div class="subname" nz-col nzSpan="24">
-               <b>City: </b>{{ tech.city }}
+              <div class="subname" nz-col nzSpan="24" *ngIf="tech?.IS_ACTIVE == 1">
+                <b>Status: </b>Active
               </div>
-              <div class="subname" nz-col nzSpan="24">
-               <b>Status: </b>{{ tech.status }}
+              <div class="subname" nz-col nzSpan="24" *ngIf="tech?.IS_ACTIVE == 0">
+                <b>Status: </b>Inactive
               </div>
             </div>
           </div>
@@ -263,30 +266,22 @@
       <!-- Technician Logs and Map -->
       <div nz-row [nzGutter]="16" *ngIf="selectedmode == 'tech' && onlymap == false">
         <div nz-col [nzSpan]="10">
-          <nz-card nzTitle="Selected Technician Action Logs">
+          <nz-card [nzTitle]="technicianName + ' Technician Action Logs'">
             <div style="height: 505px; overflow-y: scroll; padding-right: 10px; padding-top: 5px;">
-            <nz-timeline nzMode="alternate" >
-              <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
-              <nz-timeline-item nzColor="green">Solve initial network problems 2015-09-01</nz-timeline-item>
-              <nz-timeline-item [nzDot]="dotTemplate">
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-                rem
-                aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
-                explicabo.
-              </nz-timeline-item>
-              <nz-timeline-item nzColor="red">Network problems being solved 2015-09-01</nz-timeline-item>
-              <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
-              <nz-timeline-item [nzDot]="dotTemplate">Technical testing 2015-09-01</nz-timeline-item>
-            </nz-timeline>
-            <ng-template #dotTemplate>
-              <span nz-icon nzType="clock-circle-o" style="font-size: 16px;"></span>
-            </ng-template>
-          </div>
+              <nz-timeline nzMode="alternate">
+                <nz-timeline-item *ngFor="let item of timelineData">
+                  <ng-container>
+                    <p>{{ item?.ACTION_DETAILS }}</p>
+                  </ng-container>
+                </nz-timeline-item>
+              </nz-timeline>
+
+            </div>
           </nz-card>
         </div>
         <div nz-col [nzSpan]="14">
-          <nz-card [nzTitle]="selectedTechnician?.name + ' Travel Locations'">
-              <div id="map" style="height: 500px;"></div>
+          <nz-card [nzTitle]="technicianName + ' Travel Locations'">
+            <div id="map" style="height: 500px;"></div>
           </nz-card>
         </div>
       </div>
@@ -296,7 +291,7 @@
       <div nz-row [nzGutter]="16" *ngIf="selectedmode == 'tech' && onlymap == true">
         <div nz-col [nzSpan]="24">
           <nz-card>
-            <div class="card-header" style="margin-bottom: 17px;">
+            <div class="card-header" style="padding: 15px;">
               <span nz-card-title style="color: rgba(0, 0, 0, .85);
               font-weight: 500;
               font-size: 16px !important">Technician Travel Locations</span>
@@ -309,7 +304,7 @@
           </nz-card>
         </div>
       </div>
-      
+
 
       <!-- Job -->
       <div nz-row [nzGutter]="16" *ngIf="selectedmode == 'job'">
@@ -362,3 +357,66 @@
       <app-order-filter [drawerClose]="closefilterCallback" [drawerVisible]="drawerFilterVisible"
         [applyCondition]="applyCondition"></app-order-filter> </ng-container></nz-drawer>
 </div>
+
+
+<nz-modal [nzStyle]="{ top: '30px' }" nzWidth="600px" nzMaskClosable="false" [(nzVisible)]="visiblesave"
+  nzTitle="Change Password" (nzOnCancel)="handleCancelTop()" (nzOnOk)="handleOkTop()" [nzOkText]="'Apply'">
+  <ng-container *nzModalContent>
+    <form nz-form #resetform="ngForm">
+      <nz-spin [nzSpinning]="resetPasswordLoading">
+        <div nz-row nzGutter="24">
+            
+              
+                <div nz-col nzSpan="12">
+                  <nz-form-label nzNoColon>Type</nz-form-label>
+                  <div class="check-container">
+                    <div class="checkbox-container" *ngFor="let option of checkOptionsOne">
+                      <label nz-checkbox [(ngModel)]="option.checked" [nzValue]="option.value" class="chapter-checkbox"
+                        [ngModelOptions]="{ standalone: true }">
+                        {{ option.label }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+          
+                <div nz-col nzSpan="12">
+                  <nz-form-label nzNoColon>Skills</nz-form-label>
+                  <div class="check-container">
+                    <div class="checkbox-container" *ngFor="let skill of skillData">
+                      <label nz-checkbox [(ngModel)]="selectedSkills[skill.ID]" [nzValue]="skill.ID" class="chapter-checkbox"
+                        [ngModelOptions]="{ standalone: true }">
+                        {{ skill.NAME }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div nz-col nzSpan="12">
+                  <nz-form-label nzNoColon>Experience</nz-form-label>
+                  <div class="check-container">
+                    <div class="checkbox-container" *ngFor="let option of checkOptionsTwo">
+                      <label nz-checkbox [(ngModel)]="option.checked" [nzValue]="option.value" class="chapter-checkbox"
+                        [ngModelOptions]="{ standalone: true }">
+                        {{ option.label }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+      
+                <div nz-col nzSpan="12">
+                  <nz-form-label nzNoColon>Pincode</nz-form-label>
+                  <nz-form-item>
+                    <nz-form-control nzHasFeedback nzErrorTip="Please Select Pincode">
+                      <nz-select nzAllowClear="true" nzPlaceHolder="Select Pincode" name="PINCODE_ID" [(ngModel)]="PINCODE_ID"
+                        nzShowSearch required nzMode="multiple" [nzMaxTagCount]="3">
+                        <nz-option *ngFor="let data of pincodeData" [nzValue]="data.ID" [nzLabel]="data.PINCODE"></nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+
+        </div>
+      </nz-spin>
+    </form>
+  </ng-container>
+</nz-modal>

@@ -1,0 +1,90 @@
+<div>
+  <form nz-form #websitebannerPage="ngForm">
+    <nz-spin [nzSpinning]="isSpinning"
+      ><div nz-col nzSpan="24">
+        <div nz-row>
+          <div nz-col nzSpan="24">
+            <nz-table
+              class="my-scroll no-wrap1"
+              nzBordered
+              [nzData]="datalist"
+              #table
+              nzShowSizeChanger
+              [nzShowPagination]="false"
+              [nzFrontPagination]="false"
+              [nzLoading]="loadingRecords"
+              [nzSize]="'small'"
+            >
+              <thead>
+                <tr>
+                  <th nzWidth="100px" style="text-align: center">Keyword</th>
+                  <th nzWidth="100px" style="text-align: center">English</th>
+                  <th nzWidth="100px" style="text-align: center">
+                    {{ data?.NAME }} Translation
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container>
+                  <tr *ngFor="let data1 of datalist; let i = index">
+                    <td>{{ data1.KEY }}</td>
+                    <!-- Keyword column -->
+                    <td>{{ data1.ENGLISH }}</td>
+                    <!-- English column (value of the keyword) -->
+                    <td>
+                      <input
+                        nz-input
+                        placeholder="Enter Translation"
+                        name="translation{{ i }}"
+                        required
+                        [(ngModel)]="data1.TRANSLATION"
+                        maxlength="256"
+                        autocomplete="off"
+                      />
+                    </td>
+                    <!-- Translation column (binds to the value for translation) -->
+                  </tr>
+                </ng-container>
+              </tbody>
+            </nz-table>
+          </div>
+        </div>
+      </div></nz-spin
+    >
+  </form>
+</div>
+
+<div class="footer">
+  <button
+    type="button"
+    nz-button
+    (click)="close()"
+    class="ant-btn"
+    style="margin-right: 8px"
+  >
+    <span>Cancel</span>
+  </button>
+
+  <button
+    type="button"
+    class="ant-btn ant-btn-primary"
+    nz-button
+    nz-dropdown
+    [nzLoading]="isSpinning"
+    (click)="save(false, websitebannerPage)"
+    style="margin-right: 8px"
+  >
+    <span>Save as a draft</span>
+  </button>
+
+  <button
+    type="button"
+    class="ant-btn ant-btn-primary"
+    nz-button
+    nz-dropdown
+    [nzLoading]="isSpinning1"
+    (click)="save1(false, websitebannerPage)"
+  >
+    <span>Save as a final</span>
+  </button>
+</div>

@@ -126,6 +126,8 @@ import { MasterMenuListComponent } from './components/Master_Menu/master-menu-li
 import { WarehouselocationmasterComponent } from './components/WarehouseLocation/warehouselocationmaster/warehouselocationmaster.component';
 import { WarehouselocationformComponent } from './components/WarehouseLocation/warehouselocationform/warehouselocationform.component';
 import { SkillMappingComponent } from './components/Service Catlog Master/skill-mapping/skill-mapping.component';
+import { TechnicianPincodeMappingComponent } from './components/TechnicianMaster/technician-pincode-mapping/technician-pincode-mapping.component';
+import { TechnicianSkillsMappingComponent } from './components/TechnicianMaster/technician-skills-mapping/technician-skills-mapping.component';
 @NgModule({
   declarations: [
     MastersComponent,
@@ -207,7 +209,8 @@ import { SkillMappingComponent } from './components/Service Catlog Master/skill-
     MasterMenuListComponent,
     WarehouselocationmasterComponent,
     WarehouselocationformComponent,
-
+    TechnicianPincodeMappingComponent,
+    TechnicianSkillsMappingComponent,
     SkillMappingComponent
 
   ],
@@ -344,7 +347,8 @@ import { SkillMappingComponent } from './components/Service Catlog Master/skill-
     MasterMenuListComponent,
     WarehouselocationmasterComponent,
     WarehouselocationformComponent,
-
+    TechnicianPincodeMappingComponent,
+    TechnicianSkillsMappingComponent,
     SkillMappingComponent
 
   ]

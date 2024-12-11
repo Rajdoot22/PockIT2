@@ -372,6 +372,8 @@ showMainFilter() {
    this.filterBox.splice(index, 1);
  }
 
+
+
  insertSubCondition(conditionIndex: number, subConditionIndex: number) {
 
    const lastFilterIndex = this.filterBox.length - 1;

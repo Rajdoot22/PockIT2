@@ -332,3 +332,99 @@
 .mbsc-fr-inline.mbsc-calendar .mbsc-fr-w {
   background: #fff;
 }
+
+
+
+
+.checkbox-label {
+ 
+  width:220px;
+  max-height: 100px; /* Adjust the height based on how much you want to show */
+  overflow-y: auto; /* Enables vertical scrolling */
+  display: flex;
+  /* flex-direction: column;  */
+}
+
+.checkbox-item {
+  margin-right: 30px;
+  display: flex;
+  flex-direction: column; /* Aligns each checkbox in a vertical stack */
+}
+
+.nz-checkbox-group {
+  margin-right: 30px;
+  display: flex;
+  /* flex-direction: column; */
+  gap: 10px; /* Adjust gap between each checkbox */
+}
+.ant-checkbox-group-item {
+  margin-right: 40px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.check-container {
+  max-height: 336px; /* Adjust this height as needed */
+  overflow-y: auto; /* Adds vertical scrollbar if content overflows */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #888 #f1f1f1; /* For Firefox */
+}
+
+/* Custom styles for WebKit browsers (Chrome, Safari) */
+.check-container::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.check-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background color of the scrollbar track */
+}
+
+.check-container::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+}
+
+.check-container::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+}
+
+.check-container {
+  height: 100%;
+  max-height: 165px; /* Adjust height as needed */
+  overflow-y: auto; /* Add vertical scroll if content overflows */
+  padding: 8px; /* Add padding */
+  border: 1px solid #d9d9d9; /* Light border */
+  border-radius: 4px; /* Rounded corners */
+  background-color: #fafafa; /* Light background color */
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px; /* Space between checkboxes */
+  padding: 4px; /* Space inside each checkbox container */
+  border-radius: 4px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.checkbox-container:hover {
+  background-color: #e6f7ff; /* Highlight color on hover */
+}
+
+.chapter-checkbox {
+  display: flex;
+  /* align-items: center; */
+  width: 100%; /* Ensure it takes full width */
+}

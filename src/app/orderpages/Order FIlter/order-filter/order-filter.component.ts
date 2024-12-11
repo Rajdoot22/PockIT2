@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
@@ -22,20 +23,19 @@ export class OrderFilterComponent {
     private api: ApiServiceService
   ) {}
 
-
   checkOptionsOne = [
-    { label: 'Inhouse', value: 'Inhouse', checked: false },
-    { label: 'Freelancer', value: 'Freelancer', checked: false },
-    { label: 'Vendor Tech', value: 'Vendor Tech', checked: false }
+    { label: 'Inhouse', value: 'I', checked: false },
+    { label: 'Freelancer', value: 'F', checked: false },
+    { label: 'Vendor Tech', value: 'V', checked: false }
   ];
 
   checkOptionsTwo = [
-    { label: 'Fresher', value: 'Fresher', checked: false },
-    { label: 'Junior', value: 'Junior', checked: false },
-    { label: 'Mid-Level', value: 'Mid-Level', checked: false },
-    { label: 'Senior', value: 'Senior', checked: false },
-    { label: 'Lead', value: 'Lead', checked: false },
-    { label: 'Expert', value: 'Expert', checked: false },
+    { label: 'Fresher', value: 'F', checked: false },
+    { label: 'Junior', value: 'J', checked: false },
+    { label: 'Mid-Level', value: 'M', checked: false },
+    { label: 'Senior', value: 'S', checked: false },
+    { label: 'Lead', value: 'L', checked: false },
+    { label: 'Expert', value: 'E', checked: false },
   ];
 
 
@@ -211,12 +211,6 @@ selectedSkills: { [key: number]: boolean } = {};
   }
 
 
-
-
-
-
-
-
   changeDate(value: any) {
     // this.value1 = this.datePipe.transform(value[0], 'yyyy-MM-dd');
     // this.value2 = this.datePipe.transform(value[1], 'yyyy-MM-dd');
@@ -246,5 +240,65 @@ selectedSkills: { [key: number]: boolean } = {};
   close() {
     this.drawerClose();
   }
-  applyFilter(){}
+
+  // applyFilter() {
+  //   // Gather selected values from checked checkboxes for TYPE
+  //   const selectedTypes = this.checkOptionsOne
+  //     .filter(option => option.checked)
+  //     .map(option => option.value)
+  //     .join(','); // Comma-separated values
+  
+  //   // Example: Gather selected EXPERIENCE if there's a similar check (update as needed)
+  //   const selectedExperience = '5'; // This is just an example. You would get this dynamically.
+  
+  //   // Build the filter object
+  //   const filter = {
+  //     TYPE: selectedTypes,
+  //     EXPERIENCE: selectedExperience
+  //   };
+  
+    // Call API with the updated filter
+    applyFilter() {
+      // Gather selected values from checkboxes for TYPE
+      const selectedTypes = this.checkOptionsOne
+        .filter(option => option.checked)
+        .map(option => `'${option.value}'`);
+  
+      // Gather selected EXPERIENCE values
+      const selectedExperience = this.checkOptionsTwo
+        .filter(option => option.checked)
+        .map(option => `'${option.value}'`);
+  
+      // Gather selected SKILLS (using the selectedSkills object to store selected skill IDs)
+      const selectedSkills = Object.keys(this.selectedSkills)
+        .filter(skillId => this.selectedSkills[skillId])
+        .map(skillId => parseInt(skillId)); // Convert skill IDs to numbers
+  
+      // Gather selected PINCODES
+      const selectedPincodes = this.PINCODE_ID ? this.PINCODE_ID : [];
+  
+      // Build the filter object with all selected values
+     
+  
+      // console.log('Filter Object:', filter); // Log for debugging
+  
+      // Call the API with the updated filter
+      this.api.getTechnicianDataFilter(0, 0, 'someSortKey', 'desc','', selectedTypes, selectedSkills, selectedExperience, selectedPincodes, ).subscribe(
+        (data) => {
+          if (data["code"] == 200) {
+            // Handle success
+            console.log('API Success', data);
+          } else {
+            this.message.error("Server Not Found.", "");
+          }
+        },
+        (err: HttpErrorResponse) => {
+          // Handle error
+          console.error('API Error', err);
+        }
+      );
+    }
+  
+  // }
+  
 }

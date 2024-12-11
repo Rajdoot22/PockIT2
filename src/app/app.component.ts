@@ -9,6 +9,8 @@ import { getMessaging, getToken } from 'firebase/messaging';
 import { NgForm } from '@angular/forms';
 import { CommonFunctionService } from './Service/CommonFunctionService';
 import { Subscription } from 'rxjs';
+import { customer } from './Pages/Models/customer';
+import { VendorMasterData } from './Pages/Models/vendorMaterData';
 export class PasswordData {
   LOGIN_ID: any;
   OLD_PASSWORD: any;
@@ -24,7 +26,7 @@ export class AppComponent {
   isCollapsed: boolean = false;
   isLogedIn: boolean = false;
   public commonFunction = new CommonFunctionService()
-
+  selectedRecord2 :any =  new VendorMasterData();
   userId = sessionStorage.getItem('userId');
   decrepteduserIDString = this.userId ? this.commonFunction.decryptdata(this.userId) : '';
   decrepteduserID = parseInt(this.decrepteduserIDString, 10);
@@ -595,7 +597,7 @@ export class AppComponent {
   masterRecords: any[] = [];
   searchQuery: string = '';
   drawerVisible: boolean = false;
-  selectedRecord: any = null;
+  selectedRecord: customer = new customer();
   drawerTitle: string = '';
 
   onMasterChange(value:any) {
@@ -642,21 +644,21 @@ export class AppComponent {
   onMatchedRecordClick() {
     if (this.matchedRecord) {
       this.selectedRecord = this.matchedRecord;
-      this.drawerTitle = `Update ${this.selectedMaster1.name}`;
+      // this.drawerTitle = `Update ${this.selectedMaster1.name}`;
       this.router.navigate([this.selectedMaster1.url]);
-      this.drawerVisible = true;
+      // this.drawerVisible = true;
       this.searchQuery = '';
     }
   }
 
   closeCallback = () => {
     this.drawerVisible = false;
-    this.selectedRecord = null; // Clear the selected record when closing
+    this.selectedRecord = new customer(); // Clear the selected record when closing
   };
 
   drawerClose = () => {
     this.drawerVisible = false;
-    this.selectedRecord = null; // Optionally reset the selected record
+    this.selectedRecord = new customer();  // Optionally reset the selected record
   }
 
   reset(){

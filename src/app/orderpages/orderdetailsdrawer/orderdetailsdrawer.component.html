@@ -15,11 +15,15 @@
             padding: 5px;
           "
         >
-          ORD/1010/2024</span
-        >
+          {{ vieworderdata.orderData[0]["ORDER_NUMBER"] }}
+        </span>
       </div>
       <div class="mainnam" nz-col nzSpan="12" style="text-align: end">
-        {{ date | date : "dd/MMM/yyyy hh:mm a" }}
+        <!-- {{ date }} -->
+        {{
+          vieworderdata.orderData[0]["ORDER_DATE_TIME"]
+            | date : "dd/MMM/yyyy hh:mm a"
+        }}
       </div>
 
       <div
@@ -48,7 +52,7 @@
               />
             </svg> -->
 
-        Shubham T Patil
+        {{ vieworderdata.orderData[0]["CUSTOMER_NAME"] }}
       </div>
       <div nz-col nzSpan="24">
         <div nz-row>
@@ -72,7 +76,12 @@
             nzSpan="23"
             style="font-size: 12px !important; text-align: start"
           >
-            A/p bavachi (walwa phata) Sangli 416301
+            {{ vieworderdata.orderData[0]["ADDRESS_LINE_1"] }},
+            {{ vieworderdata.orderData[0]["ADDRESS_LINE_2"] }}
+            {{ vieworderdata.orderData[0]["COUNTRY_NAME"] }},
+            {{ vieworderdata.orderData[0]["STATE_NAME"] }},{{
+              vieworderdata.orderData[0]["CITY_NAME"]
+            }}, {{ vieworderdata.orderData[0]["PINCODE"] }}
           </div>
         </div>
       </div>
@@ -83,8 +92,11 @@
         style="font-size: 12px !important; text-align: start"
       >
         <span nz-icon nzType="phone" nzTheme="outline"></span>
-        <a style="font-size: 12px !important" href="tel:+9762417537">
-          9762417537</a
+        <a
+          style="font-size: 12px !important; color: black"
+          href="tel:+9762417537"
+        >
+          {{ vieworderdata.orderData[0]["MOBILE_NO"] }}</a
         >
       </div>
       <div
@@ -100,10 +112,11 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: black;
           "
           href="mailto:patilshubham6003@gmail.com"
         >
-          patilshubham6003@gmail.com</a
+          {{ vieworderdata.orderData[0]["EMAIL"] }}</a
         >
       </div>
     </div>
@@ -115,6 +128,7 @@
     >
       <div class="mainnam">Service Details</div>
       <div
+        *ngFor="let data of vieworderdata['detailsData']"
         nz-col
         nzSpan="24"
         style="
@@ -230,421 +244,19 @@
             </svg>
           </div>
           <div nz-col nzSpan="22">
-            <span class="mainnam">Hard Disk</span>
+            <span class="mainnam">{{ data.SERVICE_NAME }}</span>
             <div nz-row>
-              <div nz-col nzSpan="20" style="text-align: end" class="subnam">
+              <div nz-col nzSpan="18" style="text-align: end" class="subnam">
                 ₹
               </div>
-              <div nz-col nzSpan="4" style="text-align: end" class="subnam">
-                500 * 2
+              <div nz-col nzSpan="6" style="text-align: end" class="subnam">
+                {{ data.RATE }} * {{ data.QUANTITY }}
               </div>
-              <div nz-col nzSpan="20" style="text-align: end" class="mainnam">
+              <div nz-col nzSpan="18" style="text-align: end" class="mainnam">
                 ₹
               </div>
-              <div nz-col nzSpan="4" style="text-align: end" class="mainnam">
-                1000
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        nz-col
-        nzSpan="24"
-        style="
-          box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
-            rgb(209, 213, 219) 0px 0px 0px 1px inset;
-          padding: 10px;
-          margin-bottom: 4px;
-        "
-      >
-        <div nz-row>
-          <div nz-col nzSpan="2" style="text-align: center">
-            <svg
-              enable-background="new 0 0 64 64"
-              height="30px"
-              id="Layer_1"
-              version="1.1"
-              viewBox="0 0 64 64"
-              width="30px"
-              xml:space="preserve"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-            >
-              <g>
-                <path
-                  d="   M52,54c0,1.1-0.9,2-2,2H14c-1.1,0-2-0.9-2-2V10c0-1.1,0.9-2,2-2H50c1.1,0,2,0.9,2,2V54z"
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <circle
-                  cx="32"
-                  cy="32"
-                  fill="none"
-                  r="3.2"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <circle
-                  cx="47.5"
-                  cy="12.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <circle
-                  cx="16.5"
-                  cy="12.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <circle
-                  cx="47.5"
-                  cy="51.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <circle
-                  cx="16.5"
-                  cy="51.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <path
-                  d="   M42,40.8c2.1-2.3,3.3-5.4,3.3-8.8c0-7.4-6-13.3-13.3-13.3s-13.3,6-13.3,13.3s6,13.3,13.3,13.3c1.5,0,2.9-0.2,4.2-0.7"
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <path
-                  d="M40,48   c-0.7-1-5.2-11.3-5.2-11.3s8.2,7.7,8.9,8.7c0.7,1,0.5,2.4-0.6,3.1C42.1,49.3,40.7,49,40,48z"
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <line
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  x1="24.3"
-                  x2="40.7"
-                  y1="12.5"
-                  y2="12.5"
-                />
-              </g>
-            </svg>
-          </div>
-          <div nz-col nzSpan="22">
-            <span class="mainnam">Hard Disk</span>
-            <div nz-row>
-              <div nz-col nzSpan="20" style="text-align: end" class="subnam">
-                ₹
-              </div>
-              <div nz-col nzSpan="4" style="text-align: end" class="subnam">
-                500 * 2
-              </div>
-              <div nz-col nzSpan="20" style="text-align: end" class="mainnam">
-                ₹
-              </div>
-              <div nz-col nzSpan="4" style="text-align: end" class="mainnam">
-                1000
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        nz-col
-        nzSpan="24"
-        style="
-          box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
-            rgb(209, 213, 219) 0px 0px 0px 1px inset;
-          padding: 10px;
-          margin-bottom: 4px;
-        "
-      >
-        <div nz-row>
-          <div nz-col nzSpan="2" style="text-align: center">
-            <svg
-              enable-background="new 0 0 64 64"
-              height="30px"
-              id="Layer_1"
-              version="1.1"
-              viewBox="0 0 64 64"
-              width="30px"
-              xml:space="preserve"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-            >
-              <g>
-                <path
-                  d="   M52,54c0,1.1-0.9,2-2,2H14c-1.1,0-2-0.9-2-2V10c0-1.1,0.9-2,2-2H50c1.1,0,2,0.9,2,2V54z"
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <circle
-                  cx="32"
-                  cy="32"
-                  fill="none"
-                  r="3.2"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <circle
-                  cx="47.5"
-                  cy="12.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <circle
-                  cx="16.5"
-                  cy="12.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <circle
-                  cx="47.5"
-                  cy="51.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <circle
-                  cx="16.5"
-                  cy="51.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <path
-                  d="   M42,40.8c2.1-2.3,3.3-5.4,3.3-8.8c0-7.4-6-13.3-13.3-13.3s-13.3,6-13.3,13.3s6,13.3,13.3,13.3c1.5,0,2.9-0.2,4.2-0.7"
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <path
-                  d="M40,48   c-0.7-1-5.2-11.3-5.2-11.3s8.2,7.7,8.9,8.7c0.7,1,0.5,2.4-0.6,3.1C42.1,49.3,40.7,49,40,48z"
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <line
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  x1="24.3"
-                  x2="40.7"
-                  y1="12.5"
-                  y2="12.5"
-                />
-              </g>
-            </svg>
-          </div>
-          <div nz-col nzSpan="22">
-            <span class="mainnam">Hard Disk</span>
-            <div nz-row>
-              <div nz-col nzSpan="20" style="text-align: end" class="subnam">
-                ₹
-              </div>
-              <div nz-col nzSpan="4" style="text-align: end" class="subnam">
-                500 * 2
-              </div>
-              <div nz-col nzSpan="20" style="text-align: end" class="mainnam">
-                ₹
-              </div>
-              <div nz-col nzSpan="4" style="text-align: end" class="mainnam">
-                1000
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        nz-col
-        nzSpan="24"
-        style="
-          box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
-            rgb(209, 213, 219) 0px 0px 0px 1px inset;
-          padding: 10px;
-          margin-bottom: 4px;
-        "
-      >
-        <div nz-row>
-          <div nz-col nzSpan="2" style="text-align: center">
-            <svg
-              enable-background="new 0 0 64 64"
-              height="30px"
-              id="Layer_1"
-              version="1.1"
-              viewBox="0 0 64 64"
-              width="30px"
-              xml:space="preserve"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-            >
-              <g>
-                <path
-                  d="   M52,54c0,1.1-0.9,2-2,2H14c-1.1,0-2-0.9-2-2V10c0-1.1,0.9-2,2-2H50c1.1,0,2,0.9,2,2V54z"
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <circle
-                  cx="32"
-                  cy="32"
-                  fill="none"
-                  r="3.2"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <circle
-                  cx="47.5"
-                  cy="12.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <circle
-                  cx="16.5"
-                  cy="12.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <circle
-                  cx="47.5"
-                  cy="51.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <circle
-                  cx="16.5"
-                  cy="51.5"
-                  fill="none"
-                  r="1.3"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <path
-                  d="   M42,40.8c2.1-2.3,3.3-5.4,3.3-8.8c0-7.4-6-13.3-13.3-13.3s-13.3,6-13.3,13.3s6,13.3,13.3,13.3c1.5,0,2.9-0.2,4.2-0.7"
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <path
-                  d="M40,48   c-0.7-1-5.2-11.3-5.2-11.3s8.2,7.7,8.9,8.7c0.7,1,0.5,2.4-0.6,3.1C42.1,49.3,40.7,49,40,48z"
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                />
-                <line
-                  fill="none"
-                  stroke="#4D4D4D"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="10"
-                  x1="24.3"
-                  x2="40.7"
-                  y1="12.5"
-                  y2="12.5"
-                />
-              </g>
-            </svg>
-          </div>
-          <div nz-col nzSpan="22">
-            <span class="mainnam">Hard Disk</span>
-            <div nz-row>
-              <div nz-col nzSpan="20" style="text-align: end" class="subnam">
-                ₹
-              </div>
-              <div nz-col nzSpan="4" style="text-align: end" class="subnam">
-                500 * 2
-              </div>
-              <div nz-col nzSpan="20" style="text-align: end" class="mainnam">
-                ₹
-              </div>
-              <div nz-col nzSpan="4" style="text-align: end" class="mainnam">
-                1000
+              <div nz-col nzSpan="6" style="text-align: end" class="mainnam">
+                {{ gettotal(data.RATE, data.QUANTITY) }}
               </div>
             </div>
           </div>
@@ -664,15 +276,15 @@
         "
       >
         <div nz-row>
-          <div nz-col nzSpan="19" style="text-align: end" class="subnam">
+          <div nz-col nzSpan="18" style="text-align: end" class="subnam">
             <span class="subnam">Tax Amount</span>
           </div>
           <div nz-col nzSpan="1" style="text-align: end" class="subnam">₹</div>
-          <div nz-col nzSpan="4" style="text-align: end" class="subnam">
-            500
+          <div nz-col nzSpan="5" style="text-align: end" class="subnam">
+            {{ vieworderdata.orderData[0]["TOTAL_TAX"] }}
           </div>
         </div>
-        <div nz-row>
+        <!-- <div nz-row>
           <div nz-col nzSpan="19" style="text-align: end" class="subnam">
             <span class="subnam">Service Charges</span>
           </div>
@@ -680,14 +292,14 @@
           <div nz-col nzSpan="4" style="text-align: end" class="subnam">
             500
           </div>
-        </div>
+        </div> -->
         <div nz-row style="border-top: 1px solid #b7b1b1b8">
-          <div nz-col nzSpan="19" style="text-align: end" class="subnam">
+          <div nz-col nzSpan="18" style="text-align: end" class="subnam">
             <span class="mainnam">Total Amount</span>
           </div>
           <div nz-col nzSpan="1" style="text-align: end" class="subnam">₹</div>
-          <div nz-col nzSpan="4" style="text-align: end" class="subnam">
-            1000
+          <div nz-col nzSpan="5" style="text-align: end" class="subnam">
+            {{ vieworderdata.orderData[0]["FINAL_AMOUNT"] }}
           </div>
         </div>
       </div>
@@ -695,16 +307,55 @@
 
     <div class="backbbb" nz-row style="padding: 10px; margin-top: 10px">
       <div class="mainnam">Payment Details</div>
-      <div nz-col nzSpan="24" class="subnam">Payment Mode: Online</div>
-      <div nz-col nzSpan="24" class="subnam">Payment Id: 34534532das</div>
-      <div nz-col nzSpan="24" class="subnam">Paid Amount: ₹ 500</div>
+      <div nz-col nzSpan="24" class="subnam">
+        Payment Mode: {{ vieworderdata.orderData[0]["PAYMENT_MODE"] }}
+      </div>
+      <!-- <div nz-col nzSpan="24" class="subnam">Payment Id: 34534532das</div>
+      <div nz-col nzSpan="24" class="subnam">Paid Amount: ₹ 500</div> -->
     </div>
 
     <div class="footer">
-      <nz-tag
+      <!-- <nz-tag
         style="width: 100% !important; text-align: center"
         [nzColor]="'orange'"
         >Order Scheduled</nz-tag
+      > -->
+
+      <nz-tag
+        style="width: 100% !important; text-align: center"
+        *ngIf="vieworderdata.orderData[0]['ORDER_STATUS'] == 'OP'"
+        [nzColor]="'orange'"
+        >Order Placed</nz-tag
+      >
+      <nz-tag
+        style="width: 100% !important; text-align: center"
+        *ngIf="vieworderdata.orderData[0]['ORDER_STATUS'] == 'OA'"
+        [nzColor]="'orange'"
+        >Order Accepted</nz-tag
+      >
+      <nz-tag
+        style="width: 100% !important; text-align: center"
+        *ngIf="vieworderdata.orderData[0]['ORDER_STATUS'] == 'OR'"
+        [nzColor]="'orange'"
+        >Order Rejected</nz-tag
+      >
+      <nz-tag
+        style="width: 100% !important; text-align: center"
+        *ngIf="vieworderdata.orderData[0]['ORDER_STATUS'] == 'OS'"
+        [nzColor]="'orange'"
+        >Order Scheduled</nz-tag
+      >
+      <nz-tag
+        style="width: 100% !important; text-align: center"
+        *ngIf="vieworderdata.orderData[0]['ORDER_STATUS'] == 'OC'"
+        [nzColor]="'orange'"
+        >Order Completed</nz-tag
+      >
+      <nz-tag
+        style="width: 100% !important; text-align: center"
+        *ngIf="vieworderdata.orderData[0]['ORDER_STATUS'] == 'C'"
+        [nzColor]="'orange'"
+        >Order Cancelled</nz-tag
       >
     </div>
   </div>
@@ -715,11 +366,12 @@
       <div
         nz-col
         nzSpan="24"
-        style="text-align: center; margin-bottom: 20px"
+        style="text-align: center; margin-bottom: 5px"
         class="cardstyle1"
       >
         <h6>
-          Order accepted on {{ date | date : "dd-MM-yyyy HH:mm a" }} by harsh
+          The order was accepted on {{ date | date : "dd-MM-yyyy HH:mm a" }} by
+          Harsh
         </h6>
       </div>
       <!-- <div nz-col nzSpan="1"></div> -->
@@ -767,14 +419,14 @@
                       ORD/1010/2024</span
                     >
                   </div>
-                  <div nz-col nzSpan="12" style="text-align: center">
+                  <div nz-col nzSpan="12">
                     <button
                       nz-button
                       nzType="primary"
                       style="text-align: center"
                       (click)="openmodelll()"
                     >
-                      Genrate Job
+                      Generate Job
                     </button>
                   </div>
                   <div
@@ -996,11 +648,11 @@
                   <button
                     nz-button
                     nzType="primary"
-                    (click)="viewPastOrders()"
+                    (click)="viewPastOrders(data)"
                     *nzSpaceItem
                   >
                     <i nz-icon nzType="eye"></i>View Past Orders
-                  </button>
+                  </button> 
 
                   <!-- <button
                     nz-button
@@ -1173,217 +825,181 @@
           </div>
 
           <!-- vaishnavi -->
-
           <div
-            nz-col
-            nzSpan="24"
-            *ngIf="!showjobcard && !showverification && showchat"
-          >
-            <div style="font-weight: bold; margin-bottom: 10px">
-              <span
-                (click)="backall()"
-                nz-icon
-                nzType="arrow-left"
-                nzTheme="outline"
-                style="font-weight: bold; cursor: pointer"
-              ></span>
-              &nbsp;Customer Chat
-            </div>
-            <div class="select-container">
-              <div nz-col nzSpan="8">
-                <nz-form-item>
-                  <nz-form-label nzRequired nzNoColon
-                    >Technician Name</nz-form-label
+          nz-col
+          nzSpan="24"
+          *ngIf="!showjobcard && !showverification && showchat"
+        >
+          <div style="font-weight: bold; margin-bottom: 10px">
+            <span
+              (click)="backall()"
+              nz-icon
+              nzType="arrow-left"
+              nzTheme="outline"
+              style="font-weight: bold; cursor: pointer"
+            ></span>
+            &nbsp;Customer Chat
+          </div>
+          <div class="select-container">
+            <div nz-col nzSpan="10">
+              <nz-form-item>
+                <nz-form-label nzRequired nzNoColon
+                  >Technician Name</nz-form-label
+                >
+                <nz-form-control
+                  nzHasFeedback
+                  nzErrorTip="Please Select Technician Name"
+                >
+                  <nz-select
+                    nzAllowClear="true"
+                    nzPlaceHolder="Select Technician Name"
+                    name="TECHNICIAN_NAME"
+                    [(ngModel)]="TECHNICIAN_NAME"
+                    (ngModelChange)="onTechnicianChange()"
+                    nzShowSearch
+                    
                   >
-                  <nz-form-control
-                    nzHasFeedback
-                    nzErrorTip="Please Select Technician Name"
-                  >
-                    <nz-select
-                      nzAllowClear="true"
-                      nzPlaceHolder="Select Technician Name"
-                      name="TECHNICIAN_NAME"
-                      [(ngModel)]="TECHNICIAN_NAME"
-                      (ngModelChange)="onTechnicianChange()"
-                      nzShowSearch
-                      required
-                    >
-                      <nz-option
-                        *ngFor="let data of techData"
-                        [nzValue]="data.ID"
-                        [nzLabel]="data.NAME"
-                      ></nz-option>
-                    </nz-select>
-                  </nz-form-control>
-                </nz-form-item>
-              </div>
+                    <nz-option
+                      *ngFor="let data of jobcardtechmapdata"
+                      [nzValue]="data.ID"
+                      [nzLabel]="data.TECHNICIAN_NAME"
+                    ></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
             </div>
-            <div class="chat-container">
-              <div class="message-box">
+          </div>
+          <div class="chat-container" *ngIf="TECHNICIAN_NAME">
+            <!-- Scrollable area for messages -->
+            <div class="message-box">
+              <div *ngFor="let data of chatDetailsdata">
                 <!-- Customer's message -->
-                <div class="message customer-message">
-                  <span class="customer-name">Customer Name</span>
+                <div class="message customer-message" *ngIf="data.IS_CUSTOMER == 1">
+                  <span class="customer-name">{{this.orderData.CUSTOMER_NAME}}</span>
                   <div>
                     <div class="message-text">
-                      Message content here.hhhhhhhhhhhhhhhhhhhhhh..
+                      {{ data.MESSAGE }}
                     </div>
-
-                    <div
-                      style="text-align: right !important; width: 100%"
-                      class="timestamp"
-                    >
-                      15/Nov | 16:39 PM
-                    </div>
+                    <div class="timestamp">15/Nov | 16:39 PM</div>
                   </div>
                 </div>
-
+          
                 <!-- Technician's message -->
-                <div class="message technician-message">
-                  <span class="technician-name">Technician Name</span>
+                <div class="message technician-message" *ngIf="data.IS_CUSTOMER == 0">
+                  <span class="technician-name">{{ selectedTechnicianName }}</span>
                   <div class="message-text">
-                    Message content
-                    here.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh..
+                    {{ data.MESSAGE }}
                   </div>
                   <span class="timestamp">15/Nov | 16:40 PM</span>
                 </div>
-
-                <!-- Customer's message -->
-                <div class="message customer-message">
-                  <span class="customer-name">Customer Name</span>
-                  <div>
-                    <div class="message-text">Message content here...</div>
-
-                    <div
-                      style="text-align: right !important; width: 100%"
-                      class="timestamp"
-                    >
-                      15/Nov | 16:39 PM
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Technician's message -->
-                <div class="message technician-message">
-                  <span class="technician-name">Technician Name</span>
-                  <div class="message-text">Message content here...</div>
-                  <span class="timestamp">15/Nov | 16:40 PM</span>
-                </div>
-              </div>
-
-              <div class="input-area">
-                <button nz-button nzType="default" class="paper-clip">
-                  <span
-                    style="font-size: 20px !important"
-                    nz-icon
-                    nzType="paper-clip"
-                    nzTheme="outline"
-                  ></span>
-                </button>
-                <textarea
-                  placeholder="Type your message..."
-                  rows="1"
-                ></textarea>
-                <button type="button" class="whatsapp-send-icon">
-                  <span nz-icon nzType="send" nzTheme="outline"></span>
-                </button>
               </div>
             </div>
-          </div>
-
-          <div nz-col nzSpan="24" *ngIf="showmap" style="height: 70vh">
-            <!-- <h3>Your Current Location</h3> -->
-            <div style="font-weight: bold; margin-bottom: 10px">
-              <span
-                (click)="backall()"
-                nz-icon
-                nzType="arrow-left"
-                nzTheme="outline"
-                style="font-weight: bold; cursor: pointer"
-              ></span>
-              &nbsp;Map View
+          
+            <!-- Fixed input area -->
+            <div class="input-area">
+              <button nz-button nzType="default" class="paper-clip">
+                <span
+                  style="font-size: 20px !important"
+                  nz-icon
+                  nzType="paper-clip"
+                  nzTheme="outline"
+                ></span>
+              </button>
+              <textarea placeholder="Type your message..." rows="1"></textarea>
+              <button type="button" class="whatsapp-send-icon">
+                <span nz-icon nzType="send" nzTheme="outline"></span>
+              </button>
             </div>
-            <!-- <iframe [src]="safeUrl" width="100%" height="100%" style="border: 1px solid;"></iframe> -->
-            <app-location [MAPlOCATION]="MAPlOCATION"></app-location>
           </div>
+          
+        </div>
+
+        <div nz-col nzSpan="24" *ngIf="showmap" style="height: 70vh">
+          <div style="font-weight: bold; margin-bottom: 10px">
+            <span
+              (click)="backall()"
+              nz-icon
+              nzType="arrow-left"
+              nzTheme="outline"
+              style="font-weight: bold; cursor: pointer"
+            ></span>
+            &nbsp;Map View
+          </div>
+          
+          <app-location [MAPlOCATION]="MAPlOCATION" ></app-location>
+        </div>
 
           <!-- purva mam -->
-          <!-- Action Log HTML -->
+         <!-- Action Log HTML -->
+ 
+         <div nz-col nzSpan="24" *ngIf="
+         !showjobcard &&
+         !showverification &&
+         !showchat &&
+         showactionlog &&
+         !showinvoicetable
+       ">
+       <!-- <div style="font-weight: bold;"> <span (click)="backall()" nz-icon nzType="arrow-left" nzTheme="outline" style="font-weight: bold;cursor: pointer;"></span> &nbsp;Customer Chat </div> -->
+       <div nz-row>
+         <div nz-col nzSpan="10">
+           <div class="formname">
+             <b><span (click)="backall()" nz-icon nzType="arrow-left" nzTheme="outline"
+                 style="font-weight: bold; cursor: pointer"></span>
+               Action Log
+             </b>
+           </div>
+         </div>
+         <div nz-col nzSpan="14">
+           <nz-checkbox-wrapper style="width: 100%;margin-top: -5px;">
+             <div nz-row>
 
-          <div
-            nz-col
-            nzSpan="24"
-            *ngIf="
-              !showjobcard &&
-              !showverification &&
-              !showchat &&
-              showactionlog &&
-              !showinvoicetable
-            "
-          >
-            <!-- <div style="font-weight: bold;"> <span (click)="backall()" nz-icon nzType="arrow-left" nzTheme="outline" style="font-weight: bold;cursor: pointer;"></span> &nbsp;Customer Chat </div> -->
-            <div nz-row>
-              <div nz-col nzSpan="10">
-                <div class="formname">
-                  <b
-                    ><span
-                      (click)="backall()"
-                      nz-icon
-                      nzType="arrow-left"
-                      nzTheme="outline"
-                      style="font-weight: bold; cursor: pointer"
-                    ></span>
-                    Action Log
-                  </b>
-                </div>
-              </div>
-              <div nz-col nzSpan="14">
-                <nz-checkbox-wrapper style="width: 100%">
-                  <div nz-row>
-                    <div nz-col nzSpan="8">
-                      <label nz-checkbox nzValue="'A'" [(ngModel)]="checked"
-                        >Invoice Log</label
-                      >
-                    </div>
-                    <div nz-col nzSpan="8">
-                      <label nz-checkbox nzValue="B">Order Log</label>
-                    </div>
-                    <div nz-col nzSpan="8">
-                      <label nz-checkbox nzValue="C">Job Card Log</label>
-                    </div>
-                  </div>
-                </nz-checkbox-wrapper>
-              </div>
-            </div>
-            <div class="timeline-container" style="float: left">
-              <!-- <h2>All the actions and events related to this Contact are recorded in a chronological order.</h2> -->
-              <div *ngFor="let group of timelineData">
-                <!-- Group Date -->
-                <h3 class="group-date">{{ group.date }}</h3>
+               <div nz-col nzSpan="8">
+                 <label nz-checkbox nzValue="B" name="checked" [(ngModel)]="checked"
+                   (ngModelChange)="getActionLog()">Order Log</label>
+               </div>
+               <div nz-col nzSpan="8">
+                 <label nz-checkbox nzValue="C" [(ngModel)]="checked1" (ngModelChange)="getActionLog()">Job Card
+                   Log</label>
+               </div>
+             </div>
+           </nz-checkbox-wrapper>
+         </div>
+       </div>
+       <div class="timeline-container">
+         <ng-container>
+           <div *ngFor="let group of timelineData">
+             <!-- Group Date -->
+             <h3 class="group-date">{{ group.date }}</h3>
 
-                <!-- Timeline for each event -->
-                <nz-timeline>
-                  <nz-timeline-item *ngFor="let event of group.events">
-                    <div class="event-details">
-                      <!-- Icon and Title -->
-                      <div class="event-title">
-                        <span class="icon">{{ event.icon }}</span>
-                        <span>{{ event.title }}</span>
-                      </div>
-                      <!-- Time and User -->
-                      <div class="event-meta">
-                        <span class="time">{{ event.time }}</span>
-                        <span class="user">By {{ event.user }}</span>
-                      </div>
-                      <!-- Description -->
-                      <div *ngIf="event.description" class="event-description">
-                        {{ event.description }}
-                      </div>
-                    </div>
-                  </nz-timeline-item>
-                </nz-timeline>
-              </div>
-            </div>
-          </div>
+             <!-- Timeline for each event -->
+             <nz-timeline>
+               <nz-timeline-item *ngFor="let event of group.events">
+                 <div class="event-details">
+                   <!-- Icon and Title -->
+                   <div class="event-title">
+                     <span class="icon">{{ event.icon }}</span>
+                     <span>{{ event.title }}</span>
+                   </div>
+                   <!-- Time and User -->
+                   <div class="event-meta">
+                     <span class="time">{{ event.time }}</span>
+                     <span class="user">By {{ event.user }}</span>
+                   </div>
+                   <!-- Description -->
+                   <div *ngIf="event.description" class="event-description">
+                     {{ event.description }}
+                   </div>
+                 </div>
+               </nz-timeline-item>
+             </nz-timeline>
+           </div>
+         </ng-container>
+         <ng-template #loadingTemplate>
+           <nz-spin>Loading timeline data...</nz-spin>
+         </ng-template>
+       </div>
+
+     </div>
           <!-- Invoice Table HTML -->
           <div
             nz-col
@@ -1406,33 +1022,67 @@
               ></span>
               &nbsp;Invoice
             </div>
+
             <nz-table
               #basicTable
               [nzBordered]="true"
               [nzSize]="'middle'"
               [nzShowPagination]="true"
-              [nzData]="listOfData"
+              [nzData]="invoiceData"
               [nzScroll]="{ x: '500px' }"
+              (nzQueryParams)="sort($event)"
             >
               <thead>
                 <tr>
                   <th nzWidth="50px">View</th>
-                  <th nzShowSort nzWidth="100px" [nzSortFn]="true">Date</th>
-                  <th nzShowSort nzWidth="150px" [nzSortFn]="true">
-                    Invoice No
+                  <th
+                    nzWidth="150px"
+                    [nzSortFn]="true"
+                    nzColumnKey="INVOICE_DATE"
+                  >
+                    Invoice Date
                   </th>
-                  <th nzShowSort nzWidth="150px" [nzSortFn]="true">Order No</th>
-                  <th nzShowSort nzWidth="150px" [nzSortFn]="true">Job No</th>
-                  <th nzShowSort nzWidth="200px" [nzSortFn]="true">
+                  <th
+                    nzWidth="150px"
+                    [nzSortFn]="true"
+                    nzColumnKey="CUSTOMER_NAME"
+                  >
                     Customer Name
                   </th>
-                  <th nzShowSort nzWidth="150px" [nzSortFn]="true">
+                  <th
+                    nzWidth="150px"
+                    [nzSortFn]="true"
+                    nzColumnKey="CUSTOMER_TYPE"
+                  >
+                    Customer Type
+                  </th>
+                  <th nzWidth="150px" [nzSortFn]="true" nzColumnKey="MOBILE_NO">
                     Mobile No
                   </th>
-                  <th nzShowSort nzWidth="200px" [nzSortFn]="true">Email ID</th>
-                  <th nzShowSort nzWidth="250px" [nzSortFn]="true">Address</th>
-                  <th nzShowSort nzWidth="150px" [nzSortFn]="true">Due Date</th>
-                  <th nzShowSort nzWidth="150px" [nzSortFn]="true">Total</th>
+                  <th nzWidth="200px" [nzSortFn]="true" nzColumnKey="EMAIL">
+                    Email
+                  </th>
+                  <th
+                    nzWidth="150px"
+                    [nzSortFn]="true"
+                    nzColumnKey="TOTAL_AMOUNT"
+                  >
+                    Total Amount
+                  </th>
+                  <th
+                    nzWidth="150px"
+                    [nzSortFn]="true"
+                    nzColumnKey="TAX_AMOUNT"
+                  >
+                    Tax Amount
+                  </th>
+                  <th
+                    nzWidth="150px"
+                    [nzSortFn]="true"
+                    nzColumnKey="FINAL_AMOUNT"
+                  >
+                    Final Amount
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -1447,142 +1097,28 @@
                       <span nz-icon nzType="eye" nzTheme="outline"></span>
                     </a>
                   </td>
-                  <td style="text-align: center">{{ data.date }}</td>
-                  <td style="text-align: center">{{ data.invoiceNo }}</td>
-                  <td style="text-align: center">{{ data.orderNo }}</td>
-                  <td style="text-align: center">{{ data.jobNo }}</td>
-                  <td>{{ data.customerName }}</td>
-                  <td style="text-align: center">{{ data.mobileNo }}</td>
-                  <td>{{ data.emailId }}</td>
-                  <td>{{ data.address }}</td>
-                  <td style="text-align: center">{{ data.dueDate }}</td>
-                  <td style="text-align: center">{{ data.total }}</td>
+                  <td style="text-align: center">{{ data.INVOICE_DATE }}</td>
+                  <td *ngIf="data.CUSTOMER_NAME">
+                    {{ data.SALUTATION }}.{{ data.CUSTOMER_NAME }}
+                  </td>
+                  <td *ngIf="!data.CUSTOMER_NAME" align="center">-</td>
+                  <td>
+                    <span *ngIf="data.CUSTOMER_TYPE == 'I'">Individual</span>
+                    <span *ngIf="data.CUSTOMER_TYPE == 'B'">Buisiness</span>
+                  </td>
+
+                  <td style="text-align: center">
+                    {{ data.MOBILE_NO || "-" }}
+                  </td>
+                  <td>{{ data.EMAIL || "-" }}</td>
+                  <td style="text-align: center">{{ data.TOTAL_AMOUNT }}</td>
+                  <td style="text-align: center">{{ data.TAX_AMOUNT }}</td>
+                  <td style="text-align: center">{{ data.FINAL_AMOUNT }}</td>
                 </tr>
               </tbody>
             </nz-table>
 
             <!-- Modal -->
-            <nz-modal
-              [(nzVisible)]="isModalVisible"
-              nzTitle="Invoice Details"
-              (nzOnCancel)="handleCancel()"
-              [nzFooter]="null"
-              [nzWidth]="600"
-              [nzStyle]="modalStyle"
-            >
-              >
-
-              <ng-container *nzModalContent>
-                <div class="invoice-container" id="printModal">
-                  <!-- Invoice Header -->
-                  <div class="invoice-header">
-                    <div class="company-info">
-                      <h2>Excel Informatics Pvt. Ltd.</h2>
-                      <p>123 Tech Park, Springfield, USA</p>
-                    </div>
-                    <div class="invoice-info">
-                      <h3>INVOICE</h3>
-                      <p><strong>Invoice No:</strong> INV123456</p>
-                      <p><strong>Date:</strong> 2024-04-15</p>
-                    </div>
-                  </div>
-
-                  <hr />
-
-                  <!-- Customer Details -->
-                  <div class="customer-info">
-                    <h3>Billing To:</h3>
-                    <div class="customer-details">
-                      <div class="detail">
-                        <p><strong>Name:</strong> John Doe</p>
-                        <p><strong>Email:</strong> john.doe@example.com</p>
-                      </div>
-                      <div class="detail">
-                        <p><strong>Mobile:</strong> 9876543210</p>
-                        <p>
-                          <strong>Address:</strong> 123 Main St, Springfield
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <hr />
-
-                  <!-- Order Details -->
-                  <div class="order-details">
-                    <h3>Order Details</h3>
-                    <table class="invoice-table">
-                      <thead>
-                        <tr>
-                          <th>Item</th>
-                          <th>Description</th>
-                          <th>Quantity</th>
-                          <th>Unit Price</th>
-                          <th>Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Product A</td>
-                          <td>High-quality widget</td>
-                          <td>2</td>
-                          <td>$50</td>
-                          <td>$100</td>
-                        </tr>
-                        <tr>
-                          <td>Product B</td>
-                          <td>Premium gadget</td>
-                          <td>1</td>
-                          <td>$80</td>
-                          <td>$80</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div class="invoice-summary">
-                    <p><strong>Subtotal:</strong> $180</p>
-                    <p><strong>Tax (10%):</strong> $18</p>
-                    <p><strong>Total Amount:</strong> $198</p>
-                  </div>
-
-                  <hr />
-
-                  <!-- Payment Instructions & Footer -->
-                  <div class="invoice-footer">
-                    <p><strong>Payment Instructions:</strong></p>
-                    <p>
-                      Bank Transfer: XYZ Bank | A/C: 123456789 | IFSC:
-                      XYZ0001234
-                    </p>
-                    <p class="thank-you">Thank you for your business!</p>
-                  </div>
-                </div>
-
-                <div class="footer">
-                  <button
-                    type="button"
-                    nz-button
-                    (click)="handleCancel()"
-                    class="ant-btn"
-                    style="margin-right: 8px"
-                  >
-                    <span>Close</span>
-                  </button>
-                  <button
-                    style="float: right"
-                    nz-button
-                    nzType="primary"
-                    printSectionId="printModal"
-                    ngxPrint
-                    [useExistingCss]="true"
-                    style="float: right"
-                  >
-                    Print
-                  </button>
-                </div>
-              </ng-container>
-            </nz-modal>
           </div>
         </div>
       </div>
@@ -1655,104 +1191,22 @@
   </div>
   <!-- box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; -->
 </div>
-<nz-modal
-  [(nzVisible)]="openModal"
-  nzCentered="true"
-  [nzBodyStyle]="{ padding: '16px' }"
-  nzWidth="570px"
-  nzClosable="false"
-  [nzFooter]="contextofrules"
-  nzMaskClosable="false"
->
-  <ng-container *nzModalContent>
-    <h5 style="font-size: 15px">Create Job for Hard Disk</h5>
-    <hr style="margin: 8px 0" />
-    <p style="font-size: 13px; margin-bottom: 10px"></p>
-    <div nz-row>
-      <div nz-col nzSpan="24">
-        <nz-form-item class="nz-form-itemm">
-          <nz-form-label nzRequired nzNoColon>Job Details</nz-form-label>
-          <nz-form-control nzHasFeedback nzErrorTip="Please Enter Job Details ">
-            <input
-              nz-input
-              name="Name"
-              [(ngModel)]="jobdetails"
-              placeholder="Enter Job Details"
-              maxlength="120"
-              required
-              autocomplete="off"
-            />
-          </nz-form-control>
-          <span style="color: red; font-size: 10px" *ngIf="jobdetails"
-            >{{ jobdetails.length }}/120</span
-          >
-        </nz-form-item>
-      </div>
-      <div nz-col nzSpan="12">
-        <nz-form-item class="nz-form-itemm">
-          <nz-form-label nzRequired nzNoColon>Skills</nz-form-label>
-          <nz-form-control nzHasFeedback nzErrorTip="Select Skills">
-            <nz-select
-              nzAllowClear="true"
-              nzPlaceHolder="Select Skills"
-              name="skills"
-              [(ngModel)]="skills"
-              nzShowSearch
-              required
-              nzMode="multiple"
-            >
-              <nz-option [nzValue]="'laptop'" [nzLabel]="'Laptop'"></nz-option>
-              <nz-option
-                [nzValue]="'Upgrade Ram'"
-                [nzLabel]="'Upgrade Ram'"
-              ></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div nz-col nzSpan="12">
-        <nz-form-item class="nz-form-itemm">
-          <nz-form-label nzNoColon nzRequired>Estimation Time</nz-form-label>
-          <nz-form-control nzErrorTip="Enter Estimation Time">
-            <nz-input-group [nzAddOnAfter]="'mins'" style="width: 100%">
-              <input
-                nz-input
-                name="DURATION"
-                placeholder="Enter Estimation Time"
-                required
-                autocomplete="off"
-                [(ngModel)]="estimatetime"
-                #nameField="ngModel"
-                (keypress)="commonFunction.onlynum($event)"
-                style="width: 100%"
-                maxlength="10"
-              />
-            </nz-input-group>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
+<nz-modal [nzWidth]="1000" [nzBodyStyle]="{ height: '590px' }" [nzStyle]="{ top: '10px' }"
+  [(nzVisible)]="isModalVisible" nzMaskClosable="false" nzClosable="false" [nzContent]="content"
+  [nzTitle]="'Invoice PDF'" (nzOnCancel)="handleCancel()" [nzFooter]="ImageModalFooter">
+  <ng-template #content>
+    <div id="printModal">
+      <iframe [src]="pdfUrl" style="width: 100%; height: 550px" frameborder="0">
+      </iframe>
     </div>
-  </ng-container>
-
-  <ng-template #contextofrules>
-    <button
-      nz-button
-      nzType="primary"
-      class="btn btn-primary"
-      style="background-color: #006699; font-size: 11px; height: 29px"
-    >
-      Create Job
-    </button>
-    <button
-      nz-button
-      nzType="default"
-      class="btn btn-primary"
-      style="font-size: 11px; height: 29px"
-      (click)="closemodelll()"
-    >
-      Cancel
-    </button>
   </ng-template>
+    <ng-template #ImageModalFooter>
+      <button type="button" nz-button (click)="handleCancel()" class="ant-btn" style="margin-right: 8px">
+        <span>Close</span>
+      </button>
+      <button nz-button nzType="primary" (click)="downloadPDF()">Download PDF</button>
+    </ng-template>
+ 
 </nz-modal>
 
 <!-- sanjana -->

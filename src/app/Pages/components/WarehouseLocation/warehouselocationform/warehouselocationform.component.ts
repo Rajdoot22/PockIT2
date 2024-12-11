@@ -52,8 +52,18 @@ export class WarehouselocationformComponent {
   ngOnInit() {
     // this.getSubCategory()
     // this.getUnits()
+    this.getWarehouses()
   }
-
+  getWarehouses(){
+    this.api.getWarehouses(0,0,'id','desc'," AND STATUS='A'").subscribe(data=>{
+      if(data['code']==200){
+        this.Warehouselist=data['data']
+      }
+      else{
+        this.Warehouselist=[]
+      }
+    })
+  }
   close(accountMasterPage: NgForm) {
     this.drawerClose();
     this.resetDrawer(accountMasterPage);
@@ -117,99 +127,91 @@ export class WarehouselocationformComponent {
     this.isSpinning = false;
     this.isOk = true;
 
-    //     if (this.data.NAME == undefined && this.data.ADDRESS == undefined
-    //        && this.data.CITY_ID== undefined &&  this.data.COUNTRY_ID== undefined &&
-    //        this.data.STATE_ID == undefined && this.data.PINCODE_ID == undefined) {
-    //       this.isOk = false
-    //       this.message.error('Please fill all required details', '')
-    //     }
-
-    //     else if ((this.data.NAME == undefined || this.data.NAME == '')) {
-    //       this.isOk = false;
-    //       this.message.error("Please Enter Branch Name", '');
-    //     }
-
-    //     else if (this.data.ADDRESS== undefined || this.data.ADDRESS == '') {
-    //       this.isOk = false;
-    //       this.message.error("Please Enter Address ", '');
-    //     }
-
-    //     else if (this.data.COUNTRY_ID == undefined || this.data.COUNTRY_ID == '') {
-    //       this.isOk = false;
-    //       this.message.error("Please Enter City", '');
-    //     }
-    //     else if (this.data.STATE_ID == undefined || this.data.STATE_ID == '') {
-    //       this.isOk = false;
-    //       this.message.error("Please Select State", '');
-    //     }
-
-    //     else if (this.data.CITY_ID == undefined || this.data.CITY_ID == '') {
-    //       this.isOk = false;
-    //       this.message.error("Please Enter City", '');
-    //     }
-    //     else if (this.data.PINCODE_ID == undefined) {
-    //       this.isOk = false;
-    //       this.message.error("Please Enter Pincode", '');
-    //     }
-    //     else if (
-    //       this.data.SHORT_CODE == null ||
-    //       this.data.SHORT_CODE == undefined ||
-    //       this.data.SHORT_CODE == 0
-    //     ) {
-    //       this.isOk = false;
-    //       this.message.error('Please Enter Short Code', '');
-    //     }
-    //     else if (
-
-    //       this.data.SEQ_NO == undefined ||
-    //       this.data.SEQ_NO == null ||
-    //       this.data.SEQ_NO == 0
-    //     ) {
-    //       this.isOk = false;
-    //       this.message.error('Please Enter Sequence No.', '');
-    //     }
-
-    //     if (this.isOk) {
-    //       this.isSpinning = true;
-
-    //       this.orgId = this.cookie.get('orgId');
-    // this.data.ORG_ID=this.orgId
-    //       if (this.data.ID) {
-    //         this.api.updateBranch(this.data).subscribe(successCode => {
-    //           if (successCode['code'] == 200) {
-    //             this.message.success("Branch Information Updated Successfully", "");
-    //             this.isSpinning = false;
-
-    //             if (!addNew)
-    //               this.close(accountMasterPage);
-
-    //           } else {
-    //             this.message.error("Branch Information Updation Failed", "");
-    //             this.isSpinning = false;
-    //           }
-    //         });
-
-    //       } else {
-    //         this.api.createBranch(this.data).subscribe(successCode => {
-    //           if (successCode['code'] == 200) {
-    //             this.message.success("Branch Information Saved Successfully", "");
-    //             this.isSpinning = false;
-
-    //             if (!addNew) {
-    //               this.close(accountMasterPage);
-
-    //             } else {
-    //               this.data = new warehouselocation();
-    //               this.resetDrawer(accountMasterPage);
-    //             }
-
-    //           } else {
-    //             this.message.error("cannot save Branch Information", "");
-    //             this.isSpinning = false;
-    //           }
-    //         });
-    //       }
-    //     }
+    if (
+      (this.data.WAREHOUSE_ID === undefined || this.data.WAREHOUSE_ID === null || this.data.WAREHOUSE_ID === '') &&
+      (this.data.LOCATION_NAME === undefined || this.data.LOCATION_NAME === null || this.data.LOCATION_NAME.trim() === '') &&
+      (this.data.SHORT_CODE === undefined || this.data.SHORT_CODE === null || this.data.SHORT_CODE.trim() === '') &&
+      (this.data.LOCATION_DESCRIPTION === undefined || this.data.LOCATION_DESCRIPTION.trim() === '')
+    ) {
+      this.isOk = false;
+      this.message.error('Please fill all required fields', '');
+    } else if (
+      this.data.WAREHOUSE_ID === undefined || 
+      this.data.WAREHOUSE_ID === null || 
+      this.data.WAREHOUSE_ID === ''
+    ) {
+      this.isOk = false;
+      this.message.error('Please Select Valid Warehouse', '');
+    } else if (
+      this.data.LOCATION_NAME === undefined || 
+      this.data.LOCATION_NAME === null || 
+      this.data.LOCATION_NAME.trim() === ''
+    ) {
+      this.isOk = false;
+      this.message.error('Please Enter Location Name', '');
+    } else if (
+      this.data.SHORT_CODE === undefined || 
+      this.data.SHORT_CODE === null || 
+      this.data.SHORT_CODE.trim() === ''
+    ) {
+      this.isOk = false;
+      this.message.error('Please Enter Short Code', '');
+    } 
+    // else if (
+    //   this.data.LOCATION_DESCRIPTION && 
+    //   this.data.LOCATION_DESCRIPTION.length > 512
+    // ) {
+    //   this.isOk = false;
+    //   this.message.error('Location Description exceeds maximum length of 512 characters', '');
+    // } 
+    else if (
+      this.data.SHORT_CODE.length > 10
+    ) {
+      this.isOk = false;
+      this.message.error('Short Code exceeds maximum length of 10 characters', '');
+    } else {
+      this.isOk = true;
+    }
+    
+    // Proceed with the operation if all validations pass
+    if (this.isOk) {
+      this.isSpinning = true;
+    
+      // this.orgId = this.cookie.get('orgId');
+      // this.data.ORG_ID = this.orgId;
+    
+      if (this.data.ID) {
+        this.api.updateWarehousesLocation(this.data).subscribe(successCode => {
+          if (successCode['code'] === 200) {
+            this.message.success('Warehouse Location Updated Successfully', '');
+            this.isSpinning = false;
+    
+            if (!addNew) this.close(accountMasterPage);
+          } else {
+            this.message.error('Warehouse Location Updation Failed', '');
+            this.isSpinning = false;
+          }
+        });
+      } else {
+        this.api.createWarehousesLocation(this.data).subscribe(successCode => {
+          if (successCode['code'] === 200) {
+            this.message.success('Warehouse Location Saved Successfully', '');
+            this.isSpinning = false;
+    
+            if (!addNew) {
+              this.close(accountMasterPage);
+            } else {
+              this.data = new warehouselocation();
+              this.resetDrawer(accountMasterPage);
+            }
+          } else {
+            this.message.error('Failed to Save Warehouse Location', '');
+            this.isSpinning = false;
+          }
+        });
+      }
+    }
+    
   }
 
   // onStateChange(event: any) {

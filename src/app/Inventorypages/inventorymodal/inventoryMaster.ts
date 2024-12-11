@@ -9,7 +9,8 @@ export class InventoryMaster {
   PURCHASE_PRICE: any;
   SELLING_PRICE: any;
   LOCATION_ID: any;
-  DATE_OF_ENTRY: any=new Date();
+  DATE_OF_ENTRY: any;
   REMARKS: any;
   STATUS:boolean=true
+  WAREHOUSE_ID:any
 }

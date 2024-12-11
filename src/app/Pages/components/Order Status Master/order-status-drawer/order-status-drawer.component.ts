@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { OrderMasterData } from 'src/app/Pages/Models/OrderMasterData';
+import { orderMasterData } from 'src/app/Pages/Models/orderMasterData';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { CommonFunctionService } from 'src/app/Service/CommonFunctionService';
 
@@ -32,7 +32,7 @@ export class OrderStatusDrawerComponent
   }
 
   public commonFunction = new CommonFunctionService();
-  @Input() data: any = OrderMasterData;
+  @Input() data: any = orderMasterData;
   @Input()
   drawerVisible: boolean = false;
   @Input() drawerClose: any = Function;
@@ -45,7 +45,7 @@ export class OrderStatusDrawerComponent
   ) {}
 
   resetDrawer(OrderStatusmaster: NgForm) {
-    this.data = new OrderMasterData();
+    this.data = new orderMasterData();
     OrderStatusmaster.form.markAsPristine();
     OrderStatusmaster.form.markAsUntouched();
   }
@@ -109,7 +109,7 @@ export class OrderStatusDrawerComponent
               this.message.success('Order Status Saved Successfully', '');
               if (!addNew) this.drawerClose();
               else {
-                this.data = new OrderMasterData();
+                this.data = new orderMasterData();
                 this.resetDrawer(OrderStatusmaster);
               }
               this.isSpinning = false;
@@ -222,7 +222,7 @@ export class OrderStatusDrawerComponent
     //             );
     //             if (!addNew) this.drawerClose();
     //             else {
-    //               this.data = new OrderMasterData();
+    //               this.data = new orderMasterData();
     //               this.resetDrawer(OrderStatusmaster);
     //             }
     //             this.isSpinning = false;

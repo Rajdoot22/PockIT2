@@ -32,7 +32,7 @@
                       [(ngModel)]="data.NAME"
                       pattern="^[A-Za-z0-9 ]+$"
                       #name="ngModel"
-                      maxlength="256"
+                      maxlength="128"
                       required
                       autocomplete="off"
                     />
@@ -44,7 +44,7 @@
                         data.NAME != ''
                       "
                     >
-                      {{ data.NAME.length }}/256
+                      {{ data.NAME.length }}/128
                     </h6>
                   </nz-form-control>
                 </nz-form-item>
@@ -65,7 +65,7 @@
                       autocomplete="off"
                       placeholder="Enter Email"
                       [pattern]="commonFunction.emailpattern"
-                      maxlength="87"
+                      maxlength="128"
                       required
                     />
                     <h6
@@ -76,7 +76,7 @@
                         data.EMAIL_ID != ''
                       "
                     >
-                      {{ data.EMAIL_ID.length }}/87
+                      {{ data.EMAIL_ID.length }}/128
                     </h6>
                   </nz-form-control>
                 </nz-form-item>
@@ -95,6 +95,7 @@
                         placeholder="Enter Mobile No."
                         [pattern]="commonFunction.mobpattern"
                         maxlength="10"
+                        minlength="10"
                         (keypress)="omit($event)"
                       />
                     </nz-input-group>
@@ -149,15 +150,26 @@
                   <nz-form-control nzErrorTip="Please Enter Aadhaar No.">
                     <input
                       nz-input
+                      name="AADHAR_NUMBER"
+                      required
+                      [(ngModel)]="data.AADHAR_NUMBER"
+                      autocomplete="off"
+                      placeholder="Enter Mobile No."
+                      [pattern]="commonFunction.aadharpattern"
+                      maxlength="12"
+                      minlength="12"
+                    />
+                    <!-- <input
+                      nz-input
                       placeholder="Enter Aadhaar No."
                       name="AADHAR_NUMBER"
                       required
                       [(ngModel)]="data.AADHAR_NUMBER"
                       #name="ngModel"
-                      pattern="^[2-9]{1}[0-9]{11}$"
+                      pattern="commonFunction.aadharpattern"
                       maxlength="12"
                       autocomplete="off"
-                    /><span
+                    /> --><span
                       style="
                         color: red;
                         font-size: 10px !important;
@@ -238,14 +250,14 @@
                       [ngModelOptions]="{ standalone: true }"
                       required
                       nzAllowClear=""
+                      maxlength="128"
                     >
                       <nz-option
                         *ngFor="let data of VenderData"
                         [nzValue]="data.ID"
                         [nzLabel]="data.NAME"
                       >
-                        ></nz-option
-                      >
+                      </nz-option>
                     </nz-select>
                   </nz-form-control>
                 </nz-form-item>
@@ -316,7 +328,7 @@
                   name="Address1"
                   required
                   [(ngModel)]="data.ADDRESS_LINE1"
-                  maxlength="1024"
+                  maxlength="512"
                   autocomplete="off"
                 />
                 <h6
@@ -327,7 +339,7 @@
                     data.ADDRESS_LINE1 != ''
                   "
                 >
-                  {{ data.ADDRESS_LINE1.length }}/1024
+                  {{ data.ADDRESS_LINE1.length }}/512
                 </h6>
               </nz-form-control>
             </nz-form-item>
@@ -344,7 +356,7 @@
                   name="Address2"
                   [(ngModel)]="data.ADDRESS_LINE2"
                   #name="ngModel"
-                  maxlength="1024"
+                  maxlength="512"
                   autocomplete="off"
                 />
                 <h6
@@ -355,7 +367,7 @@
                     data.ADDRESS_LINE2 != ''
                   "
                 >
-                  {{ data.ADDRESS_LINE_2.length }}/1024
+                  {{ data.ADDRESS_LINE_2.length }}/512
                 </h6>
               </nz-form-control>
             </nz-form-item>
@@ -373,7 +385,7 @@
                   style="width: 100%"
                   [(ngModel)]="data.COUNTRY_ID"
                   [ngModelOptions]="{ standalone: true }"
-                  (ngModelChange)="getStatesByCountry(data.COUNTRY_ID)"
+                  (ngModelChange)="getStatesByCountry(data.COUNTRY_ID, false)"
                   required
                   nzAllowClear=""
                 >
@@ -398,7 +410,7 @@
                   style="width: 100%"
                   [(ngModel)]="data.STATE_ID"
                   [ngModelOptions]="{ standalone: true }"
-                  (ngModelChange)="getCitiesByState(data.STATE_ID)"
+                  (ngModelChange)="getCitiesByState(data.STATE_ID, false)"
                   required
                   nzAllowClear=""
                 >
@@ -425,7 +437,7 @@
                   style="width: 100%"
                   [(ngModel)]="data.CITY_ID"
                   [ngModelOptions]="{ standalone: true }"
-                  (ngModelChange)="getPincodesByCity(data.CITY_ID)"
+                  (ngModelChange)="getPincodesByCity(data.CITY_ID, false)"
                   required
                   nzAllowClear=""
                 >
@@ -522,9 +534,19 @@
                   required
                   [(ngModel)]="data.VEHICLE_DETAILS"
                   #name="ngModel"
-                  maxlength="256"
+                  maxlength="512"
                   autocomplete="off"
                 />
+                <h6
+                  style="color: red; font-size: 10px"
+                  *ngIf="
+                    data.VEHICLE_DETAILS != undefined &&
+                    data.VEHICLE_DETAILS != null &&
+                    data.VEHICLE_DETAILS != ''
+                  "
+                >
+                  {{ data.VEHICLE_DETAILS.length }}/512
+                </h6>
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -543,8 +565,30 @@
                     [(ngModel)]="data.VEHICLE_NO"
                     #name="ngModel"
                     maxlength="10"
+                    minlength="10"
                     autocomplete="off"
+                    pattern="^[A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{1,4}$"
                   />
+                  <span
+                    style="
+                      color: red;
+                      font-size: 10px !important;
+                      display: block;
+                      margin-top: 5px;
+                    "
+                  >
+                    e.g.MH10AB4385
+                  </span>
+                  <h6
+                    style="color: red; font-size: 10px"
+                    *ngIf="
+                      data.VEHICLE_NO != undefined &&
+                      data.VEHICLE_NO != null &&
+                      data.VEHICLE_NO != ''
+                    "
+                  >
+                    {{ data.VEHICLE_NO.length }}/10
+                  </h6>
                 </nz-form-control>
               </nz-form-item>
             </div>

@@ -16,7 +16,7 @@ export class CustomerComponent {
   emailpattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   customercategories: any = []
   @Input() drawerClose: Function;
-  @Input() data: customer;
+  @Input() data: customer = new customer();
   @Input() drawerVisible: boolean;
   Parentcategories: any = []
   orgId = this.cookie.get('orgId');

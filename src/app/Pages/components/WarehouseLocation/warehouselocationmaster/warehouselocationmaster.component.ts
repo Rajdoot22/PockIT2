@@ -34,11 +34,11 @@ export class WarehouselocationmasterComponent {
   filterQuery: string = "";
   isFilterApplied: string = "default";
   columns: string[][] = [
-    ["INVENTRY_CATEGORY", "Inventory Category"],
-    ["ITEM", "Item"],
-    ["NAME", "Name"],
-    ["DESCRIPTION", "Description"],
-    ["IS_ACTIVE", "Is Active"],
+    ["WAREHOUSE_NAME", "Warehouse"],
+    ["LOCATION_NAME", "Location Name"],
+    ["SHORT_CODE", "Short Code"],
+    ["LOCATION_DESCRIPTION", "Description"],
+    // ["STATUS", "Is Active"],
   ];
   // columns1: string[][] = [["NAME", "Branch Name"], ["COUNTRY_NAME", "Country"], ["STATE_NAME", "State"], ["CITY_NAME", "City"]];
   time = new Date();
@@ -59,9 +59,9 @@ export class WarehouselocationmasterComponent {
   shortCodeVisible: boolean = false;
   locationNameVisible: boolean = false;
   warehouseVisible: boolean = false;
-selectedWarehouse: any;
-locationNameFilter: any;
-shortCodeFilter: any;
+  selectedWarehouse: any;
+  locationNameFilter: any;
+  shortCodeFilter: any;
   omit(event: any) {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -70,12 +70,13 @@ shortCodeFilter: any;
     return true;
   }
   columns1: { label: string; value: string }[] = [
-    { label: "Warehouse", value: "Warehouse" },
-    { label: "Location Name", value: "Location Name" },
-    { label: "Short Code", value: "Short Code" },
-    { label: "Location Description", value: "Location Description" },
-    { label: "Is Active", value: "Is Active" },
+    { label: "Warehouse", value: "WAREHOUSE_ID" },
+    { label: "Location Name", value: "LOCATION_NAME" },
+    { label: "Short Code", value: "SHORT_CODE" },
+    { label: "Location Description", value: "LOCATION_DESCRIPTION" },
+    { label: "Is Active", value: "IS_ACTIVE" },
   ];
+  
 
   showcolumn = [
     { label: "Warehouse", key: "WAREHOUSE", visible: true },
@@ -92,6 +93,7 @@ shortCodeFilter: any;
   checkColumnselect(a: any) {
     // console.log(a);
   }
+ 
   constructor(
     private api: ApiServiceService,
     private cookie: CookieService,
@@ -101,10 +103,21 @@ shortCodeFilter: any;
   ngOnInit() {
     // this.search();
     // this.getUnits()
+    this.getWarehouses()
   }
   isColumnVisible(key: any): boolean {
     const column = this.showcolumn.find((col) => col.key === key);
     return column ? column.visible : true;
+  }
+  getWarehouses(){
+    this.api.getWarehouses(0,0,'id','desc'," AND STATUS='A'").subscribe(data=>{
+      if(data['code']==200){
+        this.Warehouselist=data['data']
+      }
+      else{
+        this.Warehouselist=[]
+      }
+    })
   }
   // onCountryChange() {}
   sort(params: NzTableQueryParams): void {
@@ -139,7 +152,7 @@ shortCodeFilter: any;
       this.sortValue = "desc";
     }
     // temporary false change when api connected
-    this.loadingRecords = false;
+    this.loadingRecords = true;
 
     let sort: string;
     try {
@@ -163,24 +176,25 @@ shortCodeFilter: any;
         ")";
     }
 
-    if (this.itemNametext?.trim()) {
+   
+
+    if (this.selectedWarehouse?.length) {
+      const categories = this.selectedWarehouse.join(",");
+      likeQuery +=
+        (likeQuery ? " AND " : "") + `WAREHOUSE_ID IN (${categories})`;
+    }
+    if (this.locationNameFilter?.trim()) {
       likeQuery +=
         (likeQuery ? " AND " : "") +
-        `ITEM_NAME LIKE '%${this.itemNametext.trim()}%'`;
+        `LOCATION_NAME LIKE '%${this.locationNameFilter.trim()}%'`;
     }
-
-    if (this.subcategorynametext?.trim()) {
+    if (this.shortCodeFilter?.trim()) {
       likeQuery +=
         (likeQuery ? " AND " : "") +
-        `NAME LIKE '%${this.subcategorynametext.trim()}%'`;
+        `SHORT_CODE LIKE '%${this.shortCodeFilter.trim()}%'`;
     }
 
-    if (this.selectedcategories?.length) {
-      const categories = this.selectedcategories.join(",");
-      likeQuery +=
-        (likeQuery ? " AND " : "") + `CATEGORY_ID IN (${categories})`;
-    }
-
+   
     // State Filter
 
     // Status Filter
@@ -195,24 +209,34 @@ shortCodeFilter: any;
     likeQuery = globalSearchQuery + (likeQuery ? " AND " + likeQuery : "");
 
     // Call API with updated search query
-    // this.api
-    //   .getAllBranch(
-    //     this.pageIndex,
-    //     this.pageSize,
-    //     this.sortKey,
-    //     sort,
-    //     likeQuery + ""
-    //   )
-    //   .subscribe(
-    //     (data) => {
-    //       this.loadingRecords = false;
-    //       this.totalRecords = data["count"];
-    //       this.dataList = data["data"];
-    //     },
-    //     (err) => {
-    //       console.log(err);
-    //     }
-    //   );
+    this.api
+      .getWarehousesLocation(
+        this.pageIndex,
+        this.pageSize,
+        this.sortKey,
+        sort,
+        likeQuery + ""
+      )
+      .subscribe(
+        (data) => {
+          if (data["code"] == 200) {
+            this.loadingRecords = false;
+            this.totalRecords = data["count"];
+            this.dataList = data["data"];
+          } else {
+            this.dataList = [];
+            this.loadingRecords = false;
+            this.message.error("Failed to get warehouse location Records", "");
+          }
+        },
+        (err) => {
+          this.dataList = [];
+          this.loadingRecords = false;
+
+          this.message.error("Failed to get Warehouse location Records", "");
+          console.log(err);
+        }
+      );
   }
 
   get closeCallback() {
@@ -531,55 +555,73 @@ shortCodeFilter: any;
 
       let sort = ""; // Assign a default value to sort
       let filterQuery = "";
-      // this.api
-      //   .getCity(
-      //     this.pageIndex,
-      //     this.pageSize,
-      //     this.sortKey,
-      //     sort,
-      //     newQuery
-      //     // filterQuery
-      //   )
-      //   .subscribe(
-      //     (data) => {
-      //       if (data["code"] === 200) {
-      //         this.totalRecords = data["count"];
-      //         this.dataList = data["data"];
-      //         this.isSpinner = false;
-      //         this.filterQuery = "";
-      //       } else {
-      //         this.dataList = [];
-      //         this.isSpinner = false;
-      //       }
-      //     },
-      //     (err) => {
-      //       if (err["ok"] === false) this.message.error("Server Not Found", "");
-      //     }
-      //   );
+      this.api
+        .getWarehousesLocation(
+          this.pageIndex,
+          this.pageSize,
+          this.sortKey,
+          sort,
+          newQuery
+          // filterQuery
+        )
+        .subscribe(
+          (data) => {
+            if (data["code"] === 200) {
+              this.totalRecords = data["count"];
+              this.dataList = data["data"];
+              this.isSpinner = false;
+              this.filterQuery = "";
+            } else {
+              this.dataList = [];
+              this.isSpinner = false;
+            }
+          },
+          (err) => {
+            if (err["ok"] === false) this.message.error("Server Not Found", "");
+          }
+        );
 
       this.QUERY_NAME = "";
     }
   }
 
-  applyFilter(i, j) {
-    // console.log(i, j);
+  restrictedKeywords = [
+    "SELECT",
+    "INSERT",
+    "UPDATE",
+    "DELETE",
+    "DROP",
+    "TRUNCATE",
+    "ALTER",
+    "CREATE",
+    "RENAME",
+    "GRANT",
+    "REVOKE",
+    "EXECUTE",
+    "UNION",
+    "HAVING",
+    "WHERE",
+    "ORDER BY",
+    "GROUP BY",
+    "ROLLBACK",
+    "COMMIT",
+    "--",
+    ";",
+    "/*",
+    "*/",
+  ];
 
-    const lastFilterIndex = this.filterBox.length - 1;
-    const lastSubFilterIndex =
-      this.filterBox[lastFilterIndex]["FILTER"].length - 1;
+  isValidInput(input: string): boolean {
+    return !this.restrictedKeywords.some((keyword) =>
+      input.toUpperCase().includes(keyword)
+    );
+  }
+  applyFilter(i: number, j: number) {
+    const currentFilter = this.filterBox[i]["FILTER"][j];
 
-    const selection1 =
-      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
-        "SELECTION1"
-      ];
-    const selection2 =
-      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
-        "SELECTION2"
-      ];
-    const selection3 =
-      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
-        "SELECTION3"
-      ];
+    const selection1 = currentFilter.SELECTION1;
+    const selection2 = currentFilter.SELECTION2;
+    const selection3 = currentFilter.SELECTION3;
 
     if (!selection1) {
       this.message.error("Please select a column", "");
@@ -587,25 +629,17 @@ shortCodeFilter: any;
       this.message.error("Please select a comparison", "");
     } else if (!selection3 || selection3.length < 1) {
       this.message.error(
-        "Please enter a valid value with at least 1 characters",
+        "Please enter a valid value with at least 1 character",
         ""
       );
+    } else if (
+      typeof selection3 === "string" &&
+      !this.isValidInput(selection3)
+    ) {
+      this.message.error(`Invalid Input: ${selection3} is not allowed.`, "");
     } else {
-      console.log(this.query, "query");
-      console.log(this.filterBox, "filterbox");
+      const sort = this.sortValue?.startsWith("a") ? "asc" : "desc";
 
-      // var DemoData:any = this.filterBox
-      let sort: string;
-      let filterQuery = "";
-
-      try {
-        sort = this.sortValue.startsWith("a") ? "asc" : "desc";
-      } catch (error) {
-        sort = "";
-      }
-      // Define a function to get the comparison value filter
-
-      this.isSpinner = true;
       const getComparisonFilter = (
         comparisonValue: any,
         columnName: any,
@@ -632,39 +666,44 @@ shortCodeFilter: any;
         }
       };
 
-      const FILDATA = this.filterBox[i]["FILTER"]
-        .map((item) => {
-          const filterCondition = getComparisonFilter(
-            item.SELECTION2,
-            item.SELECTION3,
-            item.SELECTION1
-          );
-          return `AND (${filterCondition})`;
-        })
-        .join(" ");
+      const filterCondition = getComparisonFilter(
+        selection2,
+        selection3,
+        selection1
+      );
+      const FILDATA = `AND (${filterCondition})`;
 
-      console.log(FILDATA, "FILDATA");
+      console.log(FILDATA, "Filter Data");
 
-      console.log(filterQuery, "filterQueryfilterQuery");
+      this.isSpinner = true;
 
-      // this.api
-      //   .getCity(this.pageIndex, this.pageSize, this.sortKey, sort, FILDATA)
-      //   .subscribe(
-      //     (data) => {
-      //       if (data["code"] === 200) {
-      //         this.totalRecords = data["count"];
-      //         this.dataList = data["data"];
-      //         this.isSpinner = false;
-      //         this.filterQuery = "";
-      //       } else {
-      //         this.dataList = [];
-      //         this.isSpinner = false;
-      //       }
-      //     },
-      //     (err) => {
-      //       if (err["ok"] === false) this.message.error("Server Not Found", "");
-      //     }
-      //   );
+      this.api
+        .getWarehousesLocation(
+          this.pageIndex,
+          this.pageSize,
+          this.sortKey,
+          sort,
+          FILDATA
+        )
+        .subscribe(
+          (data) => {
+            if (data["code"] == 200) {
+              this.totalRecords = data["count"];
+              this.dataList = data["data"];
+            } else {
+              this.dataList = [];
+              this.loadingRecords = false;
+              this.message.error("Failed to get warehouse location Records", "");
+            }
+            this.isSpinner = false;
+          },
+          (err) => {
+            if (err["ok"] == false) {
+              this.message.error("Server Not Found", "");
+            }
+            this.isSpinner = false;
+          }
+        );
     }
   }
 
@@ -688,7 +727,28 @@ shortCodeFilter: any;
   public visiblesave = false;
 
   saveQuery() {
+    // this.createFilterQuery();
     this.visiblesave = !this.visiblesave;
+  }
+  getComparisonOptions(selectedColumn: string): string[] {
+    if (
+      selectedColumn === "WAREHOUSE_ID" ||
+      selectedColumn === "IS_ACTIVE"
+    ) {
+      return ["=", "!="];
+    }
+    return [
+      "=",
+      "!=",
+      "<",
+      ">",
+      "<=",
+      ">=",
+      "Contains",
+      "Does not Contain",
+      "Start With",
+      "End With",
+    ];
   }
 
   QUERY_NAME: string = "";

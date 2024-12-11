@@ -22,10 +22,11 @@ export class SupportSubcategoryMasterComponent {
   
   isLoading = true;
   columns: string[][] = [
-    ['NAME', 'NAME'],
-    ['CATEGORY_ID', 'CATEGORY_ID'],
+    ['SUPPORT_CATEGORY_NAME', 'SUPPORT_CATEGORY_NAME'],
     ['SUB_CATEGORY_NAME', 'SUB_CATEGORY_NAME'],
+    ['CATEGORY_ID', 'CATEGORY_ID'],
     ['DESCRIPTION', 'DESCRIPTION'],
+  
   ];
   loadingRecords = false;
   totalRecords = 1;
@@ -34,7 +35,7 @@ export class SupportSubcategoryMasterComponent {
 
 
 
-  knowledgeBaseSubCategoryName: string = '';
+  SupportBaseSubCategoryName: string = '';
   subcategoryvisible = false;
   categoryvisible: boolean = false;
   selectedCategories: number[] = [];
@@ -52,6 +53,7 @@ export class SupportSubcategoryMasterComponent {
   filterQuery: string = '';
   visible = false;
   columns1: { label: string; value: string }[] = [
+    
     { label: 'Support Category Name', value: 'CATEGORY_ID' },
     { label: 'Support Subcategory Name', value: 'SUB_CATEGORY_NAME' },
     { label: 'Description', value: 'DESCRIPTION' },
@@ -76,6 +78,7 @@ export class SupportSubcategoryMasterComponent {
   onCategoryChange(): void {
     this.search();
   }
+
   onStatusFilterChange(selectedStatus: string) {
     this.statusFilter = selectedStatus;
     this.search(true);
@@ -83,7 +86,7 @@ export class SupportSubcategoryMasterComponent {
 
   reset(): void {
     this.searchText = '';
-    this.knowledgeBaseSubCategoryName = ''
+    this.SupportBaseSubCategoryName = ''
     this.description='';
     this.search();
   }
@@ -91,21 +94,23 @@ ngOnInit(){
   this.getcategoryData();
 }
 
-  CategoryData: any = [];
+
+// ************** 
+getSupportcategoryData: any = [];
   getcategoryData() {
-    // this.api.getKnowledgeBaseCategoryData(0, 0, "", "", "AND IS_ACTIVE = 1").subscribe(
-    //   (data) => {
-    //     if (data["code"] == 200) {
-    //       this.CategoryData = data["data"];
-    //     } else {
-    //       this.CategoryData = [];
-    //       this.message.error("Failed To Get Knowledge Base Category Data", "");
-    //     }
-    //   },
-    //   () => {
-    //     this.message.error("Something Went Wrong", "");
-    //   }
-    // );
+    this.api.getCustomerSupport(0, 0, "", "", "AND STATUS = 1").subscribe(
+      (data) => {
+        if (data["code"] == 200) {
+          this.getSupportcategoryData = data["data"];
+        } else {
+          this.getSupportcategoryData = [];
+          this.message.error("Failed To Get Supprt Category Data", "");
+        }
+      },
+      () => {
+        this.message.error("Something Went Wrong", "");
+      }
+    );
   }
 
   search(reset: boolean = false) {
@@ -134,9 +139,9 @@ ngOnInit(){
     this.loadingRecords = true;
 
 
-      // knowledgeBaseSubCategoryName Filter
-      if (this.knowledgeBaseSubCategoryName !== '') {
-        likeQuery += (likeQuery ? ' AND ' : '') + `NAME LIKE '%${this.knowledgeBaseSubCategoryName.trim()}%'`;
+      // SupportBaseSubCategoryName Filter
+      if (this.SupportBaseSubCategoryName !== '') {
+        likeQuery += (likeQuery ? ' AND ' : '') + `SUB_CATEGORY_NAME LIKE '%${this.SupportBaseSubCategoryName.trim()}%'`;
       }
 
         // DESCRIPTION Filter
@@ -144,12 +149,12 @@ ngOnInit(){
           likeQuery += (likeQuery ? ' AND ' : '') + `DESCRIPTION LIKE '%${this.description.trim()}%'`;
         }
 
-          // Country Filter
+          //Support Category Filter
           if (this.selectedCategories.length > 0) {
             if (likeQuery !== '') {
               likeQuery += ' AND ';
             }
-            likeQuery += `KNOWLEDGEBASE_CATEGORY_ID IN (${this.selectedCategories.join(',')})`; // Update with actual field name in the DB
+            likeQuery += `CATEGORY_ID IN (${this.selectedCategories.join(',')})`; // Update with actual field name in the DB
           }
 
             // Status Filter
@@ -157,43 +162,45 @@ ngOnInit(){
       if (likeQuery !== '') {
         likeQuery += ' AND ';
       }
-      likeQuery += `IS_ACTIVE = ${this.statusFilter}`;
+      likeQuery += `STATUS = ${this.statusFilter}`;
     }
 
       // Combine global search query and column-specific search query
     likeQuery = globalSearchQuery + (likeQuery ? ' AND ' + likeQuery : '');
+    
+    this.loadingRecords = false;
 
-    // this.api.getKnowledgeBasesubCategoryData(
-    //     this.pageIndex,
-    //     this.pageSize,
-    //     this.sortKey,
-    //     sort,
-    //     likeQuery
-    //   )
-    //   .subscribe(
-    //     (data) => {
-    //       if (data['code'] == 200) {
-    //         this.loadingRecords = false;
-    //         this.totalRecords = data['count'];
-    //         this.dataList = data['data'];
-    //       } else {
-    //         this.loadingRecords = false;
-    //         this.dataList = [];
-    //         this.message.error('Something Went Wrong ...', '');
-    //       }
-    //     },
-    //     (err: HttpErrorResponse) => {
-    //       this.loadingRecords = false;
-    //       if (err.status === 0) {
-    //         this.message.error(
-    //           'Network error: Please check your internet connection.',
-    //           ''
-    //         );
-    //       } else {
-    //         this.message.error('Something Went Wrong.', '');
-    //       }
-    //     }
-    //   );
+    this.api.getSupportSubcategory(
+        this.pageIndex,
+        this.pageSize,
+        this.sortKey,
+        sort,
+        likeQuery
+      )
+      .subscribe(
+        (data) => {
+          if (data['code'] == 200) {
+            this.loadingRecords = false;
+            this.totalRecords = data['count'];
+            this.dataList = data['data'];
+          } else {
+            this.loadingRecords = false;
+            this.dataList = [];
+            this.message.error('Something Went Wrong ...', '');
+          }
+        },
+        (err: HttpErrorResponse) => {
+          this.loadingRecords = false;
+          if (err.status === 0) {
+            this.message.error(
+              'Network error: Please check your internet connection.',
+              ''
+            );
+          } else {
+            this.message.error('Something Went Wrong.', '');
+          }
+        }
+      );
   }
 
 
@@ -268,7 +275,7 @@ ngOnInit(){
      'End With',];
  
      getComparisonOptions(selectedColumn: string): string[] {
-      if (selectedColumn === 'STATUS' || selectedColumn === 'CATEGORY_ID') {
+      if (selectedColumn === 'STATUS' || selectedColumn === 'SUPPORT_CATEGORY_NAME') {
         return ['=', '!='];
       }
       return [
@@ -536,29 +543,29 @@ ngOnInit(){
 
        let sort = ''; // Assign a default value to sort
        let filterQuery = '';
-      //  this.api.getKnowledgeBasesubCategoryData(
-      //    this.pageIndex,
-      //    this.pageSize,
-      //    this.sortKey,
-      //    sort,
-      //    newQuery
-      //    // filterQuery
-      //  ).subscribe(
-      //    (data) => {
-      //      if (data['code'] === 200) {
-      //        this.totalRecords = data['count'];
-      //        this.dataList = data['data'];
-      //        this.isSpinner = false;
-      //        this.filterQuery = '';
-      //      } else {
-      //        this.dataList = [];
-      //        this.isSpinner = false;
-      //      }
-      //    },
-      //    (err) => {
-      //      if (err['ok'] === false) this.message.error('Server Not Found', '');
-      //    }
-      //  );
+       this.api.getSupportSubcategory(
+         this.pageIndex,
+         this.pageSize,
+         this.sortKey,
+         sort,
+         newQuery
+         // filterQuery
+       ).subscribe(
+         (data) => {
+           if (data['code'] === 200) {
+             this.totalRecords = data['count'];
+             this.dataList = data['data'];
+             this.isSpinner = false;
+             this.filterQuery = '';
+           } else {
+             this.dataList = [];
+             this.isSpinner = false;
+           }
+         },
+         (err) => {
+           if (err['ok'] === false) this.message.error('Server Not Found', '');
+         }
+       );
  
        this.QUERY_NAME = '';
  
@@ -566,102 +573,125 @@ ngOnInit(){
  
    }
  
- 
-   applyFilter(i, j) {
+
+
+
+  applyFilter(i, j) {
     console.log(i, j);
     const inputValue = this.filterBox[i].FILTER[j].SELECTION3;
     const lastFilterIndex = this.filterBox.length - 1;
-    const lastSubFilterIndex = this.filterBox[lastFilterIndex]['FILTER'].length - 1;
+    const lastSubFilterIndex =
+      this.filterBox[lastFilterIndex]["FILTER"].length - 1;
 
-    const selection1 = this.filterBox[lastFilterIndex]['FILTER'][lastSubFilterIndex]['SELECTION1'];
-    const selection2 = this.filterBox[lastFilterIndex]['FILTER'][lastSubFilterIndex]['SELECTION2'];
-    const selection3 = this.filterBox[lastFilterIndex]['FILTER'][lastSubFilterIndex]['SELECTION3'];
+    const selection1 =
+      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
+      "SELECTION1"
+      ];
+    const selection2 =
+      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
+      "SELECTION2"
+      ];
+    const selection3 =
+      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
+      "SELECTION3"
+      ];
 
     if (!selection1) {
-      this.message.error("Please select a column", '');
+      this.message.error("Please select a column", "");
     } else if (!selection2) {
-      this.message.error("Please select a comparison", '');
+      this.message.error("Please select a comparison", "");
     } else if (!selection3 || selection3.length < 1) {
-      this.message.error("Please enter a valid value with at least 1 characters", '');
-    } else  if (typeof inputValue === 'string' && !this.isValidInput(inputValue)) {
-      // Show error message
       this.message.error(
-        `Invalid Input: ${inputValue} is not allowed.`,''
+        "Please enter a valid value with at least 1 characters",
+        ""
       );
-    } else 
-    {
-
-      console.log(this.query, 'query');
-      console.log(this.filterBox, 'filterbox');
+    } else if (
+      typeof inputValue === "string" &&
+      !this.isValidInput(inputValue)
+    ) {
+      // Show error message
+      this.message.error(`Invalid Input: ${inputValue} is not allowed.`, "");
+    } else {
+      console.log(this.query, "query");
+      console.log(this.filterBox, "filterbox");
 
       // var DemoData:any = this.filterBox
       let sort: string;
-      let filterQuery = '';
+      let filterQuery = "";
 
       try {
-        sort = this.sortValue.startsWith('a') ? 'asc' : 'desc';
+        sort = this.sortValue.startsWith("a") ? "asc" : "desc";
       } catch (error) {
-        sort = '';
+        sort = "";
       }
       // Define a function to get the comparison value filter
 
       this.isSpinner = true;
-      const getComparisonFilter = (comparisonValue: any, columnName: any, tableValue: any) => {
+      const getComparisonFilter = (
+        comparisonValue: any,
+        columnName: any,
+        tableValue: any
+      ) => {
         switch (comparisonValue) {
-          case '=':
-          case '!=':
-          case '<':
-          case '>':
-          case '<=':
-          case '>=':
+          case "=":
+          case "!=":
+          case "<":
+          case ">":
+          case "<=":
+          case ">=":
             return `${tableValue} ${comparisonValue} '${columnName}'`;
-          case 'Contains':
+          case "Contains":
             return `${tableValue} LIKE '%${columnName}%'`;
-          case 'Does not Contain':
+          case "Does not Contain":
             return `${tableValue} NOT LIKE '%${columnName}%'`;
-          case 'Start With':
+          case "Start With":
             return `${tableValue} LIKE '${columnName}%'`;
-          case 'End With':
+          case "End With":
             return `${tableValue} LIKE '%${columnName}'`;
           default:
-            return '';
+            return "";
         }
       };
 
-      const FILDATA = this.filterBox[i]['FILTER'].map(item => {
-        const filterCondition = getComparisonFilter(item.SELECTION2, item.SELECTION3, item.SELECTION1);
-        return `AND (${filterCondition})`;
-      }).join(' ');
+      const FILDATA = this.filterBox[i]["FILTER"]
+        .map((item) => {
+          const filterCondition = getComparisonFilter(
+            item.SELECTION2,
+            item.SELECTION3,
+            item.SELECTION1
+          );
+          return `AND (${filterCondition})`;
+        })
+        .join(" ");
 
-      console.log(FILDATA, 'FILDATA');
+      console.log(FILDATA, "FILDATA");
 
+      console.log(filterQuery, "filterQueryfilterQuery");
 
-      console.log(filterQuery, 'filterQueryfilterQuery');
-
-
-      // this.api.getKnowledgeBasesubCategoryData(
-      //     this.pageIndex,
-      //     this.pageSize,
-      //     this.sortKey,
-      //     sort,
-      //     FILDATA
-      //   )
-      //   .subscribe(
-      //     (data) => {
-      //       if (data['code'] === 200) {
-      //         this.totalRecords = data['count'];
-      //         this.dataList = data['data'];
-      //         this.isSpinner = false;
-      //         this.filterQuery = '';
-      //       } else {
-      //         this.dataList = [];
-      //         this.isSpinner = false;
-      //       }
-      //     },
-      //     (err) => {
-      //       if (err['ok'] === false) this.message.error('Server Not Found', '');
-      //     }
-      //   );
+      this.api
+        .getSupportSubcategory(
+          this.pageIndex,
+          this.pageSize,
+          this.sortKey,
+          sort,
+          FILDATA
+        )
+        .subscribe(
+          (data) => {
+            if (data["code"] === 200) {
+              this.totalRecords = data["count"];
+              this.dataList = data["data"];
+              this.isSpinner = false;
+              this.filterQuery = "";
+            } else {
+              this.dataList = [];
+              this.isSpinner = false;
+            }
+          },
+          (err) => {
+            if (err["ok"] === false) this.message.error("Server Not Found", "");
+          }
+        );
     }
   }
  

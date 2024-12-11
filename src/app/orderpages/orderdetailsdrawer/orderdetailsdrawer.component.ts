@@ -1,8 +1,11 @@
 import { DatePipe } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 // import tr from '@mobiscroll/angular/dist/js/i18n/tr';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { orderMasterData } from 'src/app/Pages/Models/orderMasterData';
 import { ApiServiceService } from 'src/app/Service/api-service.service';
 import { CommonFunctionService } from 'src/app/Service/CommonFunctionService';
 
@@ -12,13 +15,9 @@ import { CommonFunctionService } from 'src/app/Service/CommonFunctionService';
   styleUrls: ['./orderdetailsdrawer.component.css']
 })
 export class OrderdetailsdrawerComponent {
-  ngOnInit(){
-    this.getTechnicianData();
-
-    this.latitude = 17.096616801880028;
-    this.longitude = 74.4495388718186;
-    this.mapUrl = `https://www.google.com/maps/embed/v1/view?key=AIzaSyAn3IkTKrIw54Bu_rx_WaWXcmUjrA4bVj4&center=${this.latitude},${this.longitude}&zoom=14`;
-    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.mapUrl);
+  ngOnInit(){ 
+    this.getorderDetails();
+    this.Ordermaster();
   }
 
   showjobcard:boolean=true
@@ -28,13 +27,20 @@ export class OrderdetailsdrawerComponent {
     private message: NzNotificationService,
     private api: ApiServiceService,
     private datePipe: DatePipe,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private httpClient: HttpClient
   ) {}
   @Input()
   drawerClose!: Function;
+  @Input() vieworderdata: any 
+  @Input() orderid: any 
   date=new Date();
   close(): void {
     this.drawerClose();
+  }
+  gettotal(value1:any,value2:any){
+    // console.log(value1,value2)
+    return Number(value1)* Number(value2)
   }
   openModal=false
   public commonFunction = new CommonFunctionService();
@@ -121,12 +127,11 @@ export class OrderdetailsdrawerComponent {
   time: Date | null = null;
 
 
-  viewPastOrders()
+  viewPastOrders(data:any)
   {
-    this.drawerTitlepastorder = 'Past Orders';
-    this.drawerDatapastorder;
+    this.drawerTitlepastorder = `Past Order Of `+ this.orderData.CUSTOMER_NAME;
+    this.drawerDatapastorder=this.orderData;
     this.drawerVisiblepastorder = true;
-
   }
 
   viewCustomerRating()
@@ -206,11 +211,16 @@ export class OrderdetailsdrawerComponent {
   }
 
   onTechnicianChange() {
-    const selectedTechnician = this.techData.find(tech => tech.ID === this.TECHNICIAN_NAME);
+    const selectedTechnician = this.jobcardtechmapdata.find(
+      (tech) => tech.ID === this.TECHNICIAN_NAME
+    );
     if (selectedTechnician) {
-      this.selectedTechnicianName = selectedTechnician.NAME;
-      console.log('Selected Technician Name:', this.selectedTechnicianName);
+      this.TECHNICIAN_ID = selectedTechnician.ID;
+      this.selectedTechnicianName = selectedTechnician.TECHNICIAN_NAME;
+      console.log("Selected Technician Name:", this.selectedTechnicianName);
+      console.log("Selected Technician ID:", this.TECHNICIAN_ID);
     }
+    this.jobCardChat();
   }
 
 
@@ -218,142 +228,15 @@ export class OrderdetailsdrawerComponent {
 
   // purva mam
   // Action Log TS
-  timelineData = [
-    {
-      date: 'Today - Nov 29, 2024',
-      events: [
-        {
-          icon: '📅',
-          title: 'Service Appointment AP-1 created',
-          time: '02:57 PM',
-          user: 'John Doe',
-          description: 'Scheduled a follow-up appointment for the customer.'
-        },
-        {
-          icon: '✏️',
-          title: 'Contact details updated',
-          time: '02:55 PM',
-          user: 'John Doe',
-          description: 'Email updated from "old@example.com" to "new@example.com".'
-        },
-        {
-          icon: '📄',
-          title: 'Work Order WO1 created',
-          time: '02:54 PM',
-          user: 'Emily Clark',
-          description: 'Work order created for repairing the air conditioning unit.'
-        }
-      ]
-    },
-    {
-      date: 'Oct 16, 2024',
-      events: [
-        {
-          icon: '⚙️',
-          title: 'Asset1 added',
-          time: '04:15 PM',
-          user: 'John Doe',
-          description: 'Added a new server to the IT inventory.'
-        },
-        {
-          icon: '👤',
-          title: 'Contact created',
-          time: '04:15 PM',
-          user: 'Emily Clark',
-          description: 'Added customer contact information to the database.'
-        }
-      ]
-    }
-  ];
-  listOfData = [
-    {
-      date: '2024-04-15',
-      invoiceNo: 'INV123456',
-      orderNo: 'ORD987654',
-      jobNo: 'JOB112233',
-      customerName: 'John Doe',
-      mobileNo: '9876543210',
-      emailId: 'john.doe@example.com',
-      address: '123 Main St, Springfield',
-      dueDate: '2024-04-20',
-      total: '$100.00',
-      invoiceDetails: {
-        items: [
-          { name: 'Product A', quantity: 2, price: '$20.00' },
-          { name: 'Service B', quantity: 1, price: '$60.00' },
-        ],
-        paymentMethod: 'Credit Card',
-        transactionId: 'TXN1001',
-      },
-    },
-    {
-      date: '2024-04-16',
-      invoiceNo: 'INV123457',
-      orderNo: 'ORD987655',
-      jobNo: 'JOB112234',
-      customerName: 'Jane Smith',
-      mobileNo: '9876543211',
-      emailId: 'jane.smith@example.com',
-      address: '456 Oak St, Springfield',
-      dueDate: '2024-04-21',
-      total: '$200.00',
-      invoiceDetails: {
-        items: [
-          { name: 'Product C', quantity: 3, price: '$50.00' },
-          { name: 'Service D', quantity: 1, price: '$50.00' },
-        ],
-        paymentMethod: 'PayPal',
-        transactionId: 'TXN1002',
-      },
-    },
-    {
-      date: '2024-04-17',
-      invoiceNo: 'INV123458',
-      orderNo: 'ORD987656',
-      jobNo: 'JOB112235',
-      customerName: 'Samuel Lee',
-      mobileNo: '9876543212',
-      emailId: 'samuel.lee@example.com',
-      address: '789 Pine St, Springfield',
-      dueDate: '2024-04-22',
-      total: '$300.00',
-      invoiceDetails: {
-        items: [
-          { name: 'Product E', quantity: 4, price: '$75.00' },
-          { name: 'Service F', quantity: 2, price: '$75.00' },
-        ],
-        paymentMethod: 'Bank Transfer',
-        transactionId: 'TXN1003',
-      },
-    },
-    {
-      date: '2024-04-18',
-      invoiceNo: 'INV123459',
-      orderNo: 'ORD987657',
-      jobNo: 'JOB112236',
-      customerName: 'Alice Johnson',
-      mobileNo: '9876543213',
-      emailId: 'alice.johnson@example.com',
-      address: '101 Maple St, Springfield',
-      dueDate: '2024-04-23',
-      total: '$400.00',
-      invoiceDetails: {
-        items: [
-          { name: 'Product G', quantity: 5, price: '$80.00' },
-          { name: 'Service H', quantity: 3, price: '$60.00' },
-        ],
-        paymentMethod: 'Cash',
-        transactionId: 'TXN1004',
-      },
-    },
-  ];
+
+  
 
   isModalVisible = false;
   selectedInvoice: any = null;
-  showInvoiceModal(data: any): void {
-    this.selectedInvoice = data;
-    this.isModalVisible = true;
-  }
+  // showInvoiceModal(data: any): void {
+  //   this.selectedInvoice = data;
+  //   this.isModalVisible = true;
+  // }
 
   handleCancel(): void {
     this.isModalVisible = false;
@@ -371,6 +254,7 @@ export class OrderdetailsdrawerComponent {
     this.showverification=false
     this.showchat=false
     this.showmap=false
+    this.getInvoiceLog()
   }
 
   showaction(){
@@ -380,6 +264,7 @@ export class OrderdetailsdrawerComponent {
     this.showverification=false
     this.showchat=false
     this.showmap=false
+    this.getActionLog()
   }
 
   showverificationn(){
@@ -398,14 +283,7 @@ export class OrderdetailsdrawerComponent {
     this.showchat=false
     this.showmap=false
   }
-  showwmapp(){
-    this.showactionlog=false
-    this.showinvoicetable=false
-    this.showjobcard=false
-    this.showverification=false
-    this.showchat=false
-    this.showmap=true
-  }
+ 
 
   modalStyle = {
     top: '20px',
@@ -426,4 +304,471 @@ export class OrderdetailsdrawerComponent {
     // { "latitude": 18.511190328632434, "longitude": 73.90544713522702, name: "Location 3" },
     // { "latitude": 18.45096180755418, "longitude": 73.85497558570897, name: "Location 4" }
   ];
+
+
+  checked1 = false
+ 
+
+
+  // purvamam
+  timelineData: any = []
+  invoiceData:any=[]
+  getActionLog() {
+    var filter = ''
+    if (this.checked == true && this.checked1 == false) {
+      filter = " AND ACTION_LOG_TYPE IN('O')"
+    }
+    else if (this.checked == false && this.checked1 == true) {
+      filter = " AND ACTION_LOG_TYPE IN('J')"
+    }
+    else {
+      filter = " AND ACTION_LOG_TYPE IN('O','J')"
+    }
+    this.api.getActionLog(0, 0, '', '', filter+' AND ORDER_ID= '+this.orderid).subscribe(
+      (data) => {
+        if (data['code'] == 200) {
+          this.timelineData = this.formatTimelineData(data['data']);
+          console.log(this.timelineData)
+        } else {
+          this.message.error('Failed To get Action Log Data', '');
+        }
+      },
+      () => {
+        this.message.error('Something Went Wrong', '');
+      }
+    );
+  }
+  formatTimelineData(data: any[]): any[] {
+    return data.map((day) => ({
+      date: day.DATE,
+      events: day.ACTION_LOGS.map((log) => ({
+        icon: this.getStatusIcon(
+          log.ORDER_STATUS || ''
+        ),// Adjust icon logic as needed
+        title: log.ACTION_DETAILS || 'Action performed',
+        time: log.ORDER_DATE_TIME ? new Date(log.ORDER_DATE_TIME).toLocaleTimeString() : 'N/A',
+        user: log.TECHNICIAN_NAME || 'Unknown',
+        description: log.TASK_DESCRIPTION || 'No description provided'
+      }))
+    }));
+  }
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'order placed':
+        return '🛒';
+      case 'order accepted':
+        return '✅';
+      case 'order rejected':
+        return '❌';
+      case 'order scheduled':
+        return '📅';
+      case 'order ongoing':
+        return '🔄';
+      case 'order completed':
+        return '🏁';
+      case 'order cancelled':
+        return '🚫';
+      default:
+        return 'ℹ️';
+    }
+  }
+  getInvoiceLog() {
+    var sort: string;
+    try {
+      sort = this.sortValue.startsWith('a') ? 'asc' : 'desc';
+    } catch (error) {
+      sort = '';
+    }
+    this.api.getInvoiceLogs(   this.pageIndex,  this.pageSize,  this.sortKey, sort, ' AND ORDER_ID= '+this.orderid).subscribe(
+      (data) => {
+        if (data['code'] == 200) {
+          this.invoiceData =data['data'];
+        } else {
+          this.message.error('Failed To get Invoice Data', '');
+        }
+      },
+      () => {
+        this.message.error('Something Went Wrong', '');
+      }
+    );
+  }
+ 
+  pdfUrl: any
+  showInvoiceModal(data: any): void {
+    if (data?.INVOICE_URL) {
+      const a = this.api.retriveimgUrl + 'Invoices' + '/' + data.INVOICE_URL;
+      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(a);
+      console.log('Sanitized PDF URL:', this.pdfUrl);
+      this.isModalVisible = true;
+    } else {
+      this.message.error('Invoice URL not available','');
+    }
+  }
+  downloadPDF(): void {
+    // Extract the original URL from the sanitized URL (without breaking security)
+    const urlString = this.pdfUrl.changingThisBreaksApplicationSecurity || '';
+    console.log('Attempting to download PDF from URL:', urlString);
+ 
+    if (!urlString) {
+      console.error('Invalid PDF URL');
+      return;
+    }
+ 
+    // Create HTTP request headers to force the PDF MIME type
+    const headers = new HttpHeaders().set('Accept', 'application/pdf');
+ 
+    // Fetch the PDF as a Blob from the server with forced MIME type
+    this.httpClient.get(urlString, { responseType: 'blob', headers: headers }).subscribe(
+      (response: Blob) => {
+        // Log the received Blob to ensure it's a PDF
+        console.log('Received PDF Blob:', response);
+ 
+        // Create a temporary Blob URL
+        const blobUrl = URL.createObjectURL(response);
+ 
+        // Create an anchor element for download
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = urlString.split('/').pop() || 'invoice.pdf'; // Use the file name from URL
+        a.target = '_self'; // Download in the same tab
+ 
+        // Trigger the download
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a); // Clean up the DOM
+ 
+        // Revoke the Blob URL after the download starts
+        URL.revokeObjectURL(blobUrl);
+      },
+      (error) => {
+        console.error('Error fetching PDF:', error);
+      }
+    );
+  }
+ 
+ 
+  pageIndex = 1;
+  pageSize = 10;
+  sortValue: string = 'desc';
+  sortKey: string = 'id';
+  sort(params: NzTableQueryParams): void {
+    const { pageSize, pageIndex, sort } = params;
+    console.log(params)
+    const currentSort = sort.find((item) => item.value !== null);
+    const sortField = (currentSort && currentSort.key) || 'id';
+    const sortOrder = (currentSort && currentSort.value) || 'desc';
+    console.log(currentSort);
+    console.log('sortOrder :' + sortOrder);
+    this.pageIndex = pageIndex;
+    this.pageSize = pageSize;
+ 
+    if (this.pageSize != pageSize) {
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+    }
+ 
+    if (this.sortKey != sortField) {
+      this.pageIndex = 1;
+      this.pageSize = pageSize;
+    }
+ 
+    this.sortKey = sortField;
+    this.sortValue = sortOrder;
+    this.getInvoiceLog();
+  }
+
+  dataList:any=[{id:1}];
+
+
+  
+  TIME: any
+  DATE :any  
+
+
+
+
+
+
+
+ 
+orderData:any = new orderMasterData();
+isSpinning = false;
+acceptorder()
+  {
+
+    if(this.STATUS != null &&
+       this.STATUS  != undefined &&
+       this.STATUS  !=  ""
+    )
+    {
+      if(this.STATUS == 'A'){
+        this.orderData.ORDER_STATUS ='A'
+      }
+     else if(this.STATUS == 'R'){
+        this.orderData.REMARK,
+        this.orderData.ORDER_STATUS ='R'
+      }
+     else  if(this.STATUS == 'Res'){
+      this.orderData.DATE,
+      this.orderData.TIME,
+        this.orderData.ORDER_STATUS ='Res'
+      }
+
+      if(this.STATUS == 'R' && (this.orderData.REMARK == null || this.orderData.REMARK == undefined || this.orderData.REMARK == "" ))
+      {
+        this.message.error("Please Enter Reject Remark ", "");
+      }
+      else if(this.STATUS == 'Res' && (this.orderData.DATE == null || this.orderData.DATE == undefined || this.orderData.DATE == "" ))
+      {
+        this.message.error("Please Select Date and Time ", "");
+      }
+      else
+      {
+
+        this.api.acceptorder(this.orderData).subscribe((successCode: any) => {
+          if (successCode.code == "200") {
+            if(this.STATUS == 'A')
+            {
+              this.message.success("Order Accepted Successfully", "");
+            }
+            if(this.STATUS == 'R')
+              {
+                this.message.success("Order Rejected", "");
+              }
+              if(this.STATUS == 'Res')
+                {
+                  this.message.success("Order Rescheduled", "");
+                }
+            this.backall();
+            this.isSpinning = false;
+          } else {
+            this.message.error("Order Failed ", "");
+            this.isSpinning = false;
+          }
+        });
+
+      }
+
+
+  }
+  else
+  {
+    this.message.error("Please Select Order Status","")
+  }
+
+
+  }
+
+  orderDetailsData: any = [];
+  jobCardIds: any[] = [];
+  getorderDetails() {
+    this.api
+      .getorderDetails(0, 0, "", "", "AND ORDER_ID = " + this.orderData.ID)
+      .subscribe(
+        (data) => {
+          if (data["code"] == 200) {
+            this.orderDetailsData = data["data"];
+
+            this.jobCardIds = this.orderDetailsData.map(
+              (order) => order.JOB_CARD_ID
+            );
+
+            console.log("this.jobCardIds:", this.jobCardIds);
+          } else {
+            this.orderDetailsData = [];
+            this.message.error("Failed To Get Order Details Data", "");
+          }
+        },
+        () => {
+          this.message.error("Something Went Wrong", "");
+        }
+      );
+  }
+
+  TECHNICIAN_ID: any; 
+  jobcardtechmapdata: any = [];
+  filteredJobcardTechData: any[] = [];
+
+  getjobcardTechnicianMapping() {
+    console.log("this.jobCardIds1:", this.jobCardIds);
+    console.log("this.orderDetailsData:", this.orderDetailsData);
+    this.api
+      .getjobcardTechnicianMapping(
+        0,
+        0,
+        "",
+        "",
+        "AND JOB_CARD_ID IN (" + this.jobCardIds + ")"
+      )
+      .subscribe(
+        (data) => {
+          if (data["code"] == 200) {
+            this.jobcardtechmapdata = data["data"];
+
+          } else {
+            this.jobcardtechmapdata = [];
+            this.message.error(
+              "Failed To Get JobCard Technician Mapping Data",
+              ""
+            );
+          }
+        },
+        () => {
+          this.message.error("Something Went Wrong", "");
+        }
+      );
+  }
+
+
+
+  chatdata: any = [];
+  jobCardChat() {
+    this.api
+      .jobCardChat(
+        0,
+        0,
+        "",
+        "",
+        "AND ORDER_ID = " +
+          this.orderData.ID +
+          " AND CUSTOMER_ID = " +
+          this.orderData.CUSTOMER_ID +
+          " AND TECHNICIAN_ID=" +
+          this.TECHNICIAN_ID
+      )
+      .subscribe(
+        (data) => {
+          if (data["code"] == 200) {
+            this.chatdata = data["data"];
+            if (this.chatdata.length > 0) {
+              this.jobCardChatDetails();
+            }
+          } else {
+            this.chatdata = [];
+            this.message.error("Failed To Get Job Card Chat", "");
+          }
+        },
+        () => {
+          this.message.error("Something Went Wrong", "");
+        }
+      );
+  }
+
+  chatDetailsdata: any = [];
+  jobCardChatDetails() {
+    this.api
+      .jobCardChatDetails(0, 0, "", "", "AND CHAT_ID =" + this.chatdata[0].ID)
+      .subscribe(
+        (data) => {
+          if (data["code"] == 200) {
+            this.chatDetailsdata = data["data"];
+          } else {
+            this.chatDetailsdata = [];
+            this.message.error("Failed To Get Job Card Chat Details", "");
+          }
+        },
+        () => {
+          this.message.error("Something Went Wrong", "");
+        }
+      );
+  }
+
+
+
+
+
+
+  // map
+
+  showwmapp(){
+    this.showactionlog=false
+    this.showinvoicetable=false
+    this.showjobcard=false
+    this.showverification=false
+    this.showchat=false
+    this.showmap=true
+  }
+
+
+ 
+  mapData: any = [];
+  OrderAddressMap() {
+    this.api
+      .OrderAddressMap(
+        0,
+        0,
+        "",
+        "",
+        "AND ORDER_ID = " +
+          this.orderData.ID +
+          " AND ID = " +
+          this.orderData.SERVICE_ADDRESS_ID
+      )
+      .subscribe(
+        (data) => {
+          if (data["code"] == 200) {
+            this.mapData = data["data"];
+            console.log("this.mapData", this.mapData);
+
+            if (this.mapData.length > 0) {
+              this.MAPlOCATION = [
+                ...[],
+                ...[
+                  {
+                    latitude: Number(this.mapData[0].LONGITUDE),
+                    longitude: Number(this.mapData[0].LATITUDE),
+                    name: this.orderData.CUSTOMER_NAME,
+                    address: `${this.mapData[0].COUNTRY_NAME}, 
+                ${this.mapData[0].STATE_NAME}, 
+                ${this.mapData[0].CITY_NAME}, 
+                ${this.mapData[0].ADDRESS_LINE_1}, 
+                ${this.mapData[0].ADDRESS_LINE_2} - 
+                ${this.mapData[0].PINCODE}`,
+                  },
+                ],
+              ];
+              console.log("this.MAPlOCATION2", this.MAPlOCATION);
+              this.showmap = true;
+            } else {
+              this.message.warning("No map data available", "");
+            }
+          } else {
+            this.mapData = [];
+            this.message.error(
+              "Failed To Get Order Master Address Map Data",
+              ""
+            );
+          }
+        },
+        () => {
+          this.message.error("Something Went Wrong", "");
+        }
+      );
+  }
+
+
+
+  ordermasterdata: any = [];
+  ServiceAddressId;
+  Ordermaster() {
+    this.api.Ordermaster(0, 0, "", "", "").subscribe(
+      (data) => {
+        if (data["code"] == 200) {
+          this.ordermasterdata = data["data"];
+          console.log("this.ordermasterdata", this.ordermasterdata);
+          this.ServiceAddressId = this.ordermasterdata.map(
+            (order) => order.SERVICE_ADDRESS_ID
+          );
+          console.log("this.ServiceAddressId", this.ServiceAddressId);
+        } else {
+          this.ordermasterdata = [];
+          this.message.error("Failed To Get Order Master  Data", "");
+        }
+      },
+      () => {
+        this.message.error("Something Went Wrong", "");
+      }
+    );
+  }
+
 }

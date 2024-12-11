@@ -34,8 +34,7 @@ export class InventorysubcategorymasterComponent {
   filterQuery: string = "";
   isFilterApplied: string = "default";
   columns: string[][] = [
-    ["INVENTRY_CATEGORY", "Inventory Category"],
-    ["ITEM", "Item"],
+    ["CATEGORY_NAME", "Inventory Category"],
     ["NAME", "Name"],
     ["DESCRIPTION", "Description"],
     ["IS_ACTIVE", "Is Active"],
@@ -64,18 +63,20 @@ export class InventorysubcategorymasterComponent {
     return true;
   }
   columns1: { label: string; value: string }[] = [
-    { label: "Inventory Category", value: "Inventory Category" },
-    { label: "Item", value: "Item" },
-    { label: "Name", value: "Name" },
-    { label: "Description", value: "Description" },
-    { label: "Is Active", value: "Is Active" },
+    { label: "Inventory Category", value: "INVENTRY_CATEGORY_ID" },
+    // { label: "Item", value: "Item" },
+    { label: "Sub Category Name", value: "NAME" },
+    { label: "Description", value: "DESCRIPTION" },
+    { label: "Sequence No", value: "SEQ_NO" },
+    { label: "Is Active", value: "IS_ACTIVE" },
   ];
 
   showcolumn = [
-    { label: "Inventory Category", key: "INVENTRY_CATEGORY", visible: true },
-    { label: "Item", key: "ITEM", visible: true },
-    { label: "Name", key: "NAME", visible: true },
+    { label: "Inventory Category", key: "CATEGORY_NAME", visible: true },
+    // { label: "Item", key: "ITEM", visible: true },
+    { label: "Sub Category Name", key: "NAME", visible: true },
     { label: "Description", key: "DESCRIPTION", visible: true },
+    { label: "Sequence No", key: "SEQ_NO", visible: true },
     { label: "Is Active", key: "IS_ACTIVE", visible: true },
   ];
 
@@ -91,19 +92,31 @@ export class InventorysubcategorymasterComponent {
   ngOnInit() {
     // this.search();
     // this.getUnits()
+    this.getInventoryCategory()
   }
   isColumnVisible(key: any): boolean {
     const column = this.showcolumn.find((col) => col.key === key);
     return column ? column.visible : true;
   }
+  getInventoryCategory(){
+    this.api.getInventoryCategory(0,0,'id','desc',' AND IS_ACTIVE=1').subscribe(data=>{
+      if(data['code']==200){
+        this.categoryData=data['data']
+      }
+      else{
+        this.categoryData=[]
+      }
+    })
+  }
+
   // onCountryChange() {}
   sort(params: NzTableQueryParams): void {
     const { pageSize, pageIndex, sort } = params;
     const currentSort = sort.find((item) => item.value !== null);
     const sortField = (currentSort && currentSort.key) || "id";
     const sortOrder = (currentSort && currentSort.value) || "desc";
-    console.log(currentSort);
-    console.log("sortOrder :" + sortOrder);
+    // console.log(currentSort);
+    // console.log("sortOrder :" + sortOrder);
     this.pageIndex = pageIndex;
     this.pageSize = pageSize;
 
@@ -153,11 +166,11 @@ export class InventorysubcategorymasterComponent {
         ")";
     }
 
-    if (this.itemNametext?.trim()) {
-      likeQuery +=
-        (likeQuery ? " AND " : "") +
-        `ITEM_NAME LIKE '%${this.itemNametext.trim()}%'`;
-    }
+    // if (this.itemNametext?.trim()) {
+    //   likeQuery +=
+    //     (likeQuery ? " AND " : "") +
+    //     `ITEM_NAME LIKE '%${this.itemNametext.trim()}%'`;
+    // }
 
     if (this.subcategorynametext?.trim()) {
       likeQuery +=
@@ -168,7 +181,7 @@ export class InventorysubcategorymasterComponent {
     if (this.selectedcategories?.length) {
       const categories = this.selectedcategories.join(",");
       likeQuery +=
-        (likeQuery ? " AND " : "") + `CATEGORY_ID IN (${categories})`;
+        (likeQuery ? " AND " : "") + `INVENTRY_CATEGORY_ID IN (${categories})`;
     }
 
     // State Filter
@@ -185,24 +198,40 @@ export class InventorysubcategorymasterComponent {
     likeQuery = globalSearchQuery + (likeQuery ? " AND " + likeQuery : "");
 
     // Call API with updated search query
-    // this.api
-    //   .getAllBranch(
-    //     this.pageIndex,
-    //     this.pageSize,
-    //     this.sortKey,
-    //     sort,
-    //     likeQuery + ""
-    //   )
-    //   .subscribe(
-    //     (data) => {
-    //       this.loadingRecords = false;
-    //       this.totalRecords = data["count"];
-    //       this.dataList = data["data"];
-    //     },
-    //     (err) => {
-    //       console.log(err);
-    //     }
-    //   );
+    this.api
+      .getInventorySubCategory(
+        this.pageIndex,
+        this.pageSize,
+        this.sortKey,
+        sort,
+        likeQuery + ""
+      )
+      .subscribe(
+        (data) => {
+          if (data["code"] == 200) {
+            this.loadingRecords = false;
+            this.totalRecords = data["count"];
+            this.dataList = data["data"];
+          } else {
+            this.dataList = [];
+            this.loadingRecords = false;
+            this.message.error(
+              "Failed to get Inventory Sub category Records",
+              ""
+            );
+          }
+        },
+        (err) => {
+          this.dataList = [];
+          this.loadingRecords = false;
+
+          this.message.error(
+            "Failed to get Inventory Sub category Records",
+            ""
+          );
+          console.log(err);
+        }
+      );
   }
 
   get closeCallback() {
@@ -215,18 +244,18 @@ export class InventorysubcategorymasterComponent {
 
     // this.drawerData.IS_ACTIVE = true;
 
-    // this.api.getAllBranch(1, 1, "SEQ_NO", "desc", "" + "").subscribe(
-    //   (data) => {
-    //     if (data["count"] == 0) {
-    //       this.drawerData.SEQ_NO = 1;
-    //     } else {
-    //       this.drawerData.SEQ_NO = data["data"][0]["SEQ_NO"] + 1;
-    //     }
-    //   },
-    //   (err) => {
-    //     console.log(err);
-    //   }
-    // );
+    this.api.getInventorySubCategory(1, 1, "SEQ_NO", "desc", "" + "").subscribe(
+      (data) => {
+        if (data["count"] == 0) {
+          this.drawerData.SEQ_NO = 1;
+        } else {
+          this.drawerData.SEQ_NO = data["data"][0]["SEQ_NO"] + 1;
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
 
     this.drawerVisible = true;
   }
@@ -239,7 +268,26 @@ export class InventorysubcategorymasterComponent {
 
     this.drawerVisible = true;
   }
-
+  getComparisonOptions(selectedColumn: string): string[] {
+    if (
+      selectedColumn === "INVENTRY_CATEGORY_ID" ||
+      selectedColumn === "IS_ACTIVE"
+    ) {
+      return ["=", "!="];
+    }
+    return [
+      "=",
+      "!=",
+      "<",
+      ">",
+      "<=",
+      ">=",
+      "Contains",
+      "Does not Contain",
+      "Start With",
+      "End With",
+    ];
+  }
   drawerClose(): void {
     this.search();
     this.drawerVisible = false;
@@ -363,7 +411,7 @@ export class InventorysubcategorymasterComponent {
         ""
       );
     } else {
-      console.log(conditionIndex, subConditionIndex);
+      // console.log(conditionIndex, subConditionIndex);
       this.hide = false;
       this.filterBox[conditionIndex].FILTER.splice(subConditionIndex + 1, 0, {
         CONDITION: "",
@@ -404,7 +452,7 @@ export class InventorysubcategorymasterComponent {
       isOk = false;
       this.message.error("Please select operator.", "");
     }
-    console.log(this.filterBox, "filterBox1");
+    // console.log(this.filterBox, "filterBox1");
 
     if (isOk) {
       this.filterBox.push({
@@ -418,7 +466,7 @@ export class InventorysubcategorymasterComponent {
           },
         ],
       });
-      console.log(this.filterBox, "filterBox2");
+      // console.log(this.filterBox, "filterBox2");
     }
   }
 
@@ -428,7 +476,7 @@ export class InventorysubcategorymasterComponent {
   showquery: any;
   isSpinner: boolean = false;
   createFilterQuery(): void {
-    console.log(this.filterBox, "filterdat");
+    // console.log(this.filterBox, "filterdat");
 
     const lastFilterIndex = this.filterBox.length - 1;
     1;
@@ -448,7 +496,7 @@ export class InventorysubcategorymasterComponent {
         "SELECTION3"
       ];
     const selection4 = this.filterBox[lastFilterIndex]["CONDITION"];
-    console.log(selection4, "selection4");
+    // console.log(selection4, "selection4");
 
     if (!selection1) {
       this.message.error("Please select a column", "");
@@ -462,7 +510,7 @@ export class InventorysubcategorymasterComponent {
     } else if (!selection4 && lastFilterIndex > 0) {
       this.message.error("Please Select the Operator", "");
     } else {
-      console.log(this.filterBox);
+      // console.log(this.filterBox);
 
       this.isSpinner = true;
 
@@ -505,169 +553,139 @@ export class InventorysubcategorymasterComponent {
 
         if (i + 1 == this.filterBox.length) {
           this.query += ")";
-          console.log(this.query, "backend query");
+          // console.log(this.query, "backend query");
         }
       }
 
       this.showquery = this.query;
-      console.log(this.showquery, "showquery");
+      // console.log(this.showquery, "showquery");
 
       var newQuery = " AND " + this.query;
-      console.log(newQuery);
+      // console.log(newQuery);
 
       this.filterQuery1 = newQuery;
 
-      console.log(this.filterQuery1, "this.filterQuerythis.filterQuery");
+      // console.log(this.filterQuery1, "this.filterQuerythis.filterQuery");
 
       let sort = ""; // Assign a default value to sort
       let filterQuery = "";
-      // this.api
-      //   .getCity(
-      //     this.pageIndex,
-      //     this.pageSize,
-      //     this.sortKey,
-      //     sort,
-      //     newQuery
-      //     // filterQuery
-      //   )
-      //   .subscribe(
-      //     (data) => {
-      //       if (data["code"] === 200) {
-      //         this.totalRecords = data["count"];
-      //         this.dataList = data["data"];
-      //         this.isSpinner = false;
-      //         this.filterQuery = "";
-      //       } else {
-      //         this.dataList = [];
-      //         this.isSpinner = false;
-      //       }
-      //     },
-      //     (err) => {
-      //       if (err["ok"] === false) this.message.error("Server Not Found", "");
-      //     }
-      //   );
+      this.api
+        .getInventorySubCategory(
+          this.pageIndex,
+          this.pageSize,
+          this.sortKey,
+          sort,
+          newQuery
+          // filterQuery
+        )
+        .subscribe(
+          (data) => {
+            if (data["code"] === 200) {
+              this.totalRecords = data["count"];
+              this.dataList = data["data"];
+              this.isSpinner = false;
+              this.filterQuery = "";
+            } else {
+              this.dataList = [];
+              this.isSpinner = false;
+            }
+          },
+          (err) => {
+            if (err["ok"] === false) this.message.error("Server Not Found", "");
+          }
+        );
 
       this.QUERY_NAME = "";
     }
   }
 
-  applyFilter(i, j) {
-    // console.log(i, j);
+  restrictedKeywords = ["SELECT", "INSERT", "UPDATE", "DELETE", "DROP", "TRUNCATE", "ALTER", "CREATE", "RENAME", "GRANT", "REVOKE", "EXECUTE", "UNION", "HAVING", "WHERE", "ORDER BY", "GROUP BY", "ROLLBACK", "COMMIT", "--", ";", "/*", "*/"
+  ];
 
-    const lastFilterIndex = this.filterBox.length - 1;
-    const lastSubFilterIndex =
-      this.filterBox[lastFilterIndex]["FILTER"].length - 1;
+  isValidInput(input: string): boolean {
+    return !this.restrictedKeywords.some((keyword) =>
+      input.toUpperCase().includes(keyword)
+    );
+  }
+  applyFilter(i: number, j: number) {
+    const currentFilter = this.filterBox[i]['FILTER'][j];
 
-    const selection1 =
-      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
-        "SELECTION1"
-      ];
-    const selection2 =
-      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
-        "SELECTION2"
-      ];
-    const selection3 =
-      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
-        "SELECTION3"
-      ];
+    const selection1 = currentFilter.SELECTION1;
+    const selection2 = currentFilter.SELECTION2;
+    const selection3 = currentFilter.SELECTION3;
 
     if (!selection1) {
-      this.message.error("Please select a column", "");
+      this.message.error("Please select a column", '');
     } else if (!selection2) {
-      this.message.error("Please select a comparison", "");
+      this.message.error("Please select a comparison", '');
     } else if (!selection3 || selection3.length < 1) {
-      this.message.error(
-        "Please enter a valid value with at least 1 characters",
-        ""
-      );
+      this.message.error("Please enter a valid value with at least 1 character", '');
+    } else if (typeof selection3 === 'string' && !this.isValidInput(selection3)) {
+      this.message.error(`Invalid Input: ${selection3} is not allowed.`, '');
     } else {
-      console.log(this.query, "query");
-      console.log(this.filterBox, "filterbox");
+      const sort = this.sortValue?.startsWith('a') ? 'asc' : 'desc';
 
-      // var DemoData:any = this.filterBox
-      let sort: string;
-      let filterQuery = "";
-
-      try {
-        sort = this.sortValue.startsWith("a") ? "asc" : "desc";
-      } catch (error) {
-        sort = "";
-      }
-      // Define a function to get the comparison value filter
-
-      this.isSpinner = true;
-      const getComparisonFilter = (
-        comparisonValue: any,
-        columnName: any,
-        tableValue: any
-      ) => {
+      const getComparisonFilter = (comparisonValue: any, columnName: any, tableValue: any) => {
         switch (comparisonValue) {
-          case "=":
-          case "!=":
-          case "<":
-          case ">":
-          case "<=":
-          case ">=":
+          case '=':
+          case '!=':
+          case '<':
+          case '>':
+          case '<=':
+          case '>=':
             return `${tableValue} ${comparisonValue} '${columnName}'`;
-          case "Contains":
+          case 'Contains':
             return `${tableValue} LIKE '%${columnName}%'`;
-          case "Does not Contain":
+          case 'Does not Contain':
             return `${tableValue} NOT LIKE '%${columnName}%'`;
-          case "Start With":
+          case 'Start With':
             return `${tableValue} LIKE '${columnName}%'`;
-          case "End With":
+          case 'End With':
             return `${tableValue} LIKE '%${columnName}'`;
           default:
-            return "";
+            return '';
         }
       };
 
-      const FILDATA = this.filterBox[i]["FILTER"]
-        .map((item) => {
-          const filterCondition = getComparisonFilter(
-            item.SELECTION2,
-            item.SELECTION3,
-            item.SELECTION1
-          );
-          return `AND (${filterCondition})`;
-        })
-        .join(" ");
+      const filterCondition = getComparisonFilter(selection2, selection3, selection1);
+      const FILDATA = `AND (${filterCondition})`;
 
-      console.log(FILDATA, "FILDATA");
+      // console.log(FILDATA, 'Filter Data');
 
-      console.log(filterQuery, "filterQueryfilterQuery");
+      this.isSpinner = true;
 
-      // this.api
-      //   .getCity(this.pageIndex, this.pageSize, this.sortKey, sort, FILDATA)
-      //   .subscribe(
-      //     (data) => {
-      //       if (data["code"] === 200) {
-      //         this.totalRecords = data["count"];
-      //         this.dataList = data["data"];
-      //         this.isSpinner = false;
-      //         this.filterQuery = "";
-      //       } else {
-      //         this.dataList = [];
-      //         this.isSpinner = false;
-      //       }
-      //     },
-      //     (err) => {
-      //       if (err["ok"] === false) this.message.error("Server Not Found", "");
-      //     }
-      //   );
+      this.api
+        .getInventorySubCategory(this.pageIndex, this.pageSize, this.sortKey, sort, FILDATA)
+        .subscribe(
+          (data) => {
+            if (data['code'] === 200) {
+              this.totalRecords = data['count'];
+              this.dataList = data['data'];
+            } else {
+              this.dataList = [];
+            }
+            this.isSpinner = false;
+          },
+          (err) => {
+            if (err['ok'] === false) {
+              this.message.error('Server Not Found', '');
+            }
+            this.isSpinner = false;
+          }
+        );
     }
   }
 
   resetValues(): void {
     this.filterBox = [
       {
-        CONDITION: "",
+        CONDITION: '',
         FILTER: [
           {
-            CONDITION: "",
-            SELECTION1: "",
-            SELECTION2: "",
-            SELECTION3: "",
+            CONDITION: '',
+            SELECTION1: '',
+            SELECTION2: '',
+            SELECTION3: '',
           },
         ],
       },
@@ -678,6 +696,7 @@ export class InventorysubcategorymasterComponent {
   public visiblesave = false;
 
   saveQuery() {
+    // this.createFilterQuery();
     this.visiblesave = !this.visiblesave;
   }
 
@@ -690,20 +709,20 @@ export class InventorysubcategorymasterComponent {
     if (this.QUERY_NAME.trim()) {
       this.INSERT_NAMES.push({ query: this.showquery, name: this.QUERY_NAME });
 
-      console.log(this.INSERT_NAMES);
+      // console.log(this.INSERT_NAMES);
       this.visiblesave = false;
       this.QUERY_NAME = ""; // Clear input after adding
     } else {
-      console.log("Name is empty");
+      // console.log("Name is empty");
     }
   }
   visible: boolean = false;
   toggleLiveDemo(item: any, item1: any) {
     this.name1 = item;
-    console.log(item, "items");
+    // console.log(item, "items");
 
     this.name2 = item1;
-    console.log(item1, "name");
+    // console.log(item1, "name");
 
     this.visible = !this.visible;
   }

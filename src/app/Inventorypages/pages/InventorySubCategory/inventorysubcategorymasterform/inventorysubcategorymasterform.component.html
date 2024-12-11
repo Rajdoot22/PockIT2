@@ -49,7 +49,7 @@
 								style="width: 100%;">
 								<nz-option *ngFor="let item of InventoryCategoryList"
 									[nzValue]="item.ID"
-									[nzLabel]="item.NAME"></nz-option>
+									[nzLabel]="item.CATEGORY_NAME"></nz-option>
 							</nz-select>
 						</nz-form-control>
 						<!-- <h6 style="color: red; font-size: 10px" *ngIf="
@@ -63,7 +63,7 @@
 				</div>
 				
 			</div>
-           <div nz-row>
+           <!-- <div nz-row>
 			<div nz-col
 					nzSpan="24">
 					<nz-form-item>
@@ -85,28 +85,22 @@
 									[nzLabel]="item.NAME"></nz-option>
 							</nz-select>
 						</nz-form-control>
-						<!-- <h6 style="color: red; font-size: 10px" *ngIf="
-								  data.NAME != undefined &&
-								  data.NAME != null &&
-								  data.NAME != ''
-								">
-						{{ data.NAME.length }}/128
-					</h6> -->
+				
 					</nz-form-item>
 				</div>
-		   </div>
+		   </div> -->
 		   <div nz-row>
 			<div nz-col
 				nzSpan="24">
 				<nz-form-item>
-					<nz-form-label nzRequired nzNoColon>Name</nz-form-label>
+					<nz-form-label nzRequired nzNoColon>Sub Category Name</nz-form-label>
 					<nz-form-control>
 						<input [(ngModel)]="data.NAME"
 									(keypress)="alphanumchar($event)"
 									name="subcategoryname"
 									nz-input
 									maxlength="128"
-									placeholder="Enter Name">
+									placeholder="Enter Subcategory Name">
 						<br>
 						<small *ngIf="data.NAME"
 							style="font-size: 9px; color: red">
@@ -125,8 +119,8 @@
 							<textarea [(ngModel)]="data.DESCRIPTION"
 								nz-input
 								rows="3"
-								name="remark"
-								placeholder="Enter Remark"
+								name="Description"
+								placeholder="Enter Description"
 								maxlength="512"></textarea>
 							<br>
 							<small *ngIf="data.DESCRIPTION"
@@ -136,6 +130,25 @@
 						</nz-form-control>
 					</nz-form-item>
 				</div>
+				<div nz-col nzSpan="12">
+					<nz-form-item>
+					  <nz-form-label nzNoColon nzRequired>Sequence No.</nz-form-label>
+					  <nz-form-control nzHasFeedback nzErrorTip="Please Enter Sequence No.">
+						<input
+						  nz-input
+						  placeholder="Sequence No."
+						  name="SeqNo"
+						  required
+						  [(ngModel)]="data.SEQ_NO"
+						  required
+						  (keypress)="commonFunction.onlynum($event)"
+						  maxlength="8"
+						  autocomplete="off"
+						  disabled
+						/>
+					  </nz-form-control>
+					</nz-form-item>
+				  </div>
 				<div nz-col nzSpan="6">
                     <nz-form-item>
                       <nz-form-label nzNoColon>Is Active?</nz-form-label>

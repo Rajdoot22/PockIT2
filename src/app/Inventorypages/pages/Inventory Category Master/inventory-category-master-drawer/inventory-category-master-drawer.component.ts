@@ -33,14 +33,14 @@ export class InventoryCategoryMasterDrawerComponent {
 
   ) {}
 
-  resetDrawer(Taxmaster: NgForm) {
+  resetDrawer(inventorycategorymaster: NgForm) {
     this.data = new InventoryCategoryData();
-    Taxmaster.form.markAsPristine();
-    Taxmaster.form.markAsUntouched();
+    inventorycategorymaster.form.markAsPristine();
+    inventorycategorymaster.form.markAsUntouched();
   }
 
 
-  save(addNew: boolean, Taxmaster: NgForm): void {
+  save(addNew: boolean, inventorycategorymaster: NgForm): void {
     this.isSpinning = false;
     this.isOk = true;
     if (
@@ -50,9 +50,9 @@ export class InventoryCategoryMasterDrawerComponent {
           (this.data.DESCRIPTION == '' ||
           this.data.DESCRIPTION == null ||
           this.data.DESCRIPTION == undefined)&&
-          (this.data.PARENT_ID == '' ||
-          this.data.PARENT_ID == null ||
-          this.data.PARENT_ID == undefined)
+          (this.data.SEQ_NO == '' ||
+          this.data.SEQ_NO == null ||
+          this.data.SEQ_NO == undefined)
     ) {
       this.isOk = false;
       this.message.error('Please Fill All The Required Fields ', '');
@@ -72,51 +72,44 @@ export class InventoryCategoryMasterDrawerComponent {
       this.isOk = false;
       this.message.error(' Please Enter Description.', '');
     }
-    else if (
-      this.data.PARENT_ID == null ||
-      this.data.PARENT_ID == undefined ||
-      this.data.PARENT_ID.trim() == ''
-    ) {
-      this.isOk = false;
-      this.message.error(' Please Select parent.', '');
-    }
 
     if (this.isOk) {
       this.isSpinning = true;
       {
         if (this.data.ID) {
-          // this.api.updateTax(this.data).subscribe((successCode: any) => {
-          //   if (successCode.code == 200) {
-          //     this.message.success('Inventory category Updated Successfully', '');
-          //     if (!addNew) this.drawerClose();
-          //     this.isSpinning = false;
-          //   } else {
-          //     this.message.error('Inventory Category Updation Failed', '');
-          //     this.isSpinning = false;
-          //   }
-          // });
+          this.api.updateInventoryCategory(this.data).subscribe((successCode: any) => {
+            if (successCode.code == 200) {
+              this.message.success('Inventory category Updated Successfully', '');
+              if (!addNew) this.drawerClose();
+              this.isSpinning = false;
+            } else {
+              this.message.error('Inventory Category Updation Failed', '');
+              this.isSpinning = false;
+            }
+          });
         }
          else {
-          // this.api.createTax(this.data).subscribe(
-          //   (successCode: any) => {
-          //     if (successCode.code === 200) {
-          //       this.message.success('Inventory Category Created Successfully', '');
-          //       if (!addNew) {
-          //         this.drawerClose();
-          //       } else {
-          //         this.data = new InventoryCategoryData();
-          //         this.resetDrawer(Taxmaster);
-          //       }
-          //     } else {
-          //       this.message.error('Inventory Category Creation Failed', '');
-          //     }
-          //     this.isSpinning = false;
-          //   },
-          //   (error) => {
-          //     this.message.error('An error occurred while creating the Inventory category.', '');
-          //     this.isSpinning = false;
-          //   }
-          // );
+          
+          this.api.createInventoryCategory(this.data).subscribe(
+            (successCode: any) => {
+              if (successCode.code === 200) {
+                this.message.success('Inventory Category Created Successfully', '');
+                if (!addNew) {
+                  this.drawerClose();
+                } else {
+                  this.data = new InventoryCategoryData();
+                  this.resetDrawer(inventorycategorymaster);
+                }
+              } else {
+                this.message.error('Inventory Category Creation Failed', '');
+              }
+              this.isSpinning = false;
+            },
+            (error) => {
+              this.message.error('An error occurred while creating the Inventory category.', '');
+              this.isSpinning = false;
+            }
+          );
         }
       }
     }

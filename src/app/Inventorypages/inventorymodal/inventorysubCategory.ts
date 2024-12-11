@@ -6,4 +6,5 @@ export class InventorySubCategory {
   ITEM_NAME;
   DESCRIPTION;
   IS_ACTIVE:boolean=true;
+  SEQ_NO:any;
 }

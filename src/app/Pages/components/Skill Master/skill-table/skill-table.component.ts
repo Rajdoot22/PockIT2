@@ -188,49 +188,129 @@ export class SkillTableComponent {
    );
  }
 
-  applyFilter(i, j) {
+  // applyFilter(i, j) {
 
 
 
-    const inputValue = this.filterBox[i].FILTER[j].SELECTION3;
-    const lastFilterIndex = this.filterBox.length - 1;
-    const lastSubFilterIndex = this.filterBox[lastFilterIndex]['FILTER'].length - 1;
+  //   const inputValue = this.filterBox[i].FILTER[j].SELECTION3;
+  //   const lastFilterIndex = this.filterBox.length - 1;
+  //   const lastSubFilterIndex = this.filterBox[lastFilterIndex]['FILTER'].length - 1;
 
-    const selection1 = this.filterBox[lastFilterIndex]['FILTER'][lastSubFilterIndex]['SELECTION1'];
-    const selection2 = this.filterBox[lastFilterIndex]['FILTER'][lastSubFilterIndex]['SELECTION2'];
-    const selection3 = this.filterBox[lastFilterIndex]['FILTER'][lastSubFilterIndex]['SELECTION3'];
+  //   const selection1 = this.filterBox[lastFilterIndex]['FILTER'][lastSubFilterIndex]['SELECTION1'];
+  //   const selection2 = this.filterBox[lastFilterIndex]['FILTER'][lastSubFilterIndex]['SELECTION2'];
+  //   const selection3 = this.filterBox[lastFilterIndex]['FILTER'][lastSubFilterIndex]['SELECTION3'];
+
+  //   if (!selection1) {
+  //     this.message.error("Please select a column",'');
+  //   } else if (!selection2) {
+  //     this.message.error("Please select a comparison",'');
+  //   } else if (!selection3 || selection3.length < 1) {
+  //     this.message.error("Please enter a valid value with at least 1 characters",'');
+  //   }
+  //   else  if (typeof inputValue === 'string' && !this.isValidInput(inputValue)) {
+  //     // Show error message
+  //     this.message.error(
+  //       `Invalid Input: ${inputValue} is not allowed.`,''
+  //     );
+  //   }
+
+  //    else {
+
+  //     console.log(this.query, 'query');
+  //     console.log(this.filterBox, 'filterbox');
+
+  //     // var DemoData:any = this.filterBox
+  //     let sort: string;
+  //     let filterQuery = '';
+
+  //     try {
+  //       sort = this.sortValue.startsWith('a') ? 'asc' : 'desc';
+  //     } catch (error) {
+  //       sort = '';
+  //     }
+  //     // Define a function to get the comparison value filter
+
+  //     this.isSpinner = true;
+  //     const getComparisonFilter = (comparisonValue: any, columnName: any, tableValue: any) => {
+  //       switch (comparisonValue) {
+  //         case '=':
+  //         case '!=':
+  //         case '<':
+  //         case '>':
+  //         case '<=':
+  //         case '>=':
+  //           return `${tableValue} ${comparisonValue} '${columnName}'`;
+  //         case 'Contains':
+  //           return `${tableValue} LIKE '%${columnName}%'`;
+  //         case 'Does not Contain':
+  //           return `${tableValue} NOT LIKE '%${columnName}%'`;
+  //         case 'Start With':
+  //           return `${tableValue} LIKE '${columnName}%'`;
+  //         case 'End With':
+  //           return `${tableValue} LIKE '%${columnName}'`;
+  //         default:
+  //           return '';
+  //       }
+  //     };
+
+  //     const FILDATA = this.filterBox[i]['FILTER'].map(item => {
+  //       const filterCondition = getComparisonFilter(item.SELECTION2, item.SELECTION3, item.SELECTION1);
+  //       return `AND (${filterCondition})`;
+  //     }).join(' ');
+
+  //     console.log(FILDATA, 'FILDATA');
+
+
+  //     console.log(filterQuery, 'filterQueryfilterQuery');
+
+
+  //     this.api
+  //       .getSkillData(
+  //         this.pageIndex,
+  //         this.pageSize,
+  //         this.sortKey,
+  //         sort,
+  //         FILDATA
+  //       )
+  //       .subscribe(
+  //         (data) => {
+  //           if (data['code'] === 200) {
+  //             this.totalRecords = data['count'];
+  //             this.dataList = data['data'];
+  //             this.isSpinner = false;
+  //             this.filterQuery = '';
+  //           } else {
+  //             this.dataList = [];
+  //             this.isSpinner = false;
+  //           }
+  //         },
+  //         (err) => {
+  //           if (err['ok'] === false) this.message.error('Server Not Found', '');
+  //         }
+  //       );
+  //   }
+  // }
+
+
+
+  applyFilter(i: number, j: number) {
+    const currentFilter = this.filterBox[i]['FILTER'][j];
+
+    const selection1 = currentFilter.SELECTION1;
+    const selection2 = currentFilter.SELECTION2;
+    const selection3 = currentFilter.SELECTION3;
 
     if (!selection1) {
-      this.message.error("Please select a column",'');
+      this.message.error("Please select a column", '');
     } else if (!selection2) {
-      this.message.error("Please select a comparison",'');
+      this.message.error("Please select a comparison", '');
     } else if (!selection3 || selection3.length < 1) {
-      this.message.error("Please enter a valid value with at least 1 characters",'');
-    }
-    else  if (typeof inputValue === 'string' && !this.isValidInput(inputValue)) {
-      // Show error message
-      this.message.error(
-        `Invalid Input: ${inputValue} is not allowed.`,''
-      );
-    }
+      this.message.error("Please enter a valid value with at least 1 character", '');
+    } else if (typeof selection3 === 'string' && !this.isValidInput(selection3)) {
+      this.message.error(`Invalid Input: ${selection3} is not allowed.`, '');
+    } else {
+      const sort = this.sortValue?.startsWith('a') ? 'asc' : 'desc';
 
-     else {
-
-      console.log(this.query, 'query');
-      console.log(this.filterBox, 'filterbox');
-
-      // var DemoData:any = this.filterBox
-      let sort: string;
-      let filterQuery = '';
-
-      try {
-        sort = this.sortValue.startsWith('a') ? 'asc' : 'desc';
-      } catch (error) {
-        sort = '';
-      }
-      // Define a function to get the comparison value filter
-
-      this.isSpinner = true;
       const getComparisonFilter = (comparisonValue: any, columnName: any, tableValue: any) => {
         switch (comparisonValue) {
           case '=':
@@ -253,39 +333,30 @@ export class SkillTableComponent {
         }
       };
 
-      const FILDATA = this.filterBox[i]['FILTER'].map(item => {
-        const filterCondition = getComparisonFilter(item.SELECTION2, item.SELECTION3, item.SELECTION1);
-        return `AND (${filterCondition})`;
-      }).join(' ');
+      const filterCondition = getComparisonFilter(selection2, selection3, selection1);
+      const FILDATA = `AND (${filterCondition})`;
 
-      console.log(FILDATA, 'FILDATA');
+      console.log(FILDATA, 'Filter Data');
 
-
-      console.log(filterQuery, 'filterQueryfilterQuery');
-
+      this.isSpinner = true;
 
       this.api
-        .getSkillData(
-          this.pageIndex,
-          this.pageSize,
-          this.sortKey,
-          sort,
-          FILDATA
-        )
+        .getSkillData(this.pageIndex, this.pageSize, this.sortKey, sort, FILDATA)
         .subscribe(
           (data) => {
             if (data['code'] === 200) {
               this.totalRecords = data['count'];
               this.dataList = data['data'];
-              this.isSpinner = false;
-              this.filterQuery = '';
             } else {
               this.dataList = [];
-              this.isSpinner = false;
             }
+            this.isSpinner = false;
           },
           (err) => {
-            if (err['ok'] === false) this.message.error('Server Not Found', '');
+            if (err['ok'] === false) {
+              this.message.error('Server Not Found', '');
+            }
+            this.isSpinner = false;
           }
         );
     }
@@ -749,6 +820,10 @@ export class SkillTableComponent {
     console.log(this.selectedQuery);
      // Assign the query to display
     this.isModalVisible = true; // Show the modal
+  }
+
+  removeCondition(index: number) {
+    this.filterBox.splice(index, 1);
   }
 
 }

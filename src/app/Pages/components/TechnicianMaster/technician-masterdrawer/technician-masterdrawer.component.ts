@@ -45,14 +45,14 @@ export class TechnicianMasterdrawerComponent {
   }
   ngOnInit() {
     this.getallCountry();
-    if (this.data.ID) {
+    if (this.data?.COUNTRY_ID) {
+      this.getStatesByCountry(this.data.COUNTRY_ID);
+    }
+    if (this.data?.STATE_ID) {
       this.getCitiesByState(this.data.STATE_ID);
     }
-    if (this.data.ID) {
-      this.getPincodesByCity(this.data.CITY_ID);
-    }
-    if (this.data.ID) {
-      this.getStatesByCountry(this.data.COUNTRY_ID);
+    if (this.data?.STATE_ID) {
+      this.getPincodesByCity(this.data.STATE_ID);
     }
     this.getallVendors();
   }
@@ -94,6 +94,7 @@ export class TechnicianMasterdrawerComponent {
     }
     return false;
   };
+  pattern: RegExp = /^[A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{1,4}$/;
   save(addNew: boolean, TechnicianDrawer: NgForm): void {
     this.isSpinning = false;
     this.isOk = true;
@@ -108,9 +109,15 @@ export class TechnicianMasterdrawerComponent {
       (this.data.MOBILE_NUMBER == undefined ||
         this.data.MOBILE_NUMBER == null ||
         this.data.MOBILE_NUMBER == 0) &&
+      (this.data.DOB == undefined ||
+        this.data.DOB == null ||
+        this.data.DOB == 0) &&
       (this.data.GENDER == null || this.data.GENDER == undefined) &&
       (this.data.AADHAR_NUMBER == null ||
         this.data.AADHAR_NUMBER == undefined) &&
+      (this.data.EXPERIENCE_LEVEL == undefined ||
+        this.data.EXPERIENCE_LEVEL == null ||
+        this.data.EXPERIENCE_LEVEL == 0) &&
       (this.data.ADDRESS_LINE_1.trim() == "" ||
         this.data.ADDRESS_LINE_1 == null ||
         this.data.ADDRESS_LINE_1 == undefined) &&
@@ -153,20 +160,76 @@ export class TechnicianMasterdrawerComponent {
       this.isOk = false;
       this.message.error(" Please Enter Email Id", "");
     } else if (
+      this.data.EMAIL_ID != null &&
+      this.data.EMAIL_ID != undefined &&
+      !this.commonFunction.emailpattern.test(this.data.EMAIL_ID)
+    ) {
+      this.isOk = false;
+      this.message.error("Please Enter Valid Email. ", "");
+    } else if (
       this.data.MOBILE_NUMBER == null ||
-      this.data.MOBILE_NUMBER == undefined
+      this.data.MOBILE_NUMBER == undefined ||
+      this.data.MOBILE_NUMBER == 0
     ) {
       this.isOk = false;
       this.message.error(" Please Enter Mobile No.", "");
+    } else if (
+      this.data.MOBILE_NUMBER != null &&
+      this.data.MOBILE_NUMBER != undefined &&
+      this.data.MOBILE_NUMBER != 0 &&
+      !this.commonFunction.mobpattern.test(this.data.MOBILE_NUMBER)
+    ) {
+      this.isOk = false;
+      this.message.error("Please Enter Valid Mobile No. ", "");
     } else if (this.data.GENDER == null || this.data.GENDER == undefined) {
       this.isOk = false;
       this.message.error(" Please Enter Gender", "");
+    } else if (this.data.DOB == undefined || this.data.DOB == null) {
+      this.isOk = false;
+      this.message.error("Please Enter a Valid Date of Birth", "");
     } else if (
       this.data.AADHAR_NUMBER == null ||
       this.data.AADHAR_NUMBER == undefined
     ) {
       this.isOk = false;
       this.message.error(" Please Enter Aadhaar No", "");
+    } else if (
+      this.data.AADHAR_NUMBER != null &&
+      this.data.AADHAR_NUMBER != undefined &&
+      this.data.AADHAR_NUMBER != 0 &&
+      !this.commonFunction.aadharpattern.test(this.data.AADHAR_NUMBER)
+    ) {
+      this.isOk = false;
+      this.message.error("Please Enter Valid Aadhaar No. ", "");
+    } else if (
+      this.data.EXPERIENCE_LEVEL == null ||
+      this.data.EXPERIENCE_LEVEL == undefined ||
+      this.data.EXPERIENCE_LEVEL == 0
+    ) {
+      this.isOk = false;
+      this.message.error("Please Select Experience Level", "");
+    } else if (
+      this.data.TYPE === "V" &&
+      (this.data.VENDOR_ID == null ||
+        this.data.VENDOR_ID == undefined ||
+        this.data.VENDOR_ID == 0)
+    ) {
+      this.isOk = false;
+      this.message.error("Please Select Vender Name", "");
+    } else if (
+      this.data.TYPE === "F" &&
+      (this.data.CONTRACT_START_DATE == null ||
+        this.data.CONTRACT_START_DATE == undefined)
+    ) {
+      this.isOk = false;
+      this.message.error("Please Enter Contract Start Date", "");
+    } else if (
+      this.data.TYPE === "F" &&
+      (this.data.CONTRACT_END_DATE == undefined ||
+        this.data.CONTRACT_END_DATE == null)
+    ) {
+      this.isOk = false;
+      this.message.error("Please Enter Contract End Date", "");
     } else if (
       this.data.ADDRESS_LINE1 == null ||
       this.data.ADDRESS_LINE1 == undefined ||
@@ -209,11 +272,25 @@ export class TechnicianMasterdrawerComponent {
       this.isOk = false;
       this.message.error(" Please Select Vehicle Type", "");
     } else if (
+      this.data.VEHICLE_DETAILS == null ||
+      this.data.VEHICLE_DETAILS == undefined
+    ) {
+      this.isOk = false;
+      this.message.error(" Please Enter Vehicle Details", "");
+    } else if (
       this.data.VEHICLE_NO == null ||
       this.data.VEHICLE_NO == undefined
     ) {
       this.isOk = false;
       this.message.error(" Please Enter Vehicle No.", "");
+    } else if (
+      this.data.VEHICLE_NO != null &&
+      this.data.VEHICLE_NO != undefined &&
+      this.data.VEHICLE_NO != 0 &&
+      !this.pattern.test(this.data.VEHICLE_NO)
+    ) {
+      this.isOk = false;
+      this.message.error("Please Enter Valid Vehicle No. ", "");
     }
     this.data.DOB = this.datePipe.transform(this.data.DOB, "yyyy-MM-dd");
     this.data.CONTRACT_START_DATE = this.datePipe.transform(
@@ -301,13 +378,22 @@ export class TechnicianMasterdrawerComponent {
   }
 
   // Fetch states based on country ID
-  getStatesByCountry(countryId: any) {
+  getStatesByCountry(countryId: any, value: boolean = true) {
+    console.log("countryId", countryId);
+
+    if (value == false) {
+      this.data.STATE_ID = null;
+      this.data.CITY_ID = null;
+      this.data.PINCODE_ID = null;
+    }
+
     this.api
       .getAllStateMaster(0, 0, "", "", " AND COUNTRY_ID=" + countryId)
       .subscribe(
         (data) => {
           if (data["code"] === 200) {
             this.StateData = data["data"];
+            //this.data.STATE_ID = "";
           } else {
             this.StateData = [];
             this.message.error("Failed To Get State Data...", "");
@@ -320,9 +406,13 @@ export class TechnicianMasterdrawerComponent {
   }
 
   // Fetch cities based on state ID
-  getCitiesByState(stateId: number) {
+  getCitiesByState(stateId: number, value: boolean = true) {
+    if (value == false) {
+      this.data.CITY_ID = null;
+      this.data.PINCODE_ID = null;
+    }
     this.api
-      .getAllCityMaster(0, 0, "", "", "AND STATE_ID=" + stateId)
+      .getAllCityMaster(0, 0, "", "", "  AND STATE_ID=" + stateId)
       .subscribe(
         (data) => {
           if (data["code"] === 200) {
@@ -339,8 +429,11 @@ export class TechnicianMasterdrawerComponent {
   }
 
   // Fetch pincodes based on city ID
-  getPincodesByCity(cityId: number) {
-    this.api.getAllPincode(0, 0, "", "", "AND CITY_ID=" + cityId).subscribe(
+  getPincodesByCity(stateId: number, value: boolean = true) {
+    if (value == false) {
+      this.data.PINCODE_ID = null;
+    }
+    this.api.getAllPincode(0, 0, "", "", "  AND STATE_ID=" + stateId).subscribe(
       (data) => {
         if (data["code"] === 200) {
           this.PincodeData = data["data"];

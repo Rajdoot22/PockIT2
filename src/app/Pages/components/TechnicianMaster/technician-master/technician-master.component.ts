@@ -4,7 +4,7 @@ import { NzNotificationService } from "ng-zorro-antd/notification";
 import { NzTableQueryParams } from "ng-zorro-antd/table";
 import { TechnicianMasterData } from "src/app/Pages/Models/TechnicianMasterData";
 import { ApiServiceService } from "src/app/Service/api-service.service";
-
+import { NzModalModule, NzModalService } from "ng-zorro-antd/modal";
 @Component({
   selector: "app-technician-master",
   templateUrl: "./technician-master.component.html",
@@ -14,7 +14,8 @@ export class TechnicianMasterComponent {
   selecteReportingPerson: number[] = [];
   constructor(
     private api: ApiServiceService,
-    private message: NzNotificationService
+    private message: NzNotificationService,
+    private modal: NzModalService
   ) {}
 
   formTitle = "Manage Technicians";
@@ -96,12 +97,70 @@ export class TechnicianMasterComponent {
       }
       likeQuery += `STATE_ID IN (${this.selecteReportingPerson.join(",")})`; // Update with actual field name in the DB
     }
+    if (this.selecteReportingPerson.length > 0) {
+      if (likeQuery !== "") {
+        likeQuery += " AND ";
+      }
+      likeQuery += `COUNTRY_ID IN (${this.selecteReportingPerson.join(",")})`; // Update with actual field name in the DB
+    }
+    if (this.selecteReportingPerson.length > 0) {
+      if (likeQuery !== "") {
+        likeQuery += " AND ";
+      }
+      likeQuery += `PINCODE_ID IN (${this.selecteReportingPerson.join(",")})`; // Update with actual field name in the DB
+    }
+    if (this.selecteReportingPerson.length > 0) {
+      if (likeQuery !== "") {
+        likeQuery += " AND ";
+      }
+      likeQuery += `CITY_ID IN (${this.selecteReportingPerson.join(",")})`; // Update with actual field name in the DB
+    }
     if (this.statusFilter) {
       if (likeQuery !== "") {
         likeQuery += " AND ";
       }
       likeQuery += `IS_ACTIVE = ${this.statusFilter}`;
     }
+    if (this.Techniciantext !== "") {
+      likeQuery +=
+        (likeQuery ? " AND " : "") +
+        `NAME LIKE '%${this.Techniciantext.trim()}%'`;
+    }
+    if (this.Emailtext !== "") {
+      likeQuery +=
+        (likeQuery ? " AND " : "") +
+        `EMAIL_ID LIKE '%${this.Emailtext.trim()}%'`;
+    }
+    if (this.Mobiletext !== "") {
+      likeQuery +=
+        (likeQuery ? " AND " : "") +
+        `MOBILE_NUMBER LIKE '%${this.Mobiletext.trim()}%'`;
+    }
+    if (this.Addresstext !== "") {
+      likeQuery +=
+        (likeQuery ? " AND " : "") +
+        `ADDRESS_LINE1
+ LIKE '%${this.Addresstext.trim()}%'`;
+    }
+    if (this.Aadhaartext !== "") {
+      likeQuery +=
+        (likeQuery ? " AND " : "") +
+        `
+AADHAR_NUMBER LIKE '%${this.Aadhaartext.trim()}%'`;
+    }
+    if (this.Vehicletext !== "") {
+      likeQuery +=
+        (likeQuery ? " AND " : "") +
+        `
+VEHICLE_NO
+ LIKE '%${this.Vehicletext.trim()}%'`;
+    }
+    if (this.Detailstext !== "") {
+      likeQuery +=
+        (likeQuery ? " AND " : "") +
+        `VEHICLE_DETAILS LIKE '%${this.Detailstext.trim()}%'`;
+    }
+
     likeQuery = globalSearchQuery + (likeQuery ? " AND " + likeQuery : "");
     this.api
       .getTechnicianData(
@@ -135,6 +194,22 @@ export class TechnicianMasterComponent {
           }
         }
       );
+  }
+  VendorData: any = [];
+  getVendorData() {
+    this.api.getVendorData(0, 0, "", "", "").subscribe(
+      (data) => {
+        if (data["code"] == 200) {
+          this.venderdata = data["data"];
+        } else {
+          this.venderdata = [];
+          this.message.error("Failed To Get Vendor Data", "");
+        }
+      },
+      () => {
+        this.message.error("Something Went Wrong", "");
+      }
+    );
   }
   sort(params: NzTableQueryParams) {
     this.loadingRecords = true;
@@ -342,6 +417,7 @@ export class TechnicianMasterComponent {
     { label: "Aadhaar No.", value: "AADHAR_NUMBER" },
     { label: "Vehicle No.", value: "VEHICLE_NO" },
     { label: "Having own vehicle?", value: "IS_OWN_VEHICLE" },
+    { label: "Vendor Name", value: "VENDOR_ID" },
     { label: "Country Name", value: "COUNTRY_ID" },
     { label: "State Name", value: "STATE_ID" },
     { label: "City Name", value: "CITY_ID" },
@@ -353,9 +429,9 @@ export class TechnicianMasterComponent {
   ngOnInit(): void {
     this.loadingRecords = false;
     this.getCountyData();
-    this.CityData();
-    this.PincodeData();
-    this.StateData();
+    // this.getStateData();
+    // this.getCityData();
+    // this.getPincodeData();
   }
 
   countryData: any = [];
@@ -428,6 +504,10 @@ export class TechnicianMasterComponent {
       this.filterClass = "filter-invisible";
     } else {
       this.filterClass = "filter-visible";
+      this.getStateData();
+      this.getCityData();
+      this.getPincodeData();
+      this.getVendorData();
     }
   }
 
@@ -753,9 +833,40 @@ export class TechnicianMasterComponent {
     }
   }
 
+  restrictedKeywords = [
+    "SELECT",
+    "INSERT",
+    "UPDATE",
+    "DELETE",
+    "DROP",
+    "TRUNCATE",
+    "ALTER",
+    "CREATE",
+    "RENAME",
+    "GRANT",
+    "REVOKE",
+    "EXECUTE",
+    "UNION",
+    "HAVING",
+    "WHERE",
+    "ORDER BY",
+    "GROUP BY",
+    "ROLLBACK",
+    "COMMIT",
+    "--",
+    ";",
+    "/*",
+    "*/",
+  ];
+
+  isValidInput(input: string): boolean {
+    return !this.restrictedKeywords.some((keyword) =>
+      input.toUpperCase().includes(keyword)
+    );
+  }
   applyFilter(i, j) {
     console.log(i, j);
-
+    const inputValue = this.filterBox[i].FILTER[j].SELECTION3;
     const lastFilterIndex = this.filterBox.length - 1;
     const lastSubFilterIndex =
       this.filterBox[lastFilterIndex]["FILTER"].length - 1;
@@ -782,6 +893,12 @@ export class TechnicianMasterComponent {
         "Please enter a valid value with at least 1 characters",
         ""
       );
+    } else if (
+      typeof inputValue === "string" &&
+      !this.isValidInput(inputValue)
+    ) {
+      // Show error message
+      this.message.error(`Invalid Input: ${inputValue} is not allowed.`, "");
     } else {
       console.log(this.query, "query");
       console.log(this.filterBox, "filterbox");
@@ -886,6 +1003,7 @@ export class TechnicianMasterComponent {
   public visiblesave = false;
 
   saveQuery() {
+    // this.createFilterQuery();
     this.visiblesave = !this.visiblesave;
   }
 
@@ -906,26 +1024,6 @@ export class TechnicianMasterComponent {
     }
   }
 
-  toggleLiveDemo(item: any, item1: any) {
-    this.name1 = item;
-    console.log(item, "items");
-
-    this.name2 = item1;
-    console.log(item1, "name");
-
-    this.visible = !this.visible;
-  }
-
-  deleteItem(item: any) {
-    this.INSERT_NAMES = this.INSERT_NAMES.filter((i) => i !== item);
-  }
-
-  handleLiveDemoChange(event: any) {
-    this.visible = event;
-  }
-  toggleLiveDemo1() {
-    this.visible = false;
-  }
   omit(event: any) {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -939,4 +1037,164 @@ export class TechnicianMasterComponent {
     this.search();
   }
   venderdata: any[] = [];
+
+  handleOkTop(): void {
+    // this.createFilterQuery();
+
+    const lastFilterIndex = this.filterBox.length - 1;
+    1;
+    const lastSubFilterIndex =
+      this.filterBox[lastFilterIndex]["FILTER"].length - 1;
+
+    const selection1 =
+      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
+        "SELECTION1"
+      ];
+    const selection2 =
+      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
+        "SELECTION2"
+      ];
+    const selection3 =
+      this.filterBox[lastFilterIndex]["FILTER"][lastSubFilterIndex][
+        "SELECTION3"
+      ];
+    const selection4 = this.filterBox[lastFilterIndex]["CONDITION"];
+    console.log(selection4, "selection4");
+
+    if (!selection1) {
+      this.message.error("Please select a column", "");
+    } else if (!selection2) {
+      this.message.error("Please select a comparison", "");
+    } else if (!selection3 || selection3.length < 1) {
+      this.message.error(
+        "Please enter a valid value with at least 1 characters",
+        ""
+      );
+    } else if (!selection4 && lastFilterIndex > 0) {
+      this.message.error("Please Select the Operator", "");
+    } else {
+      this.isSpinner = true;
+
+      for (let i = 0; i < this.filterBox.length; i++) {
+        if (i != 0) {
+          this.query += ") " + this.filterBox[i]["CONDITION"] + " (";
+        } else this.query = "(";
+
+        this.query2 = "";
+        for (let j = 0; j < this.filterBox[i]["FILTER"].length; j++) {
+          const filter = this.filterBox[i]["FILTER"][j];
+          if (j == 0) {
+            //this.query2 += '(';
+          } else {
+            if (filter["CONDITION"] == "AND") {
+              this.query2 = this.query2 + " AND ";
+            } else {
+              this.query2 = this.query2 + " OR ";
+            }
+          }
+
+          let selection1 = filter["SELECTION1"];
+          let selection2 = filter["SELECTION2"];
+          let selection3 = filter["SELECTION3"];
+
+          if (selection2 == "Contains") {
+            this.query2 += `${selection1} LIKE '%${selection3}%'`;
+          } else if (selection2 == "End With") {
+            this.query2 += `${selection1} LIKE '%${selection3}'`;
+          } else if (selection2 == "Start With") {
+            this.query2 += `${selection1} LIKE '${selection3}%'`;
+          } else {
+            this.query2 += `${selection1} ${selection2} '${selection3}'`;
+          }
+          if (j + 1 == this.filterBox[i]["FILTER"].length) {
+            //this.query2 += ') ';
+            this.query += this.query2;
+          }
+        }
+
+        if (i + 1 == this.filterBox.length) {
+          this.query += ")";
+        }
+      }
+
+      this.showquery = this.query;
+    }
+
+    if (this.QUERY_NAME == "" || this.QUERY_NAME.trim() == "") {
+      this.message.error("Please Enter Query Name", "");
+    } else {
+      this.INSERT_NAMES.push({ query: this.showquery, name: this.QUERY_NAME });
+      console.log(this.INSERT_NAMES);
+      this.visiblesave = false;
+      this.QUERY_NAME = ""; // Clear input after adding
+    }
+    this.visiblesave = false;
+  }
+
+  handleCancelTop(): void {
+    this.visiblesave = false;
+  }
+
+  isModalVisible = false; // Controls modal visibility
+  selectedQuery: string = ""; // Holds the query to display
+
+  toggleLiveDemo(query: string, name: string): void {
+    console.log(query);
+    this.selectedQuery = query;
+    console.log(this.selectedQuery);
+    // Assign the query to display
+    this.isModalVisible = true; // Show the modal
+  }
+
+  handleCancel(): void {
+    this.isModalVisible = false; // Close the modal
+    this.selectedQuery = ""; // Clear the selected query
+  }
+
+  deleteItem(item: any) {
+    this.INSERT_NAMES = this.INSERT_NAMES.filter((i) => i !== item);
+  }
+
+  handleLiveDemoChange(event: any) {
+    this.visible = event;
+  }
+  toggleLiveDemo1() {
+    this.visible = false;
+  }
+  drawerMappingTitle = "";
+  drawerMappigVisible = false;
+
+  showConfirm(): void {
+    this.modal.confirm({
+      nzTitle: "<i>Are You Sure to Mark as Available?</i>",
+      nzOnOk: () => console.log("OK"),
+    });
+  }
+  get closePincodeMappingCallback() {
+    return this.drawerPicodeMappingClose.bind(this);
+  }
+  drawerPicodeVisible = false;
+  drawerPicodeMappingClose(): void {
+    this.search();
+    this.drawerPicodeVisible = false;
+  }
+  PincodeMapping(data: any): void {
+    this.drawerTitle = ` Map Pincodes to the ${data.NAME} Technician`;
+    this.drawerData = Object.assign({}, data);
+    this.drawerPicodeVisible = true;
+  }
+
+  get closeSkillsMappingCallback() {
+    return this.drawerSkillsMappingClose.bind(this);
+  }
+  drawerSKillsVisible = false;
+  drawerSkillsMappingClose(): void {
+    this.search();
+    this.drawerSKillsVisible = false;
+  }
+  SkillsMapping(data: any): void {
+    this.drawerTitle = ` Map Skills to the ${data.NAME} Technician`;
+    this.drawerData = Object.assign({}, data);
+    this.drawerSKillsVisible = true;
+  }
 }

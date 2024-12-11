@@ -780,5 +780,10 @@ export class UnitTableComponent {
   }
 
 
+  removeCondition(index: number) {
+    this.filterBox.splice(index, 1);
+  }
+
+
 
 }
